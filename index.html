@@ -3,154 +3,218 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>법률 절차 길잡이 — 복잡한 법 문제, 대화로 길을 찾다</title>
-<meta name="description" content="일상 언어로 물어보면 기한·할 일·서식까지 안내하는 무료 생활법률 도구. 56개 분야 242개 주제, 빈칸 채움형 서식 111종. 개인정보 수집 없음.">
+<title>법률 절차 길잡이 — 복잡한 법률 문제, 카카오톡에서 1분 만에</title>
+<meta name="description" content="일상 언어로 물어보면 기한·할 일·서식까지 한 번에. 56개 분야 242개 주제, 빈칸 채움형 서식 111종. 무료·로그인 없음·개인정보 미수집.">
 <style>
-:root{--ink:#1c2130;--sub:#5b6474;--line:#e6e9ef;--bg:#f7f8fa;--card:#ffffff;--brand:#2b48c6;--brand2:#1f8a5f;--warn:#c73a3a;--chatbg:#bacee0}
-*{box-sizing:border-box}
-body{margin:0;font-family:"Apple SD Gothic Neo",Pretendard,"Malgun Gothic",sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
-.wrap{max-width:860px;margin:0 auto;padding:0 20px}
-header{padding:64px 0 40px;text-align:center}
-.badge-line{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
-.chip{font-size:12.5px;font-weight:700;padding:5px 12px;border-radius:999px;background:#eef1ff;color:var(--brand)}
-.chip.green{background:#e8f5ee;color:var(--brand2)}
-h1{font-size:clamp(26px,5vw,38px);margin:0 0 12px;letter-spacing:-.5px}
-.lead{font-size:clamp(15px,2.5vw,18px);color:var(--sub);margin:0 auto 26px;max-width:560px}
-.cta-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.btn{display:inline-block;padding:13px 22px;border-radius:12px;font-weight:800;text-decoration:none;font-size:15px}
-.btn.primary{background:var(--brand);color:#fff}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#191f28;--sub:#4e5968;--mute:#8b95a1;--line:#e5e8eb;--bg:#fff;--soft:#f4f6f9;--blue:#3182f6;--blue-d:#1b64da;--green:#04c75a;--radius:20px}
+html{scroll-behavior:smooth}
+body{font-family:"Pretendard Variable",Pretendard,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased}
+.container{width:100%;max-width:1080px;margin:0 auto;padding:0 24px}
+a{text-decoration:none;color:inherit}
+/* ── 네비 ── */
+.nav{position:fixed;top:0;left:0;right:0;height:64px;background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);z-index:100}
+.nav .container{height:64px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:18px;font-weight:800;display:flex;align-items:center;gap:8px}
+.nav-links{display:flex;align-items:center;gap:28px;font-size:15px;font-weight:600;color:var(--sub)}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{background:var(--blue);color:#fff;padding:9px 18px;border-radius:10px;font-size:14px;font-weight:700}
+.nav-cta:hover{background:var(--blue-d)}
+@media(max-width:720px){.nav-links a.hide-m{display:none}}
+/* ── 히어로 ── */
+.hero{padding:150px 0 70px;text-align:center;background:linear-gradient(180deg,#eef4ff 0%,#fff 78%)}
+.hero .badge{display:inline-block;background:#e8f0fe;color:var(--blue-d);font-size:13.5px;font-weight:700;padding:7px 16px;border-radius:999px;margin-bottom:22px}
+.hero h1{font-size:clamp(30px,5.4vw,52px);font-weight:800;letter-spacing:-.03em;line-height:1.25}
+.hero h1 b{color:var(--blue)}
+.hero p{font-size:clamp(15px,2.4vw,19px);color:var(--sub);margin:20px auto 34px;max-width:560px}
+.btn-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:15px 30px;border-radius:14px;font-size:16px;font-weight:700;transition:.15s}
+.btn.primary{background:var(--blue);color:#fff;box-shadow:0 6px 18px rgba(49,130,246,.3)}
+.btn.primary:hover{background:var(--blue-d);transform:translateY(-1px)}
 .btn.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
-section{padding:44px 0}
-h2{font-size:22px;margin:0 0 6px}
-.sec-sub{color:var(--sub);font-size:14px;margin:0 0 22px}
-/* 카톡 데모 */
-.chat{background:var(--chatbg);border-radius:18px;padding:22px 16px;max-width:420px;margin:0 auto}
-.bubble-user{background:#fef01b;border-radius:14px 14px 3px 14px;padding:9px 14px;font-size:14px;max-width:78%;margin:0 0 12px auto;width:fit-content}
-.kcard{background:#fff;border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.08);font-size:13.5px}
-.kcap{font-size:11.5px;color:#8a93a3;margin-bottom:3px}
-.ktitle{font-weight:800;font-size:15.5px;margin-bottom:8px}
-.krow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.kbadge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px}
-.kbadge.cat{background:#eef1f6;color:#4a5568}
-.kbadge.due{background:#fdecec;color:var(--warn)}
-.kdiv{border-top:1px solid #eef0f4;margin:10px 0}
-.kstep{color:#39404e;padding:2px 0}
-.kbtn{display:block;text-align:center;background:#1c2130;color:#fff;border-radius:9px;padding:10px;font-weight:700;margin:10px 0 8px;font-size:13.5px;text-decoration:none}
-.kfoot{font-size:11px;color:#98a0ad}
-/* 시나리오 */
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-@media(max-width:640px){.grid3{grid-template-columns:1fr}}
-.scard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
-.scard .q{font-weight:800;margin-bottom:6px;font-size:15px}
-.scard .a{font-size:13.5px;color:var(--sub)}
-/* 스탯 */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;text-align:center}
-@media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
-.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 8px}
-.stat b{display:block;font-size:26px;letter-spacing:-.5px}
-.stat span{font-size:12.5px;color:var(--sub)}
-/* 카탈로그 */
-#q{width:100%;padding:13px 16px;border:1.5px solid var(--line);border-radius:12px;font-size:15px;margin-bottom:14px;background:#fff}
-#q:focus{outline:none;border-color:var(--brand)}
-.flist{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-@media(max-width:640px){.flist{grid-template-columns:1fr}}
-.fitem{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:11px 14px;text-decoration:none;color:var(--ink);font-size:13.5px;display:block}
-.fitem:hover{border-color:var(--brand)}
-.fitem small{display:block;color:#98a0ad;font-size:11.5px;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#count{font-size:12.5px;color:var(--sub);margin-bottom:10px}
-#more{width:100%;padding:12px;border:1.5px dashed var(--line);background:none;border-radius:11px;color:var(--sub);font-size:14px;cursor:pointer;margin-top:10px}
-/* 제안 */
-.suggest{background:#1c2130;color:#fff;border-radius:18px;padding:34px 26px;text-align:center}
-.suggest h2{color:#fff}
-.suggest p{color:#aab2c2;font-size:14px;max-width:480px;margin:6px auto 20px}
-.btn.yellow{background:#fef01b;color:#1c2130}
-.vote{margin-top:14px;font-size:12.5px;color:#8a93a3}
-footer{padding:36px 0 56px;border-top:1px solid var(--line);margin-top:30px}
-.disc{font-size:12px;color:#98a0ad;max-width:640px}
-.disc b{color:var(--sub)}
+.btn.ghost:hover{border-color:#c9cfd6}
+.trust{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:30px;font-size:13.5px;color:var(--mute);font-weight:600}
+.trust span::before{content:"✓ ";color:var(--green);font-weight:800}
+/* ── 채팅 데모 ── */
+.demo{padding:10px 0 40px}
+.phone{max-width:420px;margin:0 auto;background:#b2c7da;border-radius:28px;padding:26px 18px;box-shadow:0 24px 60px rgba(25,31,40,.16)}
+.bub-u{background:#fee500;border-radius:16px 16px 4px 16px;padding:10px 15px;font-size:14.5px;max-width:80%;margin:0 0 14px auto;width:fit-content;font-weight:500}
+.kcard{background:#fff;border-radius:16px;padding:18px;font-size:13.5px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.kcap{font-size:11.5px;color:var(--mute);margin-bottom:3px}
+.ktitle{font-weight:800;font-size:15.5px;margin-bottom:9px}
+.krow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:11px}
+.kbadge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px}
+.kbadge.cat{background:var(--soft);color:var(--sub)}
+.kbadge.due{background:#fdecec;color:#e5484d}
+.kdiv{border-top:1px solid #f0f2f5;margin:11px 0}
+.kstep{color:#39404e;padding:2.5px 0}
+.kbtn{display:block;text-align:center;background:var(--ink);color:#fff;border-radius:10px;padding:11px;font-weight:700;margin:12px 0 9px;font-size:13.5px}
+.kfoot{font-size:11px;color:var(--mute)}
+/* ── 섹션 공통 ── */
+section{padding:88px 0}
+section.soft{background:var(--soft)}
+.sec-head{text-align:center;margin-bottom:52px}
+.sec-head .eyebrow{color:var(--blue);font-weight:800;font-size:14.5px;margin-bottom:10px}
+.sec-head h2{font-size:clamp(24px,3.6vw,36px);font-weight:800;letter-spacing:-.02em;line-height:1.35}
+.sec-head p{color:var(--sub);font-size:16px;margin-top:14px}
+/* ── 3단계 ── */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:820px){.steps{grid-template-columns:1fr}}
+.step{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:34px 28px;text-align:center}
+.step .ico{font-size:38px;margin-bottom:16px}
+.step h3{font-size:18px;font-weight:800;margin-bottom:9px}
+.step p{font-size:14.5px;color:var(--sub)}
+/* ── 시나리오 ── */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:820px){.grid{grid-template-columns:1fr}}
+.scard{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px;transition:.15s}
+.scard:hover{box-shadow:0 10px 30px rgba(25,31,40,.08);transform:translateY(-2px)}
+.scard .q{font-weight:800;font-size:16.5px;margin-bottom:10px;line-height:1.4}
+.scard .q::before{content:"💬 "}
+.scard .a{font-size:14px;color:var(--sub)}
+.scard .f{margin-top:14px;font-size:13px;color:var(--green);font-weight:700}
+/* ── 스탯 ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center}
+@media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat b{display:block;font-size:clamp(32px,4.5vw,46px);font-weight:800;letter-spacing:-.02em;color:var(--blue)}
+.stat span{font-size:14.5px;color:var(--sub);font-weight:600}
+/* ── 카탈로그 ── */
+.search-wrap{max-width:640px;margin:0 auto 14px;position:relative}
+#q{width:100%;padding:17px 22px 17px 52px;border:1.5px solid var(--line);border-radius:16px;font-size:16px;background:#fff;outline:none;transition:.15s}
+#q:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(49,130,246,.12)}
+.search-wrap::before{content:"🔍";position:absolute;left:20px;top:50%;transform:translateY(-50%);font-size:17px}
+#count{text-align:center;font-size:13.5px;color:var(--mute);margin-bottom:26px}
+.flist{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:900px){.flist{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.flist{grid-template-columns:1fr}}
+.fitem{background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px 19px;display:block;transition:.15s}
+.fitem:hover{border-color:var(--blue);box-shadow:0 6px 18px rgba(49,130,246,.1)}
+.fitem b{font-size:14.5px;font-weight:700;display:block;line-height:1.45}
+.fitem small{display:block;color:var(--mute);font-size:12.5px;margin-top:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#more{display:block;margin:30px auto 0;padding:14px 34px;border:1.5px solid var(--line);background:#fff;border-radius:14px;color:var(--sub);font-size:15px;font-weight:700;cursor:pointer}
+#more:hover{border-color:#c9cfd6}
+/* ── 의견 CTA ── */
+.suggest-box{background:var(--ink);border-radius:28px;padding:64px 36px;text-align:center;color:#fff}
+.suggest-box h2{font-size:clamp(22px,3.4vw,32px);font-weight:800;letter-spacing:-.02em}
+.suggest-box p{color:#aab2c2;font-size:15.5px;max-width:520px;margin:16px auto 30px}
+.btn.yellow{background:#fee500;color:var(--ink)}
+.btn.yellow:hover{transform:translateY(-1px)}
+.suggest-box .note{margin-top:18px;font-size:13px;color:#8b95a1}
+/* ── 푸터 ── */
+footer{border-top:1px solid var(--line);padding:44px 0 60px}
+footer .container{text-align:center}
+footer .flogo{font-weight:800;font-size:16px;margin-bottom:14px}
+footer p{font-size:12.5px;color:var(--mute);max-width:640px;margin:0 auto;line-height:1.7}
 </style>
 </head>
 <body>
 
-<header class="wrap">
-  <div class="badge-line">
-    <span class="chip">AGENTIC PLAYER 10 본선 진출작</span>
-    <span class="chip green">무료 · 로그인 없음 · 개인정보 미수집</span>
+<nav class="nav"><div class="container">
+  <a class="logo" href="#top">⚖️ 법률 절차 길잡이</a>
+  <div class="nav-links">
+    <a class="hide-m" href="#how">서비스 소개</a>
+    <a class="hide-m" href="#forms">서식 찾기</a>
+    <a class="nav-cta" href="https://forms.gle/fauC7Kq8EVaDzJVbA" target="_blank" rel="noopener">의견 보내기</a>
   </div>
-  <h1>⚖️ 법률 절차 길잡이</h1>
-  <p class="lead">"월급을 3개월째 못 받았어요" — 일상 언어로 물어보면<br>지켜야 할 <b>기한</b>, 지금 할 일, 빈칸만 채우면 되는 <b>서식</b>까지 한 번에 안내합니다.</p>
-  <div class="cta-row">
-    <a class="btn primary" href="#forms">서식 111종 미리 써보기</a>
-    <a class="btn ghost" href="#suggest">기능 제안하기</a>
-  </div>
-</header>
+</div></nav>
 
-<section class="wrap">
-  <h2>카카오톡에서 이렇게 답해요</h2>
-  <p class="sec-sub">AI 에이전트가 검증된 절차 DB에서 찾아 카드로 정리해줍니다. 웹 검색 요약이 아니라, 법제처 기준으로 확인한 정보예요.</p>
-  <div class="chat">
-    <div class="bubble-user">월급을 3개월째 못 받았어요 😢</div>
+<header class="hero" id="top"><div class="container">
+  <span class="badge">카카오 AI 에이전트 공모전 본선작 · AGENTIC PLAYER 10</span>
+  <h1>복잡한 법률 문제,<br><b>카카오톡에서 1분</b> 만에</h1>
+  <p>"월급을 3개월째 못 받았어요" — 일상 언어로 물어보면<br>지켜야 할 기한, 지금 할 일, 빈칸만 채우면 되는 서식까지 한 번에 안내합니다.</p>
+  <div class="btn-row">
+    <a class="btn primary" href="#forms">서식 111종 무료로 써보기</a>
+    <a class="btn ghost" href="https://forms.gle/fauC7Kq8EVaDzJVbA" target="_blank" rel="noopener">의견 보내기</a>
+  </div>
+  <div class="trust"><span>완전 무료</span><span>로그인 없음</span><span>개인정보 미수집</span></div>
+</div></header>
+
+<div class="demo"><div class="container">
+  <div class="phone">
+    <div class="bub-u">월급을 3개월째 못 받았어요 😢</div>
     <div class="kcard">
       <div class="kcap">빠른 진단 · 임금체불</div>
       <div class="ktitle">임금체불(못 받은 임금·수당) 대응 절차</div>
       <div class="krow"><span class="kbadge cat">노동</span><span class="kbadge due">⏰ 임금채권 소멸시효 3년</span></div>
       <div class="kdiv"></div>
-      <div style="font-weight:700;margin-bottom:4px">✅ 지금 할 일</div>
+      <div style="font-weight:700;margin-bottom:5px">✅ 지금 할 일</div>
       <div class="kstep">• 증거 수집 — 근로계약서·급여명세서·입금내역</div>
       <div class="kstep">• 노동포털 온라인 또는 노동청 방문해 진정서 접수</div>
       <div class="kstep">• 근로감독관 조사 — 사실관계 확인</div>
-      <a class="kbtn" href="https://legal-navigator-kakaotools.playmcp-endpoint.kakaocloud.io/forms/%EC%9E%84%EA%B8%88%EC%B2%B4%EB%B6%88%EC%A7%84%EC%A0%95%EC%84%9C" target="_blank">🏛️ 접수처 바로가기</a>
+      <a class="kbtn" href="https://legal-navigator-kakaotools.playmcp-endpoint.kakaocloud.io/forms/%EC%9E%84%EA%B8%88%EC%B2%B4%EB%B6%88%EC%A7%84%EC%A0%95%EC%84%9C" target="_blank" rel="noopener">🏛️ 접수처 바로가기</a>
       <div class="kfoot">⚖️ 근로기준법 제36조 · 제43조 · 제49조 · 제109조</div>
       <div class="kfoot">결론 아님·경로 안내 · 무료상담 132 · 법률 절차 길잡이</div>
     </div>
   </div>
-</section>
+</div></div>
 
-<section class="wrap">
-  <h2>이런 순간에 쓰세요</h2>
-  <p class="sec-sub">변호사를 만나기 전, 혼자서도 방향을 잡을 수 있어야 하니까요.</p>
-  <div class="grid3">
-    <div class="scard"><div class="q">"전세 보증금을 안 돌려줘요"</div><div class="a">임차권등기명령 → 지급명령 순서와 기한, 내용증명 서식까지. 이사 나가기 전에 해야 할 일이 따로 있어요.</div></div>
-    <div class="scard"><div class="q">"법원에서 소장이 왔어요"</div><div class="a">답변서 제출 기한 30일. 놓치면 그대로 패소(무변론 판결)할 수 있어요. 답변서 서식과 작성 요령을 바로 안내해요.</div></div>
-    <div class="scard"><div class="q">"아버지 빚을 상속받게 될까 봐요"</div><div class="a">상속포기·한정승인은 3개월 안에. 오늘 기준 데드라인 계산과 가정법원 제출 서류를 알려드려요.</div></div>
+<section id="how"><div class="container">
+  <div class="sec-head">
+    <div class="eyebrow">이렇게 도와드려요</div>
+    <h2>물어보기만 하면, 절차가 정리됩니다</h2>
+    <p>웹 검색 요약이 아니라, 법제처 기준으로 검증한 절차 데이터베이스에서 답합니다.</p>
   </div>
-</section>
+  <div class="steps">
+    <div class="step"><div class="ico">💬</div><h3>1. 일상 언어로 묻기</h3><p>법률 용어를 몰라도 됩니다. "보증금을 안 돌려줘요"처럼 평소 말로 물어보세요.</p></div>
+    <div class="step"><div class="ico">⏰</div><h3>2. 기한과 할 일 확인</h3><p>놓치면 권리가 사라지는 기한과, 오늘 당장 해야 할 일을 순서대로 알려드립니다.</p></div>
+    <div class="step"><div class="ico">📄</div><h3>3. 서식까지 바로 작성</h3><p>빈칸만 채우면 되는 서식을 열어 탭으로 입력하고, 그대로 인쇄·PDF 저장하면 끝.</p></div>
+  </div>
+</div></section>
 
-<section class="wrap">
-  <h2>숫자로 보는 커버리지</h2>
-  <p class="sec-sub">생활법률 전 영역을 다루고, 모든 인용은 실재 확인된 것만 담았습니다.</p>
+<section class="soft"><div class="container">
+  <div class="sec-head">
+    <div class="eyebrow">이런 순간에 쓰세요</div>
+    <h2>변호사를 만나기 전, 먼저 방향을 잡을 수 있게</h2>
+  </div>
+  <div class="grid">
+    <div class="scard"><div class="q">"전세 보증금을 안 돌려줘요"</div><div class="a">임차권등기명령 → 지급명령 순서와 기한, 내용증명 서식까지. 이사 나가기 전에 해야 할 일이 따로 있어요.</div><div class="f">📄 임차권등기명령 신청서</div></div>
+    <div class="scard"><div class="q">"법원에서 소장이 왔어요"</div><div class="a">답변서 제출 기한은 30일. 놓치면 그대로 패소(무변론 판결)할 수 있어요. 서식과 작성 요령을 바로 안내해요.</div><div class="f">📄 민사 답변서</div></div>
+    <div class="scard"><div class="q">"아버지 빚을 상속받게 될까 봐요"</div><div class="a">상속포기·한정승인은 3개월 안에. 오늘 기준 데드라인 계산과 가정법원 제출 서류를 알려드려요.</div><div class="f">📄 상속포기 심판청구서</div></div>
+    <div class="scard"><div class="q">"갑자기 해고 통보를 받았어요"</div><div class="a">부당해고 구제신청은 해고일부터 3개월 이내. 노동위원회 절차를 단계별로 안내해요.</div><div class="f">📄 부당해고 구제신청서</div></div>
+    <div class="scard"><div class="q">"빚 독촉 전화가 하루 수십 통이에요"</div><div class="a">불법추심 판별과 신고 절차, 개인회생·채무조정 비교까지. 추심은 막을 수 있어요.</div><div class="f">📄 불법추심 중단 요청서</div></div>
+    <div class="scard"><div class="q">"환불을 안 해줘요"</div><div class="a">청약철회 기한과 통지 방법, 분쟁조정 신청까지. 소비자의 권리는 생각보다 넓어요.</div><div class="f">📄 청약철회 통지서</div></div>
+  </div>
+</div></section>
+
+<section><div class="container">
+  <div class="sec-head">
+    <div class="eyebrow">숫자로 보는 커버리지</div>
+    <h2>생활법률 전 영역을 다룹니다</h2>
+  </div>
   <div class="stats">
     <div class="stat"><b>56</b><span>분야</span></div>
     <div class="stat"><b>242</b><span>절차 주제</span></div>
     <div class="stat"><b>111</b><span>빈칸 채움형 서식</span></div>
     <div class="stat"><b>0</b><span>수집하는 개인정보</span></div>
   </div>
-</section>
+</div></section>
 
-<section class="wrap" id="forms">
-  <h2>📄 서식 111종 — 지금 바로 써보세요</h2>
-  <p class="sec-sub">클릭하면 빈칸 채움형 서식이 열려요. 탭으로 입력하고 그대로 인쇄·PDF 저장하면 됩니다. 회원가입 없이요.</p>
-  <input id="q" type="search" placeholder="찾는 서식을 검색해보세요 — 예: 보증금, 고소장, 육아휴직, 내용증명">
+<section class="soft" id="forms"><div class="container">
+  <div class="sec-head">
+    <div class="eyebrow">서식 찾기</div>
+    <h2>서식 111종, 지금 바로 써보세요</h2>
+    <p>클릭하면 빈칸 채움형 서식이 열려요. 회원가입 없이 입력하고 인쇄·PDF 저장까지.</p>
+  </div>
+  <div class="search-wrap"><input id="q" type="search" placeholder="예: 보증금, 고소장, 육아휴직, 내용증명"></div>
   <div id="count"></div>
   <div class="flist" id="flist"></div>
-  <button id="more">전체 보기</button>
-</section>
+  <button id="more">서식 전체 보기</button>
+</div></section>
 
-<section class="wrap" id="suggest">
-  <div class="suggest">
+<section id="suggest"><div class="container">
+  <div class="suggest-box">
     <h2>💡 이런 기능도 있으면 좋겠다!</h2>
     <p>법률 절차 길잡이는 지금도 만들어지는 중이에요. 필요한 주제·서식·기능을 제안해주시면 실제 개발에 반영합니다. 1분이면 돼요.</p>
     <a class="btn yellow" href="https://forms.gle/fauC7Kq8EVaDzJVbA" target="_blank" rel="noopener">기능 제안하러 가기 →</a>
-    <div class="vote">🗳️ 8월 31일부터 Kakao Tools 공개 투표가 시작돼요 — 투표 링크가 여기에 열립니다.</div>
+    <div class="note">🗳️ 8월 31일부터 Kakao Tools 공개 투표가 시작돼요 — 투표 링크가 여기에 열립니다.</div>
   </div>
-</section>
+</div></section>
 
-<footer>
-  <div class="wrap disc">
-    <b>법률 절차 길잡이는 정보 안내 도구이며, 개별 법률 자문이 아닙니다.</b> 구체적 사건의 판단은 반드시 변호사 등 전문가와 상의하세요. 무료 법률상담: 대한법률구조공단 132.<br><br>
-    개인정보를 수집·저장하지 않습니다 · 서식은 표준 양식 예시이며 '공식 양식 받는 곳'을 함께 안내합니다 · 팀 프로젝트윤 (AGENTIC PLAYER 10 본선)
-  </div>
-</footer>
+<footer><div class="container">
+  <div class="flogo">⚖️ 법률 절차 길잡이 · 팀 프로젝트윤</div>
+  <p>법률 절차 길잡이는 정보 안내 도구이며, 개별 법률 자문이 아닙니다. 구체적 사건의 판단은 반드시 변호사 등 전문가와 상의하세요. 무료 법률상담: 대한법률구조공단 132<br>
+  개인정보를 수집·저장하지 않습니다 · 서식은 표준 양식 예시이며 '공식 양식 받는 곳'을 함께 안내합니다 · AGENTIC PLAYER 10 본선작</p>
+</div></footer>
 
 <script>
 const BASE="https://legal-navigator-kakaotools.playmcp-endpoint.kakaocloud.io";
@@ -160,9 +224,9 @@ let showAll=false;
 function render(){
   const kw=q.value.trim();
   const hit=FORMS.filter(f=>!kw||f.t.includes(kw)||f.k.includes(kw)||f.u.includes(kw));
-  const view=(kw||showAll)?hit:hit.slice(0,12);
-  list.innerHTML=view.map(f=>`<a class="fitem" href="${BASE}/forms/${encodeURIComponent(f.k)}" target="_blank">${f.t}<small>${f.u}</small></a>`).join("");
-  count.textContent=kw?`'${kw}' 검색 결과 ${hit.length}건`:`전체 ${FORMS.length}종${showAll?"":" 중 12종 표시"}`;
+  const view=(kw||showAll)?hit:hit.slice(0,9);
+  list.innerHTML=view.map(f=>`<a class="fitem" href="${BASE}/forms/${encodeURIComponent(f.k)}" target="_blank" rel="noopener"><b>${f.t}</b><small>${f.u}</small></a>`).join("");
+  count.textContent=kw?`'${kw}' 검색 결과 ${hit.length}건`:`전체 ${FORMS.length}종${showAll?"":" 중 9종 표시"}`;
   more.style.display=(kw||showAll)?"none":"block";
 }
 q.addEventListener("input",render);
