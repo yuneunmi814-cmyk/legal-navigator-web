@@ -8,6 +8,18 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--ink:#191f28;--sub:#4e5968;--mute:#8b95a1;--line:#e5e8eb;--bg:#fff;--soft:#f4f6f9;--blue:#3182f6;--blue-d:#1b64da;--green:#04c75a;--radius:20px}
+
+/* 아이콘 — 이모지 대신 인라인 SVG 마스크. 기기별 이모지 폰트에 디자인을 맡기지 않는다. */
+:root{
+--ico-search:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M16.5 16.5 21 21'/%3E%3C/svg%3E");
+--ico-chat:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 5h16v11H9.5L4.5 20V5z'/%3E%3Cpath d='M8 9h8M8 12.5h5'/%3E%3C/svg%3E");
+--ico-clock:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='8.5'/%3E%3Cpath d='M12 7v5.3l3.4 2'/%3E%3C/svg%3E");
+--ico-doc:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M13.5 3H6v18h12V7.5z'/%3E%3Cpath d='M13.5 3v4.5H18'/%3E%3Cpath d='M9 12.5h6M9 16h4'/%3E%3C/svg%3E");
+--ico-scale:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 4v16M7 20h10M5 8h14'/%3E%3Cpath d='M5 8 2.5 13.5h5zM19 8l-2.5 5.5h5z'/%3E%3C/svg%3E");
+}
+.ico-svg{display:inline-block;background:currentColor;-webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:contain;mask-size:contain;flex:none}
+.logo .ico-svg{width:21px;height:21px;color:var(--blue)}
+.flogo .ico-svg{width:18px;height:18px;vertical-align:-3px}
 html{scroll-behavior:smooth}
 /* 가로 스크롤 방지 — 모바일에서 긴 서식 설명이 화면 밖으로 밀리던 문제 대비 */
 html,body{max-width:100%;overflow-x:hidden}
@@ -25,7 +37,7 @@ a{text-decoration:none;color:inherit}
 .nav-cta:hover{background:var(--blue-d)}
 @media(max-width:720px){.nav-links a.hide-m{display:none}}
 /* ── 히어로 ── */
-.hero{padding:150px 0 70px;text-align:center;background:linear-gradient(180deg,#eef4ff 0%,#fff 78%)}
+.hero{padding:150px 0 70px;text-align:center;background:var(--bg)}
 .hero .badge{display:inline-block;background:#e8f0fe;color:var(--blue-d);font-size:13.5px;font-weight:700;padding:7px 16px;border-radius:999px;margin-bottom:22px}
 .hero h1{font-size:clamp(30px,5.4vw,52px);font-weight:800;letter-spacing:-.03em;line-height:1.25}
 .hero h1 b{color:var(--blue)}
@@ -65,7 +77,7 @@ section.soft{background:var(--soft)}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 @media(max-width:820px){.steps{grid-template-columns:1fr}}
 .step{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:34px 28px;text-align:center}
-.step .ico{font-size:38px;margin-bottom:16px}
+.step .ico{width:34px;height:34px;margin:0 auto 16px;color:var(--blue)}
 .step h3{font-size:18px;font-weight:800;margin-bottom:9px}
 .step p{font-size:14.5px;color:var(--sub)}
 /* ── 시나리오 ── */
@@ -89,7 +101,7 @@ section.soft{background:var(--soft)}
 .search-wrap{max-width:640px;margin:0 auto 14px;position:relative}
 #q{width:100%;padding:17px 22px 17px 52px;border:1.5px solid var(--line);border-radius:16px;font-size:16px;background:#fff;outline:none;transition:.15s}
 #q:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(49,130,246,.12)}
-.search-wrap::before{content:"🔍";position:absolute;left:20px;top:50%;transform:translateY(-50%);font-size:17px}
+.search-wrap::before{content:"";position:absolute;left:20px;top:50%;width:18px;height:18px;transform:translateY(-50%);background:var(--mute);-webkit-mask:var(--ico-search) center/contain no-repeat;mask:var(--ico-search) center/contain no-repeat}
 /* 추천 검색어 칩 — 무엇을 검색해야 할지 몰라 헤매는 것을 줄임 */
 .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:640px;margin:0 auto 16px}
 .chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:10px 16px;min-height:40px;font-size:13.5px;font-weight:600;color:var(--sub);cursor:pointer;font-family:inherit;transition:.15s}
@@ -108,7 +120,7 @@ section.soft{background:var(--soft)}
 .fitem mark{background:#fff2b2;color:inherit;border-radius:3px;padding:0 1px}
 /* 검색 결과 0건 — 빈 화면 대신 다음 행동을 제안 */
 .empty{background:#fff;border:1px dashed var(--line);border-radius:var(--radius);padding:40px 24px;text-align:center;max-width:640px;margin:0 auto}
-.empty .ico{font-size:38px}
+.empty .ico{width:34px;height:34px;margin:0 auto;color:var(--mute)}
 .empty h3{font-size:17.5px;font-weight:800;margin:12px 0 8px;line-height:1.45}
 .empty p{font-size:14.5px;color:var(--sub);margin-bottom:22px}
 .empty .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
@@ -169,7 +181,7 @@ footer p{font-size:12.5px;color:var(--mute);max-width:640px;margin:0 auto;line-h
 <body>
 
 <nav class="nav"><div class="container">
-  <a class="logo" href="#top">⚖️ 법률 절차 길잡이</a>
+  <a class="logo" href="#top"><i class="ico-svg" aria-hidden="true" style="-webkit-mask-image:var(--ico-scale);mask-image:var(--ico-scale)"></i> 법률 절차 길잡이</a>
   <div class="nav-links">
     <a class="hide-m" href="#how">서비스 소개</a>
     <a class="hide-m" href="#forms">서식 찾기</a>
@@ -190,18 +202,18 @@ footer p{font-size:12.5px;color:var(--mute);max-width:640px;margin:0 auto;line-h
 
 <div class="demo"><div class="container">
   <div class="phone">
-    <div class="bub-u">월급을 3개월째 못 받았어요 😢</div>
+    <div class="bub-u">월급을 3개월째 못 받았어요</div>
     <div class="kcard">
       <div class="kcap">빠른 진단 · 임금체불</div>
       <div class="ktitle">임금체불(못 받은 임금·수당) 대응 절차</div>
-      <div class="krow"><span class="kbadge cat">노동</span><span class="kbadge due">⏰ 임금채권 소멸시효 3년</span></div>
+      <div class="krow"><span class="kbadge cat">노동</span><span class="kbadge due">기한 · 임금채권 소멸시효 3년</span></div>
       <div class="kdiv"></div>
-      <div style="font-weight:700;margin-bottom:5px">✅ 지금 할 일</div>
+      <div style="font-weight:700;margin-bottom:5px">지금 할 일</div>
       <div class="kstep">• 증거 수집 — 근로계약서·급여명세서·입금내역</div>
       <div class="kstep">• 노동포털 온라인 또는 노동청 방문해 진정서 접수</div>
       <div class="kstep">• 근로감독관 조사 — 사실관계 확인</div>
-      <a class="kbtn" href="https://legal-navigator-kakaotools.playmcp-endpoint.kakaocloud.io/forms/%EC%9E%84%EA%B8%88%EC%B2%B4%EB%B6%88%EC%A7%84%EC%A0%95%EC%84%9C" target="_blank" rel="noopener">📄 진정서 빈칸 채우기</a>
-      <div class="kfoot">⚖️ 근로기준법 제36조 · 제43조 · 제49조 · 제109조</div>
+      <a class="kbtn" href="https://legal-navigator-kakaotools.playmcp-endpoint.kakaocloud.io/forms/%EC%9E%84%EA%B8%88%EC%B2%B4%EB%B6%88%EC%A7%84%EC%A0%95%EC%84%9C" target="_blank" rel="noopener">진정서 빈칸 채우기</a>
+      <div class="kfoot">근거 · 근로기준법 제36조 · 제43조 · 제49조 · 제109조</div>
       <div class="kfoot">결론 아님·경로 안내 · 무료상담 132 · 법률 절차 길잡이</div>
     </div>
   </div>
@@ -214,9 +226,9 @@ footer p{font-size:12.5px;color:var(--mute);max-width:640px;margin:0 auto;line-h
     <p>웹 검색 요약이 아니라, 법제처 기준으로 검증한 절차 데이터베이스에서 답합니다.</p>
   </div>
   <div class="steps">
-    <div class="step"><div class="ico">💬</div><h3>1. 일상 언어로 묻기</h3><p>법률 용어를 몰라도 됩니다. "보증금을 안 돌려줘요"처럼 평소 말로 물어보세요.</p></div>
-    <div class="step"><div class="ico">⏰</div><h3>2. 기한과 할 일 확인</h3><p>놓치면 권리가 사라지는 기한과, 오늘 당장 해야 할 일을 순서대로 알려드립니다.</p></div>
-    <div class="step"><div class="ico">📄</div><h3>3. 서식까지 바로 작성</h3><p>빈칸만 채우면 되는 서식을 열어 탭으로 입력하고, 그대로 인쇄·PDF 저장하면 끝.</p></div>
+    <div class="step"><div class="ico ico-svg" aria-hidden="true" style="-webkit-mask-image:var(--ico-chat);mask-image:var(--ico-chat)"></div><h3>1. 일상 언어로 묻기</h3><p>법률 용어를 몰라도 됩니다. "보증금을 안 돌려줘요"처럼 평소 말로 물어보세요.</p></div>
+    <div class="step"><div class="ico ico-svg" aria-hidden="true" style="-webkit-mask-image:var(--ico-clock);mask-image:var(--ico-clock)"></div><h3>2. 기한과 할 일 확인</h3><p>놓치면 권리가 사라지는 기한과, 오늘 당장 해야 할 일을 순서대로 알려드립니다.</p></div>
+    <div class="step"><div class="ico ico-svg" aria-hidden="true" style="-webkit-mask-image:var(--ico-doc);mask-image:var(--ico-doc)"></div><h3>3. 서식까지 바로 작성</h3><p>빈칸만 채우면 되는 서식을 열어 탭으로 입력하고, 그대로 인쇄·PDF 저장하면 끝.</p></div>
   </div>
 </div></section>
 
@@ -227,12 +239,12 @@ footer p{font-size:12.5px;color:var(--mute);max-width:640px;margin:0 auto;line-h
   </div>
   <p class="sec-note">카드를 누르면 해당 서식이 바로 열립니다 — 빈칸을 채워 인쇄·PDF로 저장하세요.</p>
   <div class="grid">
-    <a class="scard" href="https://legal-navigator-kakaotools.playmcp-endpoint.kakaocloud.io/forms/%EC%9E%84%EC%B0%A8%EA%B6%8C%EB%93%B1%EA%B8%B0%EB%AA%85%EB%A0%B9%EC%8B%A0%EC%B2%AD%EC%84%9C" target="_blank" rel="noopener"><div class="q">"전세 보증금을 안 돌려줘요"</div><div class="a">임차권등기명령 → 지급명령 순서와 기한, 내용증명 서식까지. 이사 나가기 전에 해야 할 일이 따로 있어요.</div><div class="f">📄 임차권등기명령 신청서</div></a>
-    <a class="scard" href="https://legal-navigator-kakaotools.playmcp-endpoint.kakaocloud.io/forms/%EB%AF%BC%EC%82%AC_%EB%8B%B5%EB%B3%80%EC%84%9C" target="_blank" rel="noopener"><div class="q">"법원에서 소장이 왔어요"</div><div class="a">답변서 제출 기한은 30일. 놓치면 그대로 패소(무변론 판결)할 수 있어요. 서식과 작성 요령을 바로 안내해요.</div><div class="f">📄 민사 답변서</div></a>
-    <a class="scard" href="https://legal-navigator-kakaotools.playmcp-endpoint.kakaocloud.io/forms/%EC%83%81%EC%86%8D%ED%8F%AC%EA%B8%B0%EC%8B%AC%ED%8C%90%EC%B2%AD%EA%B5%AC%EC%84%9C" target="_blank" rel="noopener"><div class="q">"아버지 빚을 상속받게 될까 봐요"</div><div class="a">상속포기·한정승인은 3개월 안에. 오늘 기준 데드라인 계산과 가정법원 제출 서류를 알려드려요.</div><div class="f">📄 상속포기 심판청구서</div></a>
-    <a class="scard" href="https://legal-navigator-kakaotools.playmcp-endpoint.kakaocloud.io/forms/%EB%B6%80%EB%8B%B9%ED%95%B4%EA%B3%A0%EA%B5%AC%EC%A0%9C%EC%8B%A0%EC%B2%AD%EC%84%9C" target="_blank" rel="noopener"><div class="q">"갑자기 해고 통보를 받았어요"</div><div class="a">부당해고 구제신청은 해고일부터 3개월 이내. 노동위원회 절차를 단계별로 안내해요.</div><div class="f">📄 부당해고 구제신청서</div></a>
-    <a class="scard" href="https://legal-navigator-kakaotools.playmcp-endpoint.kakaocloud.io/forms/%EB%B6%88%EB%B2%95%EC%B6%94%EC%8B%AC%EC%A4%91%EB%8B%A8%EC%9A%94%EC%B2%AD%EC%84%9C" target="_blank" rel="noopener"><div class="q">"빚 독촉 전화가 하루 수십 통이에요"</div><div class="a">불법추심 판별과 신고 절차, 개인회생·채무조정 비교까지. 추심은 막을 수 있어요.</div><div class="f">📄 불법추심 중단 요청서</div></a>
-    <a class="scard" href="https://legal-navigator-kakaotools.playmcp-endpoint.kakaocloud.io/forms/%EC%B2%AD%EC%95%BD%EC%B2%A0%ED%9A%8C_%ED%86%B5%EC%A7%80%EC%84%9C" target="_blank" rel="noopener"><div class="q">"환불을 안 해줘요"</div><div class="a">청약철회 기한과 통지 방법, 분쟁조정 신청까지. 소비자의 권리는 생각보다 넓어요.</div><div class="f">📄 청약철회 통지서</div></a>
+    <a class="scard" href="https://legal-navigator-kakaotools.playmcp-endpoint.kakaocloud.io/forms/%EC%9E%84%EC%B0%A8%EA%B6%8C%EB%93%B1%EA%B8%B0%EB%AA%85%EB%A0%B9%EC%8B%A0%EC%B2%AD%EC%84%9C" target="_blank" rel="noopener"><div class="q">"전세 보증금을 안 돌려줘요"</div><div class="a">임차권등기명령 → 지급명령 순서와 기한, 내용증명 서식까지. 이사 나가기 전에 해야 할 일이 따로 있어요.</div><div class="f">임차권등기명령 신청서</div></a>
+    <a class="scard" href="https://legal-navigator-kakaotools.playmcp-endpoint.kakaocloud.io/forms/%EB%AF%BC%EC%82%AC_%EB%8B%B5%EB%B3%80%EC%84%9C" target="_blank" rel="noopener"><div class="q">"법원에서 소장이 왔어요"</div><div class="a">답변서 제출 기한은 30일. 놓치면 그대로 패소(무변론 판결)할 수 있어요. 서식과 작성 요령을 바로 안내해요.</div><div class="f">민사 답변서</div></a>
+    <a class="scard" href="https://legal-navigator-kakaotools.playmcp-endpoint.kakaocloud.io/forms/%EC%83%81%EC%86%8D%ED%8F%AC%EA%B8%B0%EC%8B%AC%ED%8C%90%EC%B2%AD%EA%B5%AC%EC%84%9C" target="_blank" rel="noopener"><div class="q">"아버지 빚을 상속받게 될까 봐요"</div><div class="a">상속포기·한정승인은 3개월 안에. 오늘 기준 데드라인 계산과 가정법원 제출 서류를 알려드려요.</div><div class="f">상속포기 심판청구서</div></a>
+    <a class="scard" href="https://legal-navigator-kakaotools.playmcp-endpoint.kakaocloud.io/forms/%EB%B6%80%EB%8B%B9%ED%95%B4%EA%B3%A0%EA%B5%AC%EC%A0%9C%EC%8B%A0%EC%B2%AD%EC%84%9C" target="_blank" rel="noopener"><div class="q">"갑자기 해고 통보를 받았어요"</div><div class="a">부당해고 구제신청은 해고일부터 3개월 이내. 노동위원회 절차를 단계별로 안내해요.</div><div class="f">부당해고 구제신청서</div></a>
+    <a class="scard" href="https://legal-navigator-kakaotools.playmcp-endpoint.kakaocloud.io/forms/%EB%B6%88%EB%B2%95%EC%B6%94%EC%8B%AC%EC%A4%91%EB%8B%A8%EC%9A%94%EC%B2%AD%EC%84%9C" target="_blank" rel="noopener"><div class="q">"빚 독촉 전화가 하루 수십 통이에요"</div><div class="a">불법추심 판별과 신고 절차, 개인회생·채무조정 비교까지. 추심은 막을 수 있어요.</div><div class="f">불법추심 중단 요청서</div></a>
+    <a class="scard" href="https://legal-navigator-kakaotools.playmcp-endpoint.kakaocloud.io/forms/%EC%B2%AD%EC%95%BD%EC%B2%A0%ED%9A%8C_%ED%86%B5%EC%A7%80%EC%84%9C" target="_blank" rel="noopener"><div class="q">"환불을 안 해줘요"</div><div class="a">청약철회 기한과 통지 방법, 분쟁조정 신청까지. 소비자의 권리는 생각보다 넓어요.</div><div class="f">청약철회 통지서</div></a>
   </div>
 </div></section>
 
@@ -265,15 +277,15 @@ footer p{font-size:12.5px;color:var(--mute);max-width:640px;margin:0 auto;line-h
 
 <section id="suggest"><div class="container">
   <div class="suggest-box">
-    <h2>💡 이런 기능도 있으면 좋겠다!</h2>
+    <h2>이런 기능도 있으면 좋겠다!</h2>
     <p>법률 절차 길잡이는 지금도 만들어지는 중이에요. 필요한 주제·서식·기능을 제안해주시면 실제 개발에 반영합니다. 1분이면 돼요.</p>
     <a class="btn yellow" href="https://forms.gle/fauC7Kq8EVaDzJVbA" target="_blank" rel="noopener">기능 제안하러 가기 →</a>
-    <div class="note">🗳️ 8월 31일부터 Kakao Tools 공개 투표가 시작돼요 — 투표 링크가 여기에 열립니다.</div>
+    <div class="note">8월 31일부터 Kakao Tools 공개 투표가 시작돼요 — 투표 링크가 여기에 열립니다.</div>
   </div>
 </div></section>
 
 <footer><div class="container">
-  <div class="flogo">⚖️ 법률 절차 길잡이 · 팀 프로젝트윤</div>
+  <div class="flogo"><i class="ico-svg" aria-hidden="true" style="-webkit-mask-image:var(--ico-scale);mask-image:var(--ico-scale)"></i> 법률 절차 길잡이 · 팀 프로젝트윤</div>
   <p>법률 절차 길잡이는 정보 안내 도구이며, 개별 법률 자문이 아닙니다. 구체적 사건의 판단은 반드시 변호사 등 전문가와 상의하세요. 무료 법률상담: 대한법률구조공단 132<br>
   개인정보를 수집·저장하지 않습니다 · 서식은 표준 양식 예시이며 '공식 양식 받는 곳'을 함께 안내합니다 · AGENTIC PLAYER 10 본선작</p>
 </div></footer>
@@ -345,7 +357,7 @@ function render(){
   list.innerHTML=view.map(f=>`<a class="fitem" href="${BASE}/forms/${encodeURIComponent(f.k)}" target="_blank" rel="noopener"><b>${hl(f.t,kw)}</b><small>${esc(f.u)}</small></a>`).join("");
   if(kw&&hit.length===0){
     empty.hidden=false;
-    empty.innerHTML=`<div class="ico">🔍</div>
+    empty.innerHTML=`<div class="ico ico-svg" aria-hidden="true" style="-webkit-mask-image:var(--ico-search);mask-image:var(--ico-search)"></div>
       <h3>'${esc(kw)}'에 딱 맞는 서식은 아직 없어요</h3>
       <p>서식은 계속 추가되는 중이에요. 필요한 서식을 알려주시면 실제로 만들어 넣습니다.<br>카카오톡에서 상황을 그대로 말하면, 서식이 없는 문제도 절차와 기한을 안내해드려요.</p>
       <div class="row">
