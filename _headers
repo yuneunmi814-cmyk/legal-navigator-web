@@ -1,0 +1,21 @@
+# Cloudflare Pages 응답 헤더
+# 주의: /* 규칙과 개별 규칙은 '합쳐진다'. 같은 헤더를 양쪽에 쓰면
+# Cache-Control이 두 번 붙어 의도와 다르게 동작하므로 여기선 겹치지 않게 둔다.
+# HTML은 Pages 기본값(max-age=0, must-revalidate)을 그대로 쓴다 — 고치면 바로 반영.
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+
+/og.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/icon.svg
+  Cache-Control: public, max-age=31536000, immutable
+
+/apple-touch-icon.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/brochure/*
+  Cache-Control: public, max-age=86400
