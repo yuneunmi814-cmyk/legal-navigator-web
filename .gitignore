@@ -1,2 +1,5 @@
-node_modules/
-.DS_Store
+# 검증하다 생긴 임시 내려받기 파일
+live.html
+now.html
+new.html
+*.tmp
