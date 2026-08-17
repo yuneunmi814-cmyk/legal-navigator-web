@@ -21,18 +21,94 @@ const CONCURRENCY = 6;
 const esc = (s) =>
   String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
-/** 랜딩 HTML에 이미 114종이 박혀 있으므로 그걸 원본으로 삼는다(목록을 두 곳에서 관리하지 않기 위해). */
-async function readForms() {
-  const html = await readFile("index.html", "utf8");
-  const forms = [...html.matchAll(/data-k="([^"]+)"\s+data-t="([^"]+)"\s+data-u="([^"]+)"/g)].map(
-    ([, k, t, u]) => ({
-      k: k.replace(/&amp;/g, "&").replace(/&quot;/g, '"'),
-      t: t.replace(/&amp;/g, "&").replace(/&quot;/g, '"'),
-      u: u.replace(/&amp;/g, "&").replace(/&quot;/g, '"'),
-    })
-  );
-  if (!forms.length) throw new Error("index.html에서 서식 목록을 못 찾았습니다 (data-k/t/u 속성 확인)");
-  return forms;
+const unesc = (s) =>
+  String(s)
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&amp;/g, "&");
+
+/**
+ * 서식 목록·커버리지 수치를 MCP에서 직접 받아온다.
+ *
+ * 예전에는 index.html에 박아둔 목록을 원본으로 삼았는데, 그러면 MCP에 서식을
+ * 추가해도 랜딩이 모른다. 손으로 맞춰야 하는 건 언젠가 어긋난다.
+ * tools/list 응답의 enum이 곧 MCP가 실제로 가진 목록이라 그걸 쓴다.
+ */
+async function fromMcp() {
+  const res = await fetch(`${MCP}/mcp`, {
+    method: "POST",
+    headers: { "content-type": "application/json", accept: "application/json, text/event-stream" },
+    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "tools/list" }),
+  });
+  if (!res.ok) throw new Error(`tools/list ${res.status}`);
+  const tools = (await res.json()).result.tools;
+
+  const enumOf = (tool, param) => {
+    const t = tools.find((x) => x.name === tool);
+    const e = t?.inputSchema?.properties?.[param]?.enum;
+    if (!Array.isArray(e) || !e.length) throw new Error(`${tool}.${param} 목록을 못 읽었습니다`);
+    return e;
+  };
+
+  return {
+    keys: enumOf("get_form_template", "form"),
+    counts: {
+      분야: enumOf("search_topics", "category").length,
+      주제: enumOf("get_procedure", "topic").length,
+      서식: enumOf("get_form_template", "form").length,
+      자가진단: enumOf("check_elements", "issue").length,
+    },
+  };
+}
+
+/** 서식 페이지에서 제목과 용도를 읽는다. 랜딩 목록에 그대로 쓰인다. */
+function readMeta(html, key) {
+  const t = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/);
+  const u = html.match(/<p class="use">([\s\S]*?)<\/p>/);
+  if (!t || !u) throw new Error(`제목·용도를 못 읽었습니다: ${key}`);
+  return { t: unesc(t[1].replace(/<[^>]+>/g, "").trim()), u: unesc(u[1].replace(/<[^>]+>/g, "").trim()) };
+}
+
+/** 랜딩의 서식 목록과 커버리지 숫자를 MCP 기준으로 다시 쓴다. */
+async function syncLanding(forms, counts) {
+  let html = await readFile("index.html", "utf8");
+  const before = [...html.matchAll(/data-k="([^"]+)"/g)].map((m) => unesc(m[1]));
+
+  const items = forms
+    .map(
+      (f, i) =>
+        `<a class="fitem" href="/forms/${encodeURIComponent(f.k)}" target="_blank" rel="noopener"` +
+        ` data-k="${esc(f.k)}" data-t="${esc(f.t)}" data-u="${esc(f.u)}"${i >= 9 ? " hidden" : ""}>` +
+        `<b>${esc(f.t)}</b><small>${esc(f.u)}</small></a>`
+    )
+    .join("\n");
+  html = html.replace(/<div class="flist" id="flist">[\s\S]*?<\/div>\n?(?=\s*<div id="empty")/,
+    `<div class="flist" id="flist">\n${items}\n</div>\n`);
+
+  // 커버리지 숫자 — 통계 칸과 본문 곳곳
+  const stat = (n, label) => [new RegExp(`<b>\\d+</b><span>${label}</span>`, "g"), `<b>${n}</b><span>${label}</span>`];
+  for (const [re, to] of [
+    stat(counts.분야, "분야"),
+    stat(counts.주제, "절차 주제"),
+    stat(counts.서식, "빈칸 채움형 서식"),
+    stat(counts.자가진단, "자가진단"),
+  ])
+    html = html.replace(re, to);
+  html = html
+    .replace(/서식 \d+종/g, `서식 ${counts.서식}종`)
+    .replace(/자가진단 \d+종/g, `자가진단 ${counts.자가진단}종`)
+    .replace(/(스토킹·명예훼손·사기·횡령 등 <b>)\d+(<\/b>)/, `$1${counts.자가진단}$2`)
+    .replace(/(<b>)\d+(종<\/b> — 진정서·내용증명)/, `$1${counts.서식}$2`);
+
+  await writeFile("index.html", html);
+
+  const now = forms.map((f) => f.k);
+  return {
+    added: now.filter((k) => !before.includes(k)),
+    removed: before.filter((k) => !now.includes(k)),
+  };
 }
 
 /** 검색 결과에 그대로 노출되는 문구들. 사람들이 실제로 치는 말이 '양식'이라 제목에 넣는다. */
@@ -84,6 +160,9 @@ async function buildOne(f) {
 
   if (!/<\/title>/.test(html)) throw new Error(`title 없음: ${f.k}`);
 
+  // 제목·용도는 이 페이지가 원본이다. 랜딩 목록도 여기서 나온 값을 쓴다.
+  Object.assign(f, readMeta(html, f.k));
+
   // MCP 절대주소로 나가는 링크(.txt 내려받기 등)를 우리 도메인 상대경로로 돌린다.
   html = html.split(MCP + "/").join("/");
 
@@ -126,7 +205,8 @@ async function buildOne(f) {
 }
 
 async function run() {
-  const forms = await readForms();
+  const { keys, counts } = await fromMcp();
+  const forms = keys.map((k) => ({ k }));
   await rm(OUT, { recursive: true, force: true });
   await mkdir(OUT, { recursive: true });
 
@@ -163,9 +243,15 @@ async function run() {
 
   await writeFile("robots.txt", `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 
+  const { added, removed } = await syncLanding(forms.filter((f) => f.t), counts);
+
   console.log(`서식 ${done}/${forms.length}종 생성 · ${Math.round(bytes / 1024)}KB`);
-  console.log(`sitemap.xml ${urls.length}건 · robots.txt`);
+  console.log(`커버리지 ${counts.분야}분야 · ${counts.주제}주제 · 서식 ${counts.서식} · 자가진단 ${counts.자가진단}`);
+  console.log(`sitemap.xml ${urls.length}건 · robots.txt · 랜딩 목록 갱신`);
   console.log(`기준 주소 SITE=${SITE}`);
+  if (added.length) console.log(`\n＋ 새 서식 ${added.length}종: ${added.join(", ")}`);
+  if (removed.length) console.log(`\n－ 빠진 서식 ${removed.length}종: ${removed.join(", ")}`);
+  if (!added.length && !removed.length) console.log(`\n서식 목록 변동 없음 — MCP와 일치`);
   if (failed.length) {
     console.error(`\n❌ 실패 ${failed.length}건:`);
     failed.forEach((x) => console.error("  " + x));
