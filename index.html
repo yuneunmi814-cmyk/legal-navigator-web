@@ -1049,9 +1049,10 @@ function render(){
     empty.hidden=true;empty.innerHTML="";
   }
   const alias=kw&&hit.length&&!FORMS.some(f=>norm(f.t+f.k+f.u).includes(norm(kw)));
+  // "전체 114종 중 9종 표시"는 개발자 말투였다. 사람에게 하는 말로 바꾼다.
   count.textContent=kw
     ?`'${kw}' 검색 결과 ${hit.length}건${alias?" (비슷한 뜻으로 찾았어요)":""}`
-    :`전체 ${FORMS.length}종${showAll?"":" 중 9종 표시"}`;
+    :showAll?`서식 ${FORMS.length}종 전체`:"9종 먼저 보여드려요 — 찾는 게 없으면 검색해 보세요";
   more.style.display=(kw||showAll)?"none":"block";
   [...chips.children].forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.w===kw)));
 }
@@ -1061,6 +1062,7 @@ chips.addEventListener("click",e=>{
   q.value=q.value.trim()===b.dataset.w?"":b.dataset.w;render();
 });
 q.addEventListener("input",render);
+more.textContent=`서식 ${FORMS.length}종 전체 보기`;
 more.addEventListener("click",()=>{showAll=true;render();});
 render();
 
