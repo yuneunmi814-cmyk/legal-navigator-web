@@ -64,6 +64,11 @@ mark{background:var(--brand-soft);color:var(--brand-d);border-radius:3px;padding
 ::selection{background:var(--brand);color:#fff}
 :focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:6px}
 
+/* hidden 속성은 브라우저 기본 display:none으로 동작하는데,
+   .fitem처럼 우리가 display를 지정한 요소에서는 그 규칙이 밀린다.
+   속성만 걸리고 화면엔 그대로 보이는 사고가 났었다. */
+[hidden]{display:none!important}
+
 .wrap{max-width:1200px;margin:0 auto;padding:0 24px}
 .narrow{max-width:840px;margin:0 auto}
 section{padding:112px 0;border-top:1px solid var(--line)}
