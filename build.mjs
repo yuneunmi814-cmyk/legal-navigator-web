@@ -94,11 +94,20 @@ async function buildOne(f) {
   const homeCss = `<style>
 .ln-home{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between;
   padding:10px 14px;background:var(--paper);border-bottom:1px solid var(--line);font-size:13.5px}
-.ln-home a{display:inline-flex;align-items:center;gap:6px;color:var(--ink);text-decoration:none}
+.ln-home a{display:inline-flex;align-items:center;gap:6px;color:var(--ink);text-decoration:none;
+  min-height:44px}  /* 손가락으로 누르는 크기 */
 .ln-home b{font-weight:800;letter-spacing:-.02em}
 .ln-home .more{color:var(--accent);font-weight:700}
 .ln-home .more:hover{text-decoration:underline}
 @media print{.ln-home{display:none}}
+
+/* 모바일 서식 채우기 — MCP 서버(src/server.ts)에도 같은 규칙을 넣었다.
+   여기 사본은 그쪽 재배포를 기다리지 않고 먼저 반영되게 하려고 둔다.
+   16px 미만이면 iOS가 빈칸을 탭할 때마다 확대해서 서식을 채울 수가 없다. */
+@media (max-width:520px){
+  .doc{line-height:1.9;font-size:16px}
+  .fld{padding:1px 6px;min-height:1.7em}
+}
 </style>`;
   html = html.replace("</head>", `${homeCss}</head>`).replace(/<body([^>]*)>/, `<body$1>${home}`);
 
