@@ -89,7 +89,15 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
   a{color:#000;text-decoration:none}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
-</style></head><body>
+</style><style>
+.ln-home{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between;
+  padding:10px 14px;background:var(--paper);border-bottom:1px solid var(--line);font-size:13.5px}
+.ln-home a{display:inline-flex;align-items:center;gap:6px;color:var(--ink);text-decoration:none}
+.ln-home b{font-weight:800;letter-spacing:-.02em}
+.ln-home .more{color:var(--accent);font-weight:700}
+.ln-home .more:hover{text-decoration:underline}
+@media print{.ln-home{display:none}}
+</style></head><body><div class="ln-home"><a href="/"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M7 20h10M5 8h14"/><path d="M5 8 2.5 13.5h5zM19 8l-2.5 5.5h5z"/></svg><b>법률 절차 길잡이</b></a><a class="more" href="/#forms">서식 114종 전체 보기 &rsaquo;</a></div>
 <div class="bar">
   <button class="btn pri" id="printBtn" type="button">인쇄 · PDF로 저장</button>
   <button class="btn" id="docBtn" type="button">한글 · 워드로 가져가기</button>

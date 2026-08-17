@@ -87,6 +87,21 @@ async function buildOne(f) {
   // MCP 절대주소로 나가는 링크(.txt 내려받기 등)를 우리 도메인 상대경로로 돌린다.
   html = html.split(MCP + "/").join("/");
 
+  // 검색으로 이 페이지에 바로 들어온 사람에게는 여기가 사이트의 전부다.
+  // 서비스가 뭔지 알려주고 다른 서식으로 갈 길을 열어준다(검색엔진이 114개를
+  // 서로 이어진 한 사이트로 읽게 하는 효과도 같이).
+  const home = `<div class="ln-home"><a href="/"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M7 20h10M5 8h14"/><path d="M5 8 2.5 13.5h5zM19 8l-2.5 5.5h5z"/></svg><b>법률 절차 길잡이</b></a><a class="more" href="/#forms">서식 114종 전체 보기 &rsaquo;</a></div>`;
+  const homeCss = `<style>
+.ln-home{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between;
+  padding:10px 14px;background:var(--paper);border-bottom:1px solid var(--line);font-size:13.5px}
+.ln-home a{display:inline-flex;align-items:center;gap:6px;color:var(--ink);text-decoration:none}
+.ln-home b{font-weight:800;letter-spacing:-.02em}
+.ln-home .more{color:var(--accent);font-weight:700}
+.ln-home .more:hover{text-decoration:underline}
+@media print{.ln-home{display:none}}
+</style>`;
+  html = html.replace("</head>", `${homeCss}</head>`).replace(/<body([^>]*)>/, `<body$1>${home}`);
+
   // 제목은 검색 결과에 그대로 뜨는 한 줄이다. 사람들이 치는 말은 '양식'이라 그걸 넣는다.
   const title = `${f.t} 양식 · 무료 빈칸 채움 — 법률 절차 길잡이`;
   html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(title)}</title>${meta(f)}`);
