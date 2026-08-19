@@ -41,6 +41,13 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
 .hd h1{font-size:clamp(19px,4.6vw,26px);margin:0 0 8px;letter-spacing:-.01em;line-height:1.25;text-wrap:balance;word-break:keep-all;}
 .hd .kind{display:inline-block;font-size:11.5px;font-weight:700;color:var(--ink2);background:var(--tip-bg);border:1px solid var(--line);border-radius:999px;padding:3px 10px;margin:0 0 8px}
 .hd .use{font-size:13.5px;color:var(--ink2);margin:0;word-break:keep-all}
+.submit{margin:20px 0 0;padding:14px 16px;background:var(--tip-bg);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;font-size:13.5px;color:var(--ink2);line-height:1.7}
+.submit h3{margin:0 0 7px;font-size:14px;color:var(--ink);letter-spacing:-.02em}
+.submit b{color:var(--ink)}
+.submit a{color:var(--accent);word-break:break-all}
+.share{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 0;justify-content:flex-end}
+.share .btn{font-size:13px;padding:9px 13px}
+@media print{.share{display:none}}
 .official{margin:12px 0 0;font-size:13px;background:var(--tip-bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--ink2)}
 .official b{color:var(--ink)}
 /* 안내문은 한 덩어리 문장으로 흐르게 — flex로 두면 조각조각 칼럼처럼 쪼개져 읽기 어려움 */
@@ -56,7 +63,9 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
   border:1.5px dashed var(--fld-line);border-radius:10px;line-height:1.7;font-weight:500;white-space:pre-wrap;}
 .fld.big:empty::before{content:attr(data-ph);color:var(--ph);font-weight:400;font-size:.94em}
 .lbl{font-weight:800;background:color-mix(in srgb,var(--accent) 11%,transparent);color:var(--ink);padding:1px 8px;border-radius:6px;letter-spacing:-.01em;}
-.cbx{display:inline-block;cursor:pointer;user-select:none;font-size:1.15em;line-height:1;padding:0 2px;color:var(--accent);vertical-align:-.05em}
+.cbx{display:inline-block;cursor:pointer;user-select:none;font-size:1.3em;line-height:1;padding:2px 5px;margin:0 1px;color:var(--accent);vertical-align:-.12em;border-radius:5px}
+.cbx:hover{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.cbx:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .cbx:focus{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
 .tips{margin:22px 0 0;background:var(--tip-bg);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
 .tips h2{font-size:14px;margin:0 0 10px;display:flex;align-items:center;gap:7px}
@@ -116,7 +125,7 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
 </style></head><body><div class="ln-home"><a href="/"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M7 20h10M5 8h14"/><path d="M5 8 2.5 13.5h5zM19 8l-2.5 5.5h5z"/></svg><b>법률 절차 길잡이</b></a><a class="more" href="/#forms">서식 114종 전체 보기 &rsaquo;</a></div>
 <div class="bar">
   <button class="btn pri" id="printBtn" type="button">인쇄 · PDF로 저장</button>
-  <button class="btn" id="docBtn" type="button">한글 · 워드로 가져가기</button>
+  <button class="btn" id="docBtn" type="button">한글 · 워드로 내보내기</button>
   <a class="btn" href="/forms/%EA%B7%BC%EB%A1%9C%EC%9E%90%EB%85%80%EC%9E%A5%EB%A0%A4%EA%B8%88_%EC%8B%A0%EC%B2%AD%EC%84%9C.txt">텍스트 파일</a>
   <span class="sp"></span>
   <button class="btn" id="resetBtn" type="button">빈칸 비우기</button>
@@ -128,7 +137,7 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
     <p class="use">저소득 근로자·영세 자영업자 가구가 근로장려금·자녀장려금을 신청할 때(홈택스·손택스·ARS·서면).</p>
     <p class="official"><b>공식 양식 받는 곳</b> · 홈택스 hometax.go.kr·손택스 / ARS 1544-9944 / 국가법령정보센터 '조세특례제한법 시행규칙' 별지 제64호의2서식 / 장려금 상담센터 1566-3636</p>
   </div>
-  <div class="hint"><span class="k">[빈칸]</span> 과 <span class="k">○○</span>(법원·기관 이름) 을 탭해 입력하고, <b>☐</b> 는 탭하면 체크됩니다. 경위·사유처럼 길게 쓰는 항목은 <b>아래 넓은 칸</b>에 적으면 됩니다. 다 채우면 <b>인쇄·PDF로 저장</b>하거나, <b>한글·워드로 가져가기</b>로 작성한 내용을 문서 파일로 받아 이어서 편집할 수 있습니다.</div>
+  <div class="hint"><span class="k">[빈칸]</span> 과 <span class="k">○○</span>(법원·기관 이름) 을 탭해 입력하고, <b>☐</b> 는 탭하면 체크됩니다. 경위·사유처럼 길게 쓰는 항목은 <b>아래 넓은 칸</b>에 적으면 됩니다. 다 채우면 <b>인쇄·PDF로 저장</b>하거나, <b>한글·워드로 내보내기</b>로 작성한 내용을 문서 파일로 받아 이어서 편집할 수 있습니다.</div>
   <div class="doc" id="doc">( )년 귀속 근로장려금·자녀장려금 [<span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>정기신청 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>기한 후 신청] 신청서
 
 <span class="lbl">신청인(거주자)</span>
@@ -151,6 +160,18 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
   <div class="tips">
     <h2>작성요령</h2>
     <ol><li>★신청기간: 정기 5월 1~31일 / 기한 후(정기 종료 다음날~6개월 내, 산정액 95%=5% 감액) / 반기(근로소득자만, 상반기 9월·하반기 다음해 3월).</li><li>안내문 개별인증번호(8자리)가 있으면 ARS 1544-9944·홈택스에서 대부분 자동입력되니 확인·정정만 하면 됩니다.</li><li>★1가구 1명만 지급, 환급계좌는 반드시 신청인 본인 명의. 소득·재산 추정·창작 금지(국세청 보유자료와 대조).</li><li>★소득상한·재산기준·지급액은 매년 개정(변동·확인) — 신청 시점 홈택스·안내문으로 확인. 서식의 정확한 칸 명칭은 별지 제64호의2서식 원문으로 대조(일부 불확실).</li><li>★국세청은 환급금을 본인 계좌로만 지급합니다 — 현금·앱 설치·타인계좌를 요구하면 보이스피싱입니다.</li></ol>
+  </div>
+  <div class="submit">
+    <h3>다 채우셨으면, 여기에 내세요</h3>
+    <div><b>접수처</b> · 국세청(납세지 관할 세무서장)</div>
+    <div><b>접수 방법</b> · 홈택스 hometax.go.kr·손택스(모바일) / ARS 1544-9944(안내문 개별인증번호 8자리 간편신청) / 장려금 상담센터 1566-3636·국세상담 126 / 세무서 방문·우편</div>
+    <div style="margin-top:9px"><a class="btn" href="https://hometax.go.kr" target="_blank" rel="noopener">접수처 바로가기</a></div>
+  </div>
+  <div class="share">
+    <button class="btn" id="shareBtn" type="button" hidden>공유하기</button>
+    <button class="btn" id="copyBtn" type="button">링크 복사</button>
+    <a class="btn" id="mailBtn" href="#">메일</a>
+    <a class="btn" id="tgBtn" href="#" target="_blank" rel="noopener">텔레그램</a>
   </div>
   <p class="foot">※ 일반 법률·절차 정보이며 개별 법률 자문이 아닙니다. 입력 내용은 이 기기 브라우저에만 자동 저장되며 서버로 전송되지 않습니다(빈칸 비우기를 누르면 삭제). 관공서 제출본은 위 ‘공식 양식 받는 곳’에서 정식 서식을 받아 작성하세요. · 법률 절차 길잡이(Legal Navigator)</p>
 </div>
@@ -192,7 +213,7 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
   doc.addEventListener("input",function(e){autoGrow(e.target);save();});
   restore();
   document.getElementById("printBtn").addEventListener("click",function(){window.print();});
-  // 한글·워드로 가져가기 — 채운 값 그대로 담은 진짜 .docx(OOXML)를 브라우저에서 만들어 내려받는다.
+  // 한글·워드로 내보내기 — 채운 값 그대로 담은 진짜 .docx(OOXML)를 브라우저에서 만들어 내려받는다.
   // 서버로는 아무것도 보내지 않는다(개인정보 미수집 원칙).
   // .doc(HTML) 방식은 Word 없는 환경(맥 미리보기·텍스트편집기)에서 소스가 그대로 보여 폐기했다.
   // DOCX = ZIP(무압축 저장) + 최소 3파트. 외부 라이브러리 없이 CRC32·ZIP을 직접 만든다.
@@ -269,6 +290,49 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
     doc.querySelectorAll(".fld").forEach(function(x){x.textContent="";});
     doc.querySelectorAll(".cbx").forEach(function(c){c.setAttribute("aria-checked","false");c.textContent="☐";});
     try{localStorage.removeItem(KEY);}catch(e){}
+  });
+
+  // ── 공유 (8/18 회의 결정 ③) ─────────────────────────
+  // 카카오톡 공유 SDK는 외부 스크립트와 앱 키가 필요해 이 페이지의 '외부 의존 0'을 깬다.
+  // Web Share API를 쓰면 폰의 기본 공유 시트가 뜨고 거기에 카카오톡이 그대로 들어 있다.
+  var pageUrl=location.href.split("#")[0];
+  var pageTitle=(document.querySelector("h1")||{}).textContent||"법률 절차 길잡이";
+  var shareText=pageTitle+" — 빈칸만 채우면 되는 서식입니다.";
+
+  var mail=document.getElementById("mailBtn");
+  if(mail) mail.href="mailto:?subject="+encodeURIComponent(pageTitle)
+    +"&body="+encodeURIComponent(shareText+"
+"+pageUrl);
+  var tg=document.getElementById("tgBtn");
+  if(tg) tg.href="https://t.me/share/url?url="+encodeURIComponent(pageUrl)
+    +"&text="+encodeURIComponent(shareText);
+
+  var shareBtn=document.getElementById("shareBtn");
+  if(shareBtn&&navigator.share){
+    shareBtn.hidden=false;
+    shareBtn.addEventListener("click",function(){
+      navigator.share({title:pageTitle,text:shareText,url:pageUrl}).catch(function(){});
+    });
+  }
+
+  var copyBtn=document.getElementById("copyBtn");
+  if(copyBtn) copyBtn.addEventListener("click",function(){
+    function done(){
+      var old=copyBtn.textContent;
+      copyBtn.textContent="복사됨";
+      setTimeout(function(){copyBtn.textContent=old;},1500);
+    }
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(pageUrl).then(done).catch(fallback);
+    }else fallback();
+    function fallback(){
+      var ta=document.createElement("textarea");
+      ta.value=pageUrl;ta.setAttribute("readonly","");
+      ta.style.cssText="position:fixed;top:-1000px";
+      document.body.appendChild(ta);ta.select();
+      try{document.execCommand("copy");done();}catch(e){}
+      document.body.removeChild(ta);
+    }
   });
 })();
 </script>
