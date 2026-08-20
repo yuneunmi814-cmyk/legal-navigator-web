@@ -1,7 +1,7 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>행정심판청구서 양식 · 무료 빈칸 채움 — 법률 절차 길잡이</title>
-<meta name="description" content="위법·부당한 행정처분에 대해 행정심판위원회에 불복할 때 사용(안 날 90일/처분일 180일). 회원가입 없이 빈칸을 채워 인쇄·PDF·한글(워드)로 저장하세요. 어디에 접수하는지도 함께 안내합니다.">
+<meta name="description" content="위법·부당한 행정처분에 대해 행정심판위원회에 불복할 때 사용(안 날 90일/처분일 180일). 회원가입 없이 빈칸을 채워 인쇄·PDF로 저장하거나 워드·한글 파일(.docx)로 받으세요. 어디에 접수하는지도 함께 안내합니다.">
 <link rel="canonical" href="https://legalnavi.pages.dev/forms/%ED%96%89%EC%A0%95%EC%8B%AC%ED%8C%90%EC%B2%AD%EA%B5%AC%EC%84%9C">
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -75,9 +75,10 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
 .tips ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;font-size:13.5px;color:var(--ink2)}
 .foot{margin:26px 4px 0;font-size:11.5px;color:var(--foot);line-height:1.6}
 .foot a{color:var(--foot)}
-/* 좁은 화면 — 버튼 4개를 2×2로. 위 줄은 내보내기(PDF·한글), 아래 줄은 보조(텍스트·비우기) */
+/* 좁은 화면 — 버튼 5개를 2열로. 인쇄는 한 줄 전체, 그 아래 한글|워드, 텍스트|비우기 */
 @media (max-width:520px){
   .bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:9px 12px}
+  .bar #printBtn{grid-column:1/-1}
   .bar .sp{display:none}
   .btn{padding:11px 8px;font-size:13.5px;justify-content:center}
   .wrap{padding:16px 12px 56px}
@@ -126,9 +127,10 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
   .fld{padding:1px 6px;min-height:1.7em}
 }
 </style></head><body><div class="ln-home"><a href="/"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M7 20h10M5 8h14"/><path d="M5 8 2.5 13.5h5zM19 8l-2.5 5.5h5z"/></svg><b>법률 절차 길잡이</b></a><a class="more" href="/#forms">서식 114종 전체 보기 &rsaquo;</a></div>
-<div class="bar">
+<div class="bar" id="save">
   <button class="btn pri" id="printBtn" type="button">인쇄 · PDF로 저장</button>
-  <button class="btn" id="docBtn" type="button">한글 · 워드로 내보내기</button>
+  <button class="btn" id="hwpBtn" type="button">한글로 내보내기</button>
+  <button class="btn" id="docBtn" type="button">워드로 내보내기</button>
   <a class="btn" href="/forms/%ED%96%89%EC%A0%95%EC%8B%AC%ED%8C%90%EC%B2%AD%EA%B5%AC%EC%84%9C.txt">텍스트 파일</a>
   <span class="sp"></span>
   <button class="btn" id="resetBtn" type="button">빈칸 비우기</button>
@@ -140,7 +142,7 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
     <p class="use">위법·부당한 행정처분에 대해 행정심판위원회에 불복할 때 사용(안 날 90일/처분일 180일).</p>
     
   </div>
-  <div class="hint"><span class="k">[빈칸]</span> 과 <span class="k">○○</span>(법원·기관 이름) 을 탭해 입력하고, <b>☐</b> 는 탭하면 체크됩니다. 경위·사유처럼 길게 쓰는 항목은 <b>아래 넓은 칸</b>에 적으면 됩니다. 다 채우면 <b>인쇄·PDF로 저장</b>하거나, <b>한글·워드로 내보내기</b>로 작성한 내용을 문서 파일로 받아 이어서 편집할 수 있습니다.</div>
+  <div class="hint"><span class="k">[빈칸]</span> 과 <span class="k">○○</span>(법원·기관 이름) 을 탭해 입력하고, <b>☐</b> 는 탭하면 체크됩니다. 경위·사유처럼 길게 쓰는 항목은 <b>아래 넓은 칸</b>에 적으면 됩니다. 다 채우면 <b>인쇄·PDF로 저장</b>하거나, <b>한글·워드로 내보내기</b>로 작성한 내용을 받아 이어서 편집할 수 있습니다. 한글은 <b>.hwpx</b>(한글 2014 이상), 워드는 <b>.docx</b>로 받습니다.</div>
   <div class="doc" id="doc">행정심판청구서
 ① 청구인: 성명 <span class="fld" contenteditable="true" role="textbox" data-ph="성명" style="min-width:4ch"></span> / 주소 <span class="fld" contenteditable="true" role="textbox" data-ph="주소" style="min-width:4ch"></span> / 연락처 <span class="fld" contenteditable="true" role="textbox" data-ph="연락처" style="min-width:4ch"></span>
 ② 피청구인(처분청): <span class="fld" contenteditable="true" role="textbox" data-ph="처분청" style="min-width:4ch"></span>   ③ 소관 행정심판위원회: <span class="fld" contenteditable="true" role="textbox" data-ph="위원회" style="min-width:4ch"></span>
@@ -207,14 +209,16 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
   doc.addEventListener("input",function(e){autoGrow(e.target);save();});
   restore();
   document.getElementById("printBtn").addEventListener("click",function(){window.print();});
-  // 한글·워드로 내보내기 — 채운 값 그대로 담은 진짜 .docx(OOXML)를 브라우저에서 만들어 내려받는다.
+  // 한글·워드로 내보내기 — 채운 값 그대로 담은 진짜 .hwpx / .docx를 브라우저에서 만들어 내려받는다.
+  // 둘 다 ZIP+XML이라 같은 zipStore를 쓴다. .hwp(비공개 바이너리)는 만들 수 없어
+  // 한글 쪽은 국가표준 .hwpx로 낸다 — 한글 2014 이상에서 그대로 열린다(2026-08-20 회의 지적).
   // 서버로는 아무것도 보내지 않는다(개인정보 미수집 원칙).
   // .doc(HTML) 방식은 Word 없는 환경(맥 미리보기·텍스트편집기)에서 소스가 그대로 보여 폐기했다.
   // DOCX = ZIP(무압축 저장) + 최소 3파트. 외부 라이브러리 없이 CRC32·ZIP을 직접 만든다.
   (function(){
     var crcT=(function(){var t=new Uint32Array(256);for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1);t[n]=c>>>0;}return t;})();
     function crc32(u8){var c=0xFFFFFFFF;for(var i=0;i<u8.length;i++)c=crcT[(c^u8[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
-    function zipStore(files){
+    function zipStore(files,mime){
       var enc=new TextEncoder(),parts=[],central=[],offset=0;
       function u32(v){return [v&255,(v>>>8)&255,(v>>>16)&255,(v>>>24)&255];}
       function u16(v){return [v&255,(v>>>8)&255];}
@@ -227,7 +231,7 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
       });
       var cdSize=central.reduce(function(a,b){return a+b.length;},0);
       var eocd=[80,75,5,6].concat(u16(0),u16(0),u16(files.length),u16(files.length),u32(cdSize),u32(offset),u16(0));
-      return new Blob(parts.concat(central,[new Uint8Array(eocd)]),{type:"application/vnd.openxmlformats-officedocument.wordprocessingml.document"});
+      return new Blob(parts.concat(central,[new Uint8Array(eocd)]),{type:mime});
     }
     function xe(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
     // 화면의 서식(빈칸·체크박스·굵은 라벨)을 문단·런 구조로 옮긴다.
@@ -266,18 +270,57 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
       return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+body+
         '<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134"/></w:sectPr></w:body></w:document>';
     }
+
+  // ── 한글(.hwpx)로 내보내기 ─────────────────────────
+  // .hwp는 비공개 바이너리라 못 만든다. .hwpx는 국가표준(KS X 6101)이고 ZIP+XML이라
+  // .docx와 같은 방식으로 만든다. 한글 2014 이상에서 그대로 열린다.
+  var HWPX_XD="<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>",HWPX_NS="xmlns:ha=\"http://www.hancom.co.kr/hwpml/2011/app\" xmlns:hp=\"http://www.hancom.co.kr/hwpml/2011/paragraph\" xmlns:hp10=\"http://www.hancom.co.kr/hwpml/2016/paragraph\" xmlns:hs=\"http://www.hancom.co.kr/hwpml/2011/section\" xmlns:hc=\"http://www.hancom.co.kr/hwpml/2011/core\" xmlns:hh=\"http://www.hancom.co.kr/hwpml/2011/head\" xmlns:hhs=\"http://www.hancom.co.kr/hwpml/2011/history\" xmlns:hm=\"http://www.hancom.co.kr/hwpml/2011/master-page\" xmlns:hpf=\"http://www.hancom.co.kr/schema/2011/hpf\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:opf=\"http://www.idpf.org/2007/opf/\" xmlns:ooxmlchart=\"http://www.hancom.co.kr/hwpml/2016/ooxmlchart\" xmlns:hwpunitchar=\"http://www.hancom.co.kr/hwpml/2016/HwpUnitChar\" xmlns:epub=\"http://www.idpf.org/2007/ops\" xmlns:config=\"urn:oasis:names:tc:opendocument:xmlns:config:1.0\"",HWPX_SECPR="<hp:secPr id=\"\" textDirection=\"HORIZONTAL\" spaceColumns=\"1134\" tabStop=\"8000\" tabStopVal=\"4000\" tabStopUnit=\"HWPUNIT\" outlineShapeIDRef=\"1\" memoShapeIDRef=\"0\" textVerticalWidthHead=\"0\" masterPageCnt=\"0\"><hp:grid lineGrid=\"0\" charGrid=\"0\" wonggojiFormat=\"0\"/><hp:startNum pageStartsOn=\"BOTH\" page=\"0\" pic=\"0\" tbl=\"0\" equation=\"0\"/><hp:visibility hideFirstHeader=\"0\" hideFirstFooter=\"0\" hideFirstMasterPage=\"0\" border=\"SHOW_ALL\" fill=\"SHOW_ALL\" hideFirstPageNum=\"0\" hideFirstEmptyLine=\"0\" showLineNumber=\"0\"/><hp:lineNumberShape restartType=\"0\" countBy=\"0\" distance=\"0\" startNumber=\"0\"/><hp:pagePr landscape=\"WIDELY\" width=\"59528\" height=\"84188\" gutterType=\"LEFT_ONLY\"><hp:margin header=\"4252\" footer=\"4252\" gutter=\"0\" left=\"4252\" right=\"4252\" top=\"4252\" bottom=\"4252\"/></hp:pagePr><hp:footNotePr><hp:autoNumFormat type=\"DIGIT\" userChar=\"\" prefixChar=\"\" suffixChar=\")\" supscript=\"0\"/><hp:noteLine length=\"-1\" type=\"SOLID\" width=\"0.12 mm\" color=\"#000000\"/><hp:noteSpacing betweenNotes=\"283\" belowLine=\"567\" aboveLine=\"850\"/><hp:numbering type=\"CONTINUOUS\" newNum=\"1\"/><hp:placement place=\"EACH_COLUMN\" beneathText=\"0\"/></hp:footNotePr><hp:endNotePr><hp:autoNumFormat type=\"DIGIT\" userChar=\"\" prefixChar=\"\" suffixChar=\")\" supscript=\"0\"/><hp:noteLine length=\"14692344\" type=\"SOLID\" width=\"0.12 mm\" color=\"#000000\"/><hp:noteSpacing betweenNotes=\"0\" belowLine=\"567\" aboveLine=\"850\"/><hp:numbering type=\"CONTINUOUS\" newNum=\"1\"/><hp:placement place=\"END_OF_DOCUMENT\" beneathText=\"0\"/></hp:endNotePr><hp:pageBorderFill type=\"BOTH\" borderFillIDRef=\"1\" textBorder=\"PAPER\" headerInside=\"0\" footerInside=\"0\" fillArea=\"PAPER\"><hp:offset left=\"1417\" right=\"1417\" top=\"1417\" bottom=\"1417\"/></hp:pageBorderFill><hp:pageBorderFill type=\"EVEN\" borderFillIDRef=\"1\" textBorder=\"PAPER\" headerInside=\"0\" footerInside=\"0\" fillArea=\"PAPER\"><hp:offset left=\"1417\" right=\"1417\" top=\"1417\" bottom=\"1417\"/></hp:pageBorderFill><hp:pageBorderFill type=\"ODD\" borderFillIDRef=\"1\" textBorder=\"PAPER\" headerInside=\"0\" footerInside=\"0\" fillArea=\"PAPER\"><hp:offset left=\"1417\" right=\"1417\" top=\"1417\" bottom=\"1417\"/></hp:pageBorderFill></hp:secPr>",HWPX_LS="<hp:linesegarray><hp:lineseg textpos=\"0\" vertpos=\"0\" vertsize=\"1000\" textheight=\"1000\" baseline=\"850\" spacing=\"600\" horzpos=\"0\" horzsize=\"51024\" flags=\"393216\"/></hp:linesegarray>";
+  function hwpxFiles(title,paras){
+    var body="",prv=[];
+    paras.forEach(function(runs,n){
+      var rs=n===0?'<hp:run charPrIDRef="0">'+HWPX_SECPR+'<hp:ctrl><hp:colPr id="" type="NEWSPAPER" layout="LEFT" colCount="1" sameSz="1" sameGap="0"/></hp:ctrl></hp:run>':"";
+      if(!runs.length) rs+='<hp:run charPrIDRef="0"><hp:t></hp:t></hp:run>';
+      var line="";
+      runs.forEach(function(r){
+        var cid=r.s&&r.s.b?1:(r.s&&r.s.u?2:0);
+        rs+='<hp:run charPrIDRef="'+cid+'"><hp:t>'+xe(r.t)+"</hp:t></hp:run>";
+        line+=r.t;
+      });
+      prv.push(line);
+      body+='<hp:p id="'+n+'" paraPrIDRef="0" styleIDRef="0" pageBreak="0" columnBreak="0" merged="0">'+rs+HWPX_LS+"</hp:p>";
+    });
+    return [
+      {name:"mimetype",data:"application/hwp+zip"},
+      {name:"version.xml",data:"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><hv:HCFVersion xmlns:hv=\"http://www.hancom.co.kr/hwpml/2011/version\" tagetApplication=\"WORDPROCESSOR\" major=\"5\" minor=\"1\" micro=\"0\" buildNumber=\"0\" os=\"1\" xmlVersion=\"1.4\" application=\"법률 절차 길잡이\" appVersion=\"1.0\"/>"},
+      {name:"settings.xml",data:"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><ha:HWPApplicationSetting xmlns:ha=\"http://www.hancom.co.kr/hwpml/2011/app\" xmlns:config=\"urn:oasis:names:tc:opendocument:xmlns:config:1.0\"><ha:CaretPosition listIDRef=\"0\" paraIDRef=\"0\" pos=\"0\"/></ha:HWPApplicationSetting>"},
+      {name:"Contents/header.xml",data:"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><hh:head xmlns:ha=\"http://www.hancom.co.kr/hwpml/2011/app\" xmlns:hp=\"http://www.hancom.co.kr/hwpml/2011/paragraph\" xmlns:hp10=\"http://www.hancom.co.kr/hwpml/2016/paragraph\" xmlns:hs=\"http://www.hancom.co.kr/hwpml/2011/section\" xmlns:hc=\"http://www.hancom.co.kr/hwpml/2011/core\" xmlns:hh=\"http://www.hancom.co.kr/hwpml/2011/head\" xmlns:hhs=\"http://www.hancom.co.kr/hwpml/2011/history\" xmlns:hm=\"http://www.hancom.co.kr/hwpml/2011/master-page\" xmlns:hpf=\"http://www.hancom.co.kr/schema/2011/hpf\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:opf=\"http://www.idpf.org/2007/opf/\" xmlns:ooxmlchart=\"http://www.hancom.co.kr/hwpml/2016/ooxmlchart\" xmlns:hwpunitchar=\"http://www.hancom.co.kr/hwpml/2016/HwpUnitChar\" xmlns:epub=\"http://www.idpf.org/2007/ops\" xmlns:config=\"urn:oasis:names:tc:opendocument:xmlns:config:1.0\" version=\"1.4\" secCnt=\"1\"><hh:beginNum page=\"1\" footnote=\"1\" endnote=\"1\" pic=\"1\" tbl=\"1\" equation=\"1\"/><hh:refList><hh:fontfaces itemCnt=\"7\"><hh:fontface lang=\"HANGUL\" fontCnt=\"1\"><hh:font id=\"0\" face=\"바탕\" type=\"TTF\" isEmbedded=\"0\"><hh:typeInfo familyType=\"FCAT_MYUNGJO\" weight=\"6\" proportion=\"0\" contrast=\"0\" strokeVariation=\"0\" armStyle=\"0\" letterform=\"0\" midline=\"0\" xHeight=\"0\"/></hh:font></hh:fontface><hh:fontface lang=\"LATIN\" fontCnt=\"1\"><hh:font id=\"0\" face=\"바탕\" type=\"TTF\" isEmbedded=\"0\"><hh:typeInfo familyType=\"FCAT_MYUNGJO\" weight=\"6\" proportion=\"0\" contrast=\"0\" strokeVariation=\"0\" armStyle=\"0\" letterform=\"0\" midline=\"0\" xHeight=\"0\"/></hh:font></hh:fontface><hh:fontface lang=\"HANJA\" fontCnt=\"1\"><hh:font id=\"0\" face=\"바탕\" type=\"TTF\" isEmbedded=\"0\"><hh:typeInfo familyType=\"FCAT_MYUNGJO\" weight=\"6\" proportion=\"0\" contrast=\"0\" strokeVariation=\"0\" armStyle=\"0\" letterform=\"0\" midline=\"0\" xHeight=\"0\"/></hh:font></hh:fontface><hh:fontface lang=\"JAPANESE\" fontCnt=\"1\"><hh:font id=\"0\" face=\"바탕\" type=\"TTF\" isEmbedded=\"0\"><hh:typeInfo familyType=\"FCAT_MYUNGJO\" weight=\"6\" proportion=\"0\" contrast=\"0\" strokeVariation=\"0\" armStyle=\"0\" letterform=\"0\" midline=\"0\" xHeight=\"0\"/></hh:font></hh:fontface><hh:fontface lang=\"OTHER\" fontCnt=\"1\"><hh:font id=\"0\" face=\"바탕\" type=\"TTF\" isEmbedded=\"0\"><hh:typeInfo familyType=\"FCAT_MYUNGJO\" weight=\"6\" proportion=\"0\" contrast=\"0\" strokeVariation=\"0\" armStyle=\"0\" letterform=\"0\" midline=\"0\" xHeight=\"0\"/></hh:font></hh:fontface><hh:fontface lang=\"SYMBOL\" fontCnt=\"1\"><hh:font id=\"0\" face=\"바탕\" type=\"TTF\" isEmbedded=\"0\"><hh:typeInfo familyType=\"FCAT_MYUNGJO\" weight=\"6\" proportion=\"0\" contrast=\"0\" strokeVariation=\"0\" armStyle=\"0\" letterform=\"0\" midline=\"0\" xHeight=\"0\"/></hh:font></hh:fontface><hh:fontface lang=\"USER\" fontCnt=\"1\"><hh:font id=\"0\" face=\"바탕\" type=\"TTF\" isEmbedded=\"0\"><hh:typeInfo familyType=\"FCAT_MYUNGJO\" weight=\"6\" proportion=\"0\" contrast=\"0\" strokeVariation=\"0\" armStyle=\"0\" letterform=\"0\" midline=\"0\" xHeight=\"0\"/></hh:font></hh:fontface></hh:fontfaces><hh:borderFills itemCnt=\"2\"><hh:borderFill id=\"1\" threeD=\"0\" shadow=\"0\" centerLine=\"NONE\" breakCellSeparateLine=\"0\"><hh:slash type=\"NONE\" Crooked=\"0\" isCounter=\"0\"/><hh:backSlash type=\"NONE\" Crooked=\"0\" isCounter=\"0\"/><hh:leftBorder type=\"NONE\" width=\"0.1 mm\" color=\"#000000\"/><hh:rightBorder type=\"NONE\" width=\"0.1 mm\" color=\"#000000\"/><hh:topBorder type=\"NONE\" width=\"0.1 mm\" color=\"#000000\"/><hh:bottomBorder type=\"NONE\" width=\"0.1 mm\" color=\"#000000\"/><hh:diagonal type=\"SOLID\" width=\"0.1 mm\" color=\"#000000\"/></hh:borderFill><hh:borderFill id=\"2\" threeD=\"0\" shadow=\"0\" centerLine=\"NONE\" breakCellSeparateLine=\"0\"><hh:slash type=\"NONE\" Crooked=\"0\" isCounter=\"0\"/><hh:backSlash type=\"NONE\" Crooked=\"0\" isCounter=\"0\"/><hh:leftBorder type=\"NONE\" width=\"0.1 mm\" color=\"#000000\"/><hh:rightBorder type=\"NONE\" width=\"0.1 mm\" color=\"#000000\"/><hh:topBorder type=\"NONE\" width=\"0.1 mm\" color=\"#000000\"/><hh:bottomBorder type=\"NONE\" width=\"0.1 mm\" color=\"#000000\"/><hh:diagonal type=\"SOLID\" width=\"0.1 mm\" color=\"#000000\"/></hh:borderFill></hh:borderFills><hh:charProperties itemCnt=\"3\"><hh:charPr id=\"0\" height=\"1000\" textColor=\"#000000\" shadeColor=\"none\" useFontSpace=\"0\" useKerning=\"0\" symMark=\"NONE\" borderFillIDRef=\"2\"><hh:fontRef hangul=\"0\" latin=\"0\" hanja=\"0\" japanese=\"0\" other=\"0\" symbol=\"0\" user=\"0\"/><hh:ratio hangul=\"100\" latin=\"100\" hanja=\"100\" japanese=\"100\" other=\"100\" symbol=\"100\" user=\"100\"/><hh:spacing hangul=\"0\" latin=\"0\" hanja=\"0\" japanese=\"0\" other=\"0\" symbol=\"0\" user=\"0\"/><hh:relSz hangul=\"100\" latin=\"100\" hanja=\"100\" japanese=\"100\" other=\"100\" symbol=\"100\" user=\"100\"/><hh:offset hangul=\"0\" latin=\"0\" hanja=\"0\" japanese=\"0\" other=\"0\" symbol=\"0\" user=\"0\"/><hh:underline type=\"NONE\" shape=\"SOLID\" color=\"#000000\"/><hh:strikeout shape=\"NONE\" color=\"#000000\"/><hh:outline type=\"NONE\"/><hh:shadow type=\"NONE\" color=\"#B2B2B2\" offsetX=\"10\" offsetY=\"10\"/></hh:charPr><hh:charPr id=\"1\" height=\"1000\" textColor=\"#000000\" shadeColor=\"none\" useFontSpace=\"0\" useKerning=\"0\" symMark=\"NONE\" borderFillIDRef=\"2\"><hh:fontRef hangul=\"0\" latin=\"0\" hanja=\"0\" japanese=\"0\" other=\"0\" symbol=\"0\" user=\"0\"/><hh:ratio hangul=\"100\" latin=\"100\" hanja=\"100\" japanese=\"100\" other=\"100\" symbol=\"100\" user=\"100\"/><hh:spacing hangul=\"0\" latin=\"0\" hanja=\"0\" japanese=\"0\" other=\"0\" symbol=\"0\" user=\"0\"/><hh:relSz hangul=\"100\" latin=\"100\" hanja=\"100\" japanese=\"100\" other=\"100\" symbol=\"100\" user=\"100\"/><hh:offset hangul=\"0\" latin=\"0\" hanja=\"0\" japanese=\"0\" other=\"0\" symbol=\"0\" user=\"0\"/><hh:bold/><hh:underline type=\"NONE\" shape=\"SOLID\" color=\"#000000\"/><hh:strikeout shape=\"NONE\" color=\"#000000\"/><hh:outline type=\"NONE\"/><hh:shadow type=\"NONE\" color=\"#B2B2B2\" offsetX=\"10\" offsetY=\"10\"/></hh:charPr><hh:charPr id=\"2\" height=\"1000\" textColor=\"#000000\" shadeColor=\"none\" useFontSpace=\"0\" useKerning=\"0\" symMark=\"NONE\" borderFillIDRef=\"2\"><hh:fontRef hangul=\"0\" latin=\"0\" hanja=\"0\" japanese=\"0\" other=\"0\" symbol=\"0\" user=\"0\"/><hh:ratio hangul=\"100\" latin=\"100\" hanja=\"100\" japanese=\"100\" other=\"100\" symbol=\"100\" user=\"100\"/><hh:spacing hangul=\"0\" latin=\"0\" hanja=\"0\" japanese=\"0\" other=\"0\" symbol=\"0\" user=\"0\"/><hh:relSz hangul=\"100\" latin=\"100\" hanja=\"100\" japanese=\"100\" other=\"100\" symbol=\"100\" user=\"100\"/><hh:offset hangul=\"0\" latin=\"0\" hanja=\"0\" japanese=\"0\" other=\"0\" symbol=\"0\" user=\"0\"/><hh:underline type=\"BOTTOM\" shape=\"SOLID\" color=\"#000000\"/><hh:strikeout shape=\"NONE\" color=\"#000000\"/><hh:outline type=\"NONE\"/><hh:shadow type=\"NONE\" color=\"#B2B2B2\" offsetX=\"10\" offsetY=\"10\"/></hh:charPr></hh:charProperties><hh:tabProperties itemCnt=\"1\"><hh:tabPr id=\"0\" autoTabLeft=\"0\" autoTabRight=\"0\"/></hh:tabProperties><hh:numberings itemCnt=\"1\"><hh:numbering id=\"1\" start=\"0\"><hh:paraHead start=\"1\" level=\"1\" align=\"LEFT\" useInstWidth=\"1\" autoIndent=\"1\" widthAdjust=\"0\" textOffsetType=\"PERCENT\" textOffset=\"50\" numFormat=\"DIGIT\" charPrIDRef=\"4294967295\" checkable=\"0\">^1.</hh:paraHead><hh:paraHead start=\"1\" level=\"2\" align=\"LEFT\" useInstWidth=\"1\" autoIndent=\"1\" widthAdjust=\"0\" textOffsetType=\"PERCENT\" textOffset=\"50\" numFormat=\"DIGIT\" charPrIDRef=\"4294967295\" checkable=\"0\">^2.</hh:paraHead><hh:paraHead start=\"1\" level=\"3\" align=\"LEFT\" useInstWidth=\"1\" autoIndent=\"1\" widthAdjust=\"0\" textOffsetType=\"PERCENT\" textOffset=\"50\" numFormat=\"DIGIT\" charPrIDRef=\"4294967295\" checkable=\"0\">^3.</hh:paraHead><hh:paraHead start=\"1\" level=\"4\" align=\"LEFT\" useInstWidth=\"1\" autoIndent=\"1\" widthAdjust=\"0\" textOffsetType=\"PERCENT\" textOffset=\"50\" numFormat=\"DIGIT\" charPrIDRef=\"4294967295\" checkable=\"0\">^4.</hh:paraHead><hh:paraHead start=\"1\" level=\"5\" align=\"LEFT\" useInstWidth=\"1\" autoIndent=\"1\" widthAdjust=\"0\" textOffsetType=\"PERCENT\" textOffset=\"50\" numFormat=\"DIGIT\" charPrIDRef=\"4294967295\" checkable=\"0\">^5.</hh:paraHead><hh:paraHead start=\"1\" level=\"6\" align=\"LEFT\" useInstWidth=\"1\" autoIndent=\"1\" widthAdjust=\"0\" textOffsetType=\"PERCENT\" textOffset=\"50\" numFormat=\"DIGIT\" charPrIDRef=\"4294967295\" checkable=\"0\">^6.</hh:paraHead><hh:paraHead start=\"1\" level=\"7\" align=\"LEFT\" useInstWidth=\"1\" autoIndent=\"1\" widthAdjust=\"0\" textOffsetType=\"PERCENT\" textOffset=\"50\" numFormat=\"DIGIT\" charPrIDRef=\"4294967295\" checkable=\"0\">^7.</hh:paraHead></hh:numbering></hh:numberings><hh:paraProperties itemCnt=\"1\"><hh:paraPr id=\"0\" tabPrIDRef=\"0\" condense=\"0\" fontLineHeight=\"0\" snapToGrid=\"1\" suppressLineNumbers=\"0\" checked=\"0\"><hh:align horizontal=\"LEFT\" vertical=\"BASELINE\"/><hh:heading type=\"NONE\" idRef=\"0\" level=\"0\"/><hh:breakSetting breakLatinWord=\"KEEP_WORD\" breakNonLatinWord=\"KEEP_WORD\" widowOrphan=\"0\" keepWithNext=\"0\" keepLines=\"0\" pageBreakBefore=\"0\" lineWrap=\"BREAK\"/><hh:autoSpacing eAsianEng=\"0\" eAsianNum=\"0\"/><hp:switch><hp:case hp:required-namespace=\"http://www.hancom.co.kr/hwpml/2016/HwpUnitChar\"><hh:margin><hc:intent value=\"0\" unit=\"HWPUNIT\"/><hc:left value=\"0\" unit=\"HWPUNIT\"/><hc:right value=\"0\" unit=\"HWPUNIT\"/><hc:prev value=\"0\" unit=\"HWPUNIT\"/><hc:next value=\"0\" unit=\"HWPUNIT\"/></hh:margin><hh:lineSpacing type=\"PERCENT\" value=\"160\" unit=\"HWPUNIT\"/></hp:case><hp:default><hh:margin><hc:intent value=\"0\" unit=\"HWPUNIT\"/><hc:left value=\"0\" unit=\"HWPUNIT\"/><hc:right value=\"0\" unit=\"HWPUNIT\"/><hc:prev value=\"0\" unit=\"HWPUNIT\"/><hc:next value=\"0\" unit=\"HWPUNIT\"/></hh:margin><hh:lineSpacing type=\"PERCENT\" value=\"160\" unit=\"HWPUNIT\"/></hp:default></hp:switch><hh:border borderFillIDRef=\"2\" offsetLeft=\"0\" offsetRight=\"0\" offsetTop=\"0\" offsetBottom=\"0\" connect=\"0\" ignoreMargin=\"0\"/></hh:paraPr></hh:paraProperties><hh:styles itemCnt=\"1\"><hh:style id=\"0\" type=\"PARA\" name=\"바탕글\" engName=\"Normal\" paraPrIDRef=\"0\" charPrIDRef=\"0\" nextStyleIDRef=\"0\" langID=\"1042\" lockForm=\"0\"/></hh:styles></hh:refList><hh:compatibleDocument targetProgram=\"HWP201X\"><hh:layoutCompatibility/></hh:compatibleDocument><hh:docOption><hh:linkinfo path=\"\" pageInherit=\"0\" footnoteInherit=\"0\"/></hh:docOption></hh:head>"},
+      {name:"Contents/section0.xml",data:HWPX_XD+"<hs:sec "+HWPX_NS+">"+body+"</hs:sec>"},
+      {name:"Contents/content.hpf",data:HWPX_XD+'<opf:package '+HWPX_NS+' version="" unique-identifier="" id=""><opf:metadata><opf:title>'+xe(title)+"</opf:title><opf:language>ko</opf:language>"+'<opf:meta name="creator" content="text">법률 절차 길잡이</opf:meta></opf:metadata><opf:manifest><opf:item id="header" href="Contents/header.xml" media-type="application/xml"/><opf:item id="section0" href="Contents/section0.xml" media-type="application/xml"/><opf:item id="settings" href="settings.xml" media-type="application/xml"/></opf:manifest><opf:spine><opf:itemref idref="header" linear="yes"/><opf:itemref idref="section0" linear="yes"/></opf:spine></opf:package>'},
+      {name:"META-INF/container.xml",data:"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><ocf:container xmlns:ocf=\"urn:oasis:names:tc:opendocument:xmlns:container\" xmlns:hpf=\"http://www.hancom.co.kr/schema/2011/hpf\"><ocf:rootfiles><ocf:rootfile full-path=\"Contents/content.hpf\" media-type=\"application/hwpml-package+xml\"/><ocf:rootfile full-path=\"Preview/PrvText.txt\" media-type=\"text/plain\"/><ocf:rootfile full-path=\"META-INF/container.rdf\" media-type=\"application/rdf+xml\"/></ocf:rootfiles></ocf:container>"},
+      {name:"META-INF/manifest.xml",data:"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><odf:manifest xmlns:odf=\"urn:oasis:names:tc:opendocument:xmlns:manifest:1.0\"/>"},
+      {name:"META-INF/container.rdf",data:"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"><rdf:Description rdf:about=\"\"><ns0:hasPart xmlns:ns0=\"http://www.hancom.co.kr/hwpml/2016/meta/pkg#\" rdf:resource=\"Contents/header.xml\"/></rdf:Description><rdf:Description rdf:about=\"Contents/header.xml\"><rdf:type rdf:resource=\"http://www.hancom.co.kr/hwpml/2016/meta/pkg#HeaderFile\"/></rdf:Description><rdf:Description rdf:about=\"\"><ns0:hasPart xmlns:ns0=\"http://www.hancom.co.kr/hwpml/2016/meta/pkg#\" rdf:resource=\"Contents/section0.xml\"/></rdf:Description><rdf:Description rdf:about=\"Contents/section0.xml\"><rdf:type rdf:resource=\"http://www.hancom.co.kr/hwpml/2016/meta/pkg#SectionFile\"/></rdf:Description><rdf:Description rdf:about=\"\"><rdf:type rdf:resource=\"http://www.hancom.co.kr/hwpml/2016/meta/pkg#Document\"/></rdf:Description></rdf:RDF>"},
+      {name:"Preview/PrvText.txt",data:prv.join(String.fromCharCode(10)).slice(0,1000)}
+    ];
+  }
+    var FNAME="행정심판청구서";
+    function saveBlob(blob,ext){
+      var a=document.createElement("a");
+      a.href=URL.createObjectURL(blob);
+      a.download=FNAME.replace(/[\/:*?"<>|]/g,"").replace(/\s+/g,"_")+ext;
+      document.body.appendChild(a);a.click();
+      setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},1000);
+    }
+    document.getElementById("hwpBtn").addEventListener("click",function(){
+      saveBlob(zipStore(hwpxFiles(FNAME,collect()),"application/vnd.hancom.hwpx"),".hwpx");
+    });
     document.getElementById("docBtn").addEventListener("click",function(){
-      var fname="행정심판청구서";
+      var fname=FNAME;
       var blob=zipStore([
         {name:"[Content_Types].xml",data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>'},
         {name:"_rels/.rels",data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'},
         {name:"word/document.xml",data:docXml(collect())}
-      ]);
-      var a=document.createElement("a");
-      a.href=URL.createObjectURL(blob);
-      a.download=fname.replace(/[\/:*?"<>|]/g,"").replace(/\s+/g,"_")+".docx";
-      document.body.appendChild(a);a.click();
-      setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},1000);
+      ],"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+      saveBlob(blob,".docx");
     });
   })();
   document.getElementById("resetBtn").addEventListener("click",function(){
