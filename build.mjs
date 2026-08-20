@@ -114,7 +114,7 @@ async function syncLanding(forms, counts) {
 /** 검색 결과에 그대로 노출되는 문구들. 사람들이 실제로 치는 말이 '양식'이라 제목에 넣는다. */
 function meta(f) {
   const url = `${SITE}/forms/${encodeURIComponent(f.k)}`;
-  const desc = `${f.u} 회원가입 없이 빈칸을 채워 인쇄·PDF·한글(워드)로 저장하세요. 어디에 접수하는지도 함께 안내합니다.`;
+  const desc = `${f.u} 회원가입 없이 빈칸을 채워 인쇄·PDF로 저장하거나 워드·한글 파일(.docx)로 받으세요. 어디에 접수하는지도 함께 안내합니다.`;
   return `
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${url}">
