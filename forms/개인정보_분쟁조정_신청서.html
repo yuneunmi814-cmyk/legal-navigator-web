@@ -75,7 +75,14 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
 /* 안내문은 한 덩어리 문장으로 흐르게 — flex로 두면 조각조각 칼럼처럼 쪼개져 읽기 어려움 */
 .hint{display:block;margin:16px 2px 8px;font-size:12.5px;color:var(--ink2);line-height:1.9;word-break:keep-all}
 .hint .k{background:var(--fld);border:1px dashed var(--fld-line);color:var(--fld-ink);border-radius:6px;padding:1px 7px;font-weight:700;white-space:nowrap}
-.doc{background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 14px 40px -22px rgba(0,0,0,.3);padding:clamp(18px,5vw,34px);white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;font-size:15px;line-height:1.95;}
+.doc{background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 14px 40px -22px rgba(0,0,0,.3);padding:clamp(18px,5vw,34px);word-break:keep-all;overflow-wrap:anywhere;font-size:15px;line-height:1.95;}
+/* 관공서 배치 — 내보내기(layoutParas)와 같은 판정을 화면에도 그대로 입힌다. */
+.doc .ln{white-space:pre-wrap}
+.doc .ln-c{text-align:center}
+.doc .ln-r{text-align:right}
+.doc .ln-t{text-align:center;font-size:1.5em;font-weight:800;letter-spacing:.28em;margin:.2em 0 1.1em;line-height:1.5}
+.doc .ln-s{font-size:1.12em;font-weight:700;margin-top:.5em}
+.doc .ln-h{padding-left:1.5em;text-indent:-1.5em}
 .fld{display:inline-block;max-width:100%;border:none;border-bottom:1.6px solid var(--fld-line);background:var(--fld);color:var(--fld-ink);border-radius:4px 4px 0 0;padding:0 5px;margin:0 1px;min-height:1.5em;line-height:1.5;font-weight:600;outline:none;vertical-align:top;font-family:inherit;}
 .fld:focus{box-shadow:0 0 0 2px color-mix(in srgb,var(--fld-line) 45%,transparent);background:color-mix(in srgb,var(--fld) 70%,var(--paper));}
 .fld:empty::before{content:attr(data-ph);color:var(--ph);font-weight:400}
@@ -171,17 +178,7 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
     
   </div>
   <div class="hint"><span class="k">[빈칸]</span> 과 <span class="k">○○</span>(법원·기관 이름) 을 탭해 입력하고, <b>☐</b> 는 탭하면 체크됩니다. 경위·사유처럼 길게 쓰는 항목은 <b>아래 넓은 칸</b>에 적으면 됩니다. 다 채우면 <b>인쇄·PDF로 저장</b>하거나, <b>서식 다운로드</b>에서 작성한 내용을 파일로 받아 이어서 편집할 수 있습니다. 한글(<b>.hwpx</b> — 한글 2014 이상)·워드(<b>.docx</b>)·마크다운·텍스트 중에 고르시면 됩니다.</div>
-  <div class="doc" id="doc"><span class="lbl">개인정보 분쟁조정 신청서</span>
-■ 신청인(정보주체): 성명 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>  연락처 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>  주소 <span class="fld" contenteditable="true" role="textbox" data-ph="주소" style="min-width:4ch"></span>
-■ 피신청인(개인정보처리자): <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>
-■ 분쟁 유형: <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>유출 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>동의 없는 수집·이용 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>목적 외 이용 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>제3자 제공 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>기타
-■ 분쟁 발생 경위(일시·항목·경위): <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>
-■ 신청 취지(손해배상·삭제·재발방지 등): <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>
-■ 신청 이유: <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>
-■ 증거자료 목록: <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>
-■ (집단분쟁) 피해자 현황: <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>
-
-신청일 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>   신청인 <span class="fld" contenteditable="true" role="textbox" data-ph="성명" style="min-width:4ch"></span> (서명/인)</div>
+  <div class="doc" id="doc"><div class="ln ln-c ln-t"><span class="lbl">개인정보 분쟁조정 신청서</span></div><div class="ln">■ 신청인(정보주체): 성명 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>  연락처 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>  주소 <span class="fld" contenteditable="true" role="textbox" data-ph="주소" style="min-width:4ch"></span></div><div class="ln">■ 피신청인(개인정보처리자): <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span></div><div class="ln">■ 분쟁 유형: <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>유출 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>동의 없는 수집·이용 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>목적 외 이용 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>제3자 제공 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>기타</div><div class="ln">■ 분쟁 발생 경위(일시·항목·경위): <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span></div><div class="ln">■ 신청 취지(손해배상·삭제·재발방지 등): <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span></div><div class="ln">■ 신청 이유: <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span></div><div class="ln">■ 증거자료 목록: <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span></div><div class="ln">■ (집단분쟁) 피해자 현황: <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span></div><div class="ln"><br></div><div class="ln ln-c">신청일 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span></div><div class="ln ln-c">신청인 <span class="fld" contenteditable="true" role="textbox" data-ph="성명" style="min-width:4ch"></span> (서명/인)</div></div>
   <div class="tips">
     <h2>작성요령</h2>
     <ol><li>★조정 성립 시 재판상 화해 효력이 있어 강제집행이 가능합니다.</li><li>손해배상은 일반손배(실손해 입증) 또는 법정손배(300만원 한도, 입증 부담↓) 중 선택할 수 있습니다.</li><li>온라인은 kopico.go.kr, 침해신고는 KISA ☎118.</li></ol>
@@ -328,7 +325,16 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
           if(seg)paras[paras.length-1].push({t:seg,s:style||{}});
         });
       }
+      // 본문이 줄 단위 .ln 으로 감싸여 있으면 그 안을 훑는다(화면 배치를 입히며 구조가 바뀌었다).
+      // 감싸기 전 구조(평평한 텍스트+span)도 그대로 처리되도록 both 를 지원한다.
+      var nodes=[];
       doc.childNodes.forEach(function(n){
+        if(n.nodeType===1&&n.classList&&n.classList.contains("ln")){
+          if(nodes.length)nodes.push({nodeType:3,textContent:"\n"});
+          n.childNodes.forEach(function(c){nodes.push(c);});
+        } else nodes.push(n);
+      });
+      nodes.forEach(function(n){
         if(n.nodeType===3){push(n.textContent);return;}
         if(n.nodeType!==1)return;
         if(n.classList.contains("fld")){

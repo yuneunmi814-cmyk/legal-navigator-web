@@ -75,7 +75,14 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
 /* 안내문은 한 덩어리 문장으로 흐르게 — flex로 두면 조각조각 칼럼처럼 쪼개져 읽기 어려움 */
 .hint{display:block;margin:16px 2px 8px;font-size:12.5px;color:var(--ink2);line-height:1.9;word-break:keep-all}
 .hint .k{background:var(--fld);border:1px dashed var(--fld-line);color:var(--fld-ink);border-radius:6px;padding:1px 7px;font-weight:700;white-space:nowrap}
-.doc{background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 14px 40px -22px rgba(0,0,0,.3);padding:clamp(18px,5vw,34px);white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;font-size:15px;line-height:1.95;}
+.doc{background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 14px 40px -22px rgba(0,0,0,.3);padding:clamp(18px,5vw,34px);word-break:keep-all;overflow-wrap:anywhere;font-size:15px;line-height:1.95;}
+/* 관공서 배치 — 내보내기(layoutParas)와 같은 판정을 화면에도 그대로 입힌다. */
+.doc .ln{white-space:pre-wrap}
+.doc .ln-c{text-align:center}
+.doc .ln-r{text-align:right}
+.doc .ln-t{text-align:center;font-size:1.5em;font-weight:800;letter-spacing:.28em;margin:.2em 0 1.1em;line-height:1.5}
+.doc .ln-s{font-size:1.12em;font-weight:700;margin-top:.5em}
+.doc .ln-h{padding-left:1.5em;text-indent:-1.5em}
 .fld{display:inline-block;max-width:100%;border:none;border-bottom:1.6px solid var(--fld-line);background:var(--fld);color:var(--fld-ink);border-radius:4px 4px 0 0;padding:0 5px;margin:0 1px;min-height:1.5em;line-height:1.5;font-weight:600;outline:none;vertical-align:top;font-family:inherit;}
 .fld:focus{box-shadow:0 0 0 2px color-mix(in srgb,var(--fld-line) 45%,transparent);background:color-mix(in srgb,var(--fld) 70%,var(--paper));}
 .fld:empty::before{content:attr(data-ph);color:var(--ph);font-weight:400}
@@ -171,28 +178,7 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
     <p class="official"><b>공식 양식 받는 곳</b> · 노란우산(중소기업중앙회) yumam.kbiz.or.kr '구비서류' 또는 8899.or.kr / 콜센터 1666-9988</p>
   </div>
   <div class="hint"><span class="k">[빈칸]</span> 과 <span class="k">○○</span>(법원·기관 이름) 을 탭해 입력하고, <b>☐</b> 는 탭하면 체크됩니다. 경위·사유처럼 길게 쓰는 항목은 <b>아래 넓은 칸</b>에 적으면 됩니다. 다 채우면 <b>인쇄·PDF로 저장</b>하거나, <b>서식 다운로드</b>에서 작성한 내용을 파일로 받아 이어서 편집할 수 있습니다. 한글(<b>.hwpx</b> — 한글 2014 이상)·워드(<b>.docx</b>)·마크다운·텍스트 중에 고르시면 됩니다.</div>
-  <div class="doc" id="doc">공제금·해약환급금 청구서
-받는 사람: 중소기업중앙회 회장 귀하        제출일: 20<span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>.
-
-<span class="lbl">청구자</span>
-  ① 성명 <span class="fld" contenteditable="true" role="textbox" data-ph="성명" style="min-width:4ch"></span>     ② (서명 또는 날인) <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>
-  ③ 주민등록번호 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>     ⑥ 휴대전화 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>
-  ④ 주소 <span class="fld" contenteditable="true" role="textbox" data-ph="주소" style="min-width:4ch"></span>
-  ⑤ 계약자(수급권자)와의 관계 <span class="fld" contenteditable="true" role="textbox" data-ph="본인/상속인 등" style="min-width:8ch"></span>
-
-<span class="lbl">공제금·해약환급금 수령계좌</span> (계약자·수급권자 본인 명의만)
-  ⑦ 거래은행 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>   ⑧ 계좌번호 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>   ⑨ 예금주 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>
-  ⑩ 압류방지계좌 여부 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>예 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>아니오    계좌압류 여부 <span class="fld" contenteditable="true" role="textbox" data-ph="정상/압류중" style="min-width:6ch"></span>
-
-<span class="lbl">계약 관련</span>
-  ⑪ 계약자 성명 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>   ⑫ 공제계약번호 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>
-  ⑬ 청구사유 발생일 20<span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. (폐업이면 폐업일)
-  ⑭ 공제금 지급방법 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>일시금 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>분할지급(분할은 별지 17-2호 별도 작성)
-  ⑮ 청구사유(√):
-     · 공제금(개인) <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>폐업 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>공동사업자 탈퇴 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>사망 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>노령(만60세↑·납입 120개월↑)
-     · 공제금(법인대표) <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>폐업 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>해산 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>사망 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>노령 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>질병·부상 퇴임
-     · <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>간주해약환급금  <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>일반해약환급금(<span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>임의해약 등)
-  ⑯ (사망 청구 시) 상속인 일부지급 청구비율 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>%</div>
+  <div class="doc" id="doc"><div class="ln ln-c ln-t">공제금·해약환급금 청구서</div><div class="ln">받는 사람: 중소기업중앙회 회장 귀하        제출일: 20<span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>.</div><div class="ln"><br></div><div class="ln"><span class="lbl">청구자</span></div><div class="ln">  ① 성명 <span class="fld" contenteditable="true" role="textbox" data-ph="성명" style="min-width:4ch"></span>     ② (서명 또는 날인) <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span></div><div class="ln">  ③ 주민등록번호 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>     ⑥ 휴대전화 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span></div><div class="ln">  ④ 주소 <span class="fld" contenteditable="true" role="textbox" data-ph="주소" style="min-width:4ch"></span></div><div class="ln">  ⑤ 계약자(수급권자)와의 관계 <span class="fld" contenteditable="true" role="textbox" data-ph="본인/상속인 등" style="min-width:8ch"></span></div><div class="ln"><br></div><div class="ln"><span class="lbl">공제금·해약환급금 수령계좌</span> (계약자·수급권자 본인 명의만)</div><div class="ln">  ⑦ 거래은행 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>   ⑧ 계좌번호 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>   ⑨ 예금주 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span></div><div class="ln">  ⑩ 압류방지계좌 여부 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>예 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>아니오    계좌압류 여부 <span class="fld" contenteditable="true" role="textbox" data-ph="정상/압류중" style="min-width:6ch"></span></div><div class="ln"><br></div><div class="ln"><span class="lbl">계약 관련</span></div><div class="ln">  ⑪ 계약자 성명 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>   ⑫ 공제계약번호 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span></div><div class="ln">  ⑬ 청구사유 발생일 20<span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. (폐업이면 폐업일)</div><div class="ln">  ⑭ 공제금 지급방법 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>일시금 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>분할지급(분할은 별지 17-2호 별도 작성)</div><div class="ln">  ⑮ 청구사유(√):</div><div class="ln">     · 공제금(개인) <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>폐업 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>공동사업자 탈퇴 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>사망 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>노령(만60세↑·납입 120개월↑)</div><div class="ln">     · 공제금(법인대표) <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>폐업 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>해산 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>사망 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>노령 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>질병·부상 퇴임</div><div class="ln">     · <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>간주해약환급금  <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>일반해약환급금(<span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>임의해약 등)</div><div class="ln">  ⑯ (사망 청구 시) 상속인 일부지급 청구비율 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>%</div></div>
   <div class="tips">
     <h2>작성요령</h2>
     <ol><li>실제 별지 제17호 서식 항목 순서 그대로입니다(노란우산 누리집·콜센터에서 PDF·HWP 확인).</li><li>★수령계좌는 계약자·수급권자 본인 명의 개인계좌만 지정 가능하며, 압류방지계좌(행복지킴이통장)로 공제금을 받을 수 있습니다(수급권 보호, 중소기업협동조합법 제119조).</li><li>★선행: 세무서 폐업신고 → 폐업증명서(세무서 직인) 발급 후 첨부(법인은 해산 명시 법인등기부등본).</li><li>첨부(공통): 청구서·신분증 사본·수령계좌 통장사본·소득세액공제 확인서 / (우편 청구 시)본인서명사실확인서 또는 인감증명서. 분할지급은 별지 17-2호를 추가 작성. 정확한 칸은 공식 양식으로 확인하세요.</li></ol>
@@ -339,7 +325,16 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
           if(seg)paras[paras.length-1].push({t:seg,s:style||{}});
         });
       }
+      // 본문이 줄 단위 .ln 으로 감싸여 있으면 그 안을 훑는다(화면 배치를 입히며 구조가 바뀌었다).
+      // 감싸기 전 구조(평평한 텍스트+span)도 그대로 처리되도록 both 를 지원한다.
+      var nodes=[];
       doc.childNodes.forEach(function(n){
+        if(n.nodeType===1&&n.classList&&n.classList.contains("ln")){
+          if(nodes.length)nodes.push({nodeType:3,textContent:"\n"});
+          n.childNodes.forEach(function(c){nodes.push(c);});
+        } else nodes.push(n);
+      });
+      nodes.forEach(function(n){
         if(n.nodeType===3){push(n.textContent);return;}
         if(n.nodeType!==1)return;
         if(n.classList.contains("fld")){

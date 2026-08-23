@@ -75,7 +75,14 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
 /* 안내문은 한 덩어리 문장으로 흐르게 — flex로 두면 조각조각 칼럼처럼 쪼개져 읽기 어려움 */
 .hint{display:block;margin:16px 2px 8px;font-size:12.5px;color:var(--ink2);line-height:1.9;word-break:keep-all}
 .hint .k{background:var(--fld);border:1px dashed var(--fld-line);color:var(--fld-ink);border-radius:6px;padding:1px 7px;font-weight:700;white-space:nowrap}
-.doc{background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 14px 40px -22px rgba(0,0,0,.3);padding:clamp(18px,5vw,34px);white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;font-size:15px;line-height:1.95;}
+.doc{background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 14px 40px -22px rgba(0,0,0,.3);padding:clamp(18px,5vw,34px);word-break:keep-all;overflow-wrap:anywhere;font-size:15px;line-height:1.95;}
+/* 관공서 배치 — 내보내기(layoutParas)와 같은 판정을 화면에도 그대로 입힌다. */
+.doc .ln{white-space:pre-wrap}
+.doc .ln-c{text-align:center}
+.doc .ln-r{text-align:right}
+.doc .ln-t{text-align:center;font-size:1.5em;font-weight:800;letter-spacing:.28em;margin:.2em 0 1.1em;line-height:1.5}
+.doc .ln-s{font-size:1.12em;font-weight:700;margin-top:.5em}
+.doc .ln-h{padding-left:1.5em;text-indent:-1.5em}
 .fld{display:inline-block;max-width:100%;border:none;border-bottom:1.6px solid var(--fld-line);background:var(--fld);color:var(--fld-ink);border-radius:4px 4px 0 0;padding:0 5px;margin:0 1px;min-height:1.5em;line-height:1.5;font-weight:600;outline:none;vertical-align:top;font-family:inherit;}
 .fld:focus{box-shadow:0 0 0 2px color-mix(in srgb,var(--fld-line) 45%,transparent);background:color-mix(in srgb,var(--fld) 70%,var(--paper));}
 .fld:empty::before{content:attr(data-ph);color:var(--ph);font-weight:400}
@@ -171,39 +178,7 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
     <p class="official"><b>공식 양식 받는 곳</b> · 인터넷등기소 www.iros.go.kr → 자료센터 '등기신청양식' → 소유권이전등기신청(상속) / e-Form(전자양식) 작성 후 방문 또는 전자신청</p>
   </div>
   <div class="hint"><span class="k">[빈칸]</span> 과 <span class="k">○○</span>(법원·기관 이름) 을 탭해 입력하고, <b>☐</b> 는 탭하면 체크됩니다. 경위·사유처럼 길게 쓰는 항목은 <b>아래 넓은 칸</b>에 적으면 됩니다. 다 채우면 <b>인쇄·PDF로 저장</b>하거나, <b>서식 다운로드</b>에서 작성한 내용을 파일로 받아 이어서 편집할 수 있습니다. 한글(<b>.hwpx</b> — 한글 2014 이상)·워드(<b>.docx</b>)·마크다운·텍스트 중에 고르시면 됩니다.</div>
-  <div class="doc" id="doc">소유권이전등기신청서 (상속)
-
-<span class="lbl">부동산의 표시</span>
-  표시 <span class="fld big" contenteditable="true" role="textbox" data-ph="등기부등본 표제부 그대로 — 예: 서울특별시 ○○구 ○○동 123 ○○아파트 제5동 제3층 제301호"></span>
-  ※ 부동산이 여러 개면 각각 기재 (수수료는 부동산당 부과)
-
-등기원인과 그 연월일   20<span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>.  상속
-  ※ 연월일은 피상속인의 '사망일'(기본증명서 기준)
-등기의 목적           소유권이전
-이전할 지분           <span class="fld big" contenteditable="true" role="textbox" data-ph="전부 / 소유권 일부(지분) — 등기부 갑구 확인"></span>
-
-<span class="lbl">피상속인</span> (돌아가신 분)
-  성명: <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>   사망일: 20<span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>.
-  최후 주소: <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>
-<span class="lbl">등기권리자</span> (상속인 — 신청인)
-  성명: <span class="fld" contenteditable="true" role="textbox" data-ph="본인 성명" style="min-width:5ch"></span>   주민등록번호: <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>   주소: <span class="fld" contenteditable="true" role="textbox" data-ph="주소" style="min-width:4ch"></span>   지분: <span class="fld big" contenteditable="true" role="textbox" data-ph="단독이면 '전부', 공동상속이면 예: 2분의 1"></span>
-  성명: <span class="fld big" contenteditable="true" role="textbox" data-ph="공동상속인 — 없으면 지우세요"></span>   주민등록번호: <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>   주소: <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>   지분: <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>
-  ※ 협의분할이면 협의서 내용대로, 협의가 없으면 법정상속분대로 기재
-
-시가표준액: 금 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>원   국민주택채권매입금액: 금 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>원
-취득세: 금 <span class="fld big" contenteditable="true" role="textbox" data-ph="시가표준액 × 2.8%(농지 2.3%)"></span>원   지방교육세: 금 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>원   농어촌특별세: 금 <span class="fld" contenteditable="true" role="textbox" data-ph="해당 시" style="min-width:4ch"></span>원
-등기신청수수료: 금 <span class="fld big" contenteditable="true" role="textbox" data-ph="15,000 × 건수(e-Form·전자 13,000)"></span>원
-
-<span class="lbl">첨부서면</span>
-  피상속인: 제적등본  <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>   기본증명서(사망)  <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>   가족관계증명서(상세)  <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>   주민등록말소자초본  <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>
-  상속인: 가족관계증명서  <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>   주민등록초본  <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>
-  상속재산분할협의서 + 상속인 전원 인감증명(협의분할 시)  <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>
-  취득세 영수필확인서  <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>   토지대장·건축물대장  <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>
-
-20<span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>.
-위 신청인(등기권리자)  <span class="fld" contenteditable="true" role="textbox" data-ph="본인 성명" style="min-width:5ch"></span> (서명 또는 날인)  연락처: <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>
-
-<span class="lbl">관할 등기소명 — 부동산 소재지 관할</span> 등기국(등기소) 귀중</div>
+  <div class="doc" id="doc"><div class="ln ln-c ln-t">소유권이전등기신청서 (상속)</div><div class="ln"><br></div><div class="ln"><span class="lbl">부동산의 표시</span></div><div class="ln">  표시 <span class="fld big" contenteditable="true" role="textbox" data-ph="등기부등본 표제부 그대로 — 예: 서울특별시 ○○구 ○○동 123 ○○아파트 제5동 제3층 제301호"></span></div><div class="ln">  ※ 부동산이 여러 개면 각각 기재 (수수료는 부동산당 부과)</div><div class="ln"><br></div><div class="ln">등기원인과 그 연월일   20<span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>.  상속</div><div class="ln">  ※ 연월일은 피상속인의 '사망일'(기본증명서 기준)</div><div class="ln">등기의 목적           소유권이전</div><div class="ln">이전할 지분           <span class="fld big" contenteditable="true" role="textbox" data-ph="전부 / 소유권 일부(지분) — 등기부 갑구 확인"></span></div><div class="ln"><br></div><div class="ln"><span class="lbl">피상속인</span> (돌아가신 분)</div><div class="ln">  성명: <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>   사망일: 20<span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>.</div><div class="ln">  최후 주소: <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span></div><div class="ln"><span class="lbl">등기권리자</span> (상속인 — 신청인)</div><div class="ln">  성명: <span class="fld" contenteditable="true" role="textbox" data-ph="본인 성명" style="min-width:5ch"></span>   주민등록번호: <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>   주소: <span class="fld" contenteditable="true" role="textbox" data-ph="주소" style="min-width:4ch"></span>   지분: <span class="fld big" contenteditable="true" role="textbox" data-ph="단독이면 '전부', 공동상속이면 예: 2분의 1"></span></div><div class="ln">  성명: <span class="fld big" contenteditable="true" role="textbox" data-ph="공동상속인 — 없으면 지우세요"></span>   주민등록번호: <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>   주소: <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>   지분: <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span></div><div class="ln">  ※ 협의분할이면 협의서 내용대로, 협의가 없으면 법정상속분대로 기재</div><div class="ln"><br></div><div class="ln">시가표준액: 금 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>원   국민주택채권매입금액: 금 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>원</div><div class="ln">취득세: 금 <span class="fld big" contenteditable="true" role="textbox" data-ph="시가표준액 × 2.8%(농지 2.3%)"></span>원   지방교육세: 금 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>원   농어촌특별세: 금 <span class="fld" contenteditable="true" role="textbox" data-ph="해당 시" style="min-width:4ch"></span>원</div><div class="ln">등기신청수수료: 금 <span class="fld big" contenteditable="true" role="textbox" data-ph="15,000 × 건수(e-Form·전자 13,000)"></span>원</div><div class="ln"><br></div><div class="ln"><span class="lbl">첨부서면</span></div><div class="ln">  피상속인: 제적등본  <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>   기본증명서(사망)  <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>   가족관계증명서(상세)  <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>   주민등록말소자초본  <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span></div><div class="ln">  상속인: 가족관계증명서  <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>   주민등록초본  <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span></div><div class="ln">  상속재산분할협의서 + 상속인 전원 인감증명(협의분할 시)  <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span></div><div class="ln">  취득세 영수필확인서  <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>   토지대장·건축물대장  <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span></div><div class="ln"><br></div><div class="ln ln-c">20<span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>.</div><div class="ln">위 신청인(등기권리자)</div><div class="ln ln-c"><span class="fld" contenteditable="true" role="textbox" data-ph="본인 성명" style="min-width:5ch"></span> (서명 또는 날인)</div><div class="ln">연락처: <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span></div><div class="ln"><br></div><div class="ln ln-r ln-s"><span class="lbl">관할 등기소명 — 부동산 소재지 관할</span> 등기국(등기소) 귀중</div></div>
   <div class="tips">
     <h2>작성요령</h2>
     <ol><li>★취득세는 상속개시일이 속한 달의 말일부터 6개월 내 신고·납부(위택스) — 등기보다 먼저 처리하고 영수필확인서를 첨부하세요.</li><li>등기원인 날짜는 사망일입니다 — 협의분할을 나중에 했어도 '상속' 원인의 날짜는 사망일로 적습니다(협의분할 상속은 원인을 '협의분할에 의한 상속'으로).</li><li>상속인 전원이 아니라 일부만 지분등기는 불가 — 전원 명의로 하거나 협의분할서로 정리한 뒤 신청하세요.</li><li>실제 제출은 인터넷등기소 e-Form으로 작성하면 오류 검증이 되어 안전합니다 — 이 서식은 미리 항목을 준비하는 용도입니다.</li><li>예상 비용은 calculate_amount(상속등기비용)로, 서류 발급은 how_to_get_document로 확인하세요.</li></ol>
@@ -350,7 +325,16 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
           if(seg)paras[paras.length-1].push({t:seg,s:style||{}});
         });
       }
+      // 본문이 줄 단위 .ln 으로 감싸여 있으면 그 안을 훑는다(화면 배치를 입히며 구조가 바뀌었다).
+      // 감싸기 전 구조(평평한 텍스트+span)도 그대로 처리되도록 both 를 지원한다.
+      var nodes=[];
       doc.childNodes.forEach(function(n){
+        if(n.nodeType===1&&n.classList&&n.classList.contains("ln")){
+          if(nodes.length)nodes.push({nodeType:3,textContent:"\n"});
+          n.childNodes.forEach(function(c){nodes.push(c);});
+        } else nodes.push(n);
+      });
+      nodes.forEach(function(n){
         if(n.nodeType===3){push(n.textContent);return;}
         if(n.nodeType!==1)return;
         if(n.classList.contains("fld")){

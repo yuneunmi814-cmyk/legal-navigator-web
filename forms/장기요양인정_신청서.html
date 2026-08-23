@@ -75,7 +75,14 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
 /* 안내문은 한 덩어리 문장으로 흐르게 — flex로 두면 조각조각 칼럼처럼 쪼개져 읽기 어려움 */
 .hint{display:block;margin:16px 2px 8px;font-size:12.5px;color:var(--ink2);line-height:1.9;word-break:keep-all}
 .hint .k{background:var(--fld);border:1px dashed var(--fld-line);color:var(--fld-ink);border-radius:6px;padding:1px 7px;font-weight:700;white-space:nowrap}
-.doc{background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 14px 40px -22px rgba(0,0,0,.3);padding:clamp(18px,5vw,34px);white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;font-size:15px;line-height:1.95;}
+.doc{background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 14px 40px -22px rgba(0,0,0,.3);padding:clamp(18px,5vw,34px);word-break:keep-all;overflow-wrap:anywhere;font-size:15px;line-height:1.95;}
+/* 관공서 배치 — 내보내기(layoutParas)와 같은 판정을 화면에도 그대로 입힌다. */
+.doc .ln{white-space:pre-wrap}
+.doc .ln-c{text-align:center}
+.doc .ln-r{text-align:right}
+.doc .ln-t{text-align:center;font-size:1.5em;font-weight:800;letter-spacing:.28em;margin:.2em 0 1.1em;line-height:1.5}
+.doc .ln-s{font-size:1.12em;font-weight:700;margin-top:.5em}
+.doc .ln-h{padding-left:1.5em;text-indent:-1.5em}
 .fld{display:inline-block;max-width:100%;border:none;border-bottom:1.6px solid var(--fld-line);background:var(--fld);color:var(--fld-ink);border-radius:4px 4px 0 0;padding:0 5px;margin:0 1px;min-height:1.5em;line-height:1.5;font-weight:600;outline:none;vertical-align:top;font-family:inherit;}
 .fld:focus{box-shadow:0 0 0 2px color-mix(in srgb,var(--fld-line) 45%,transparent);background:color-mix(in srgb,var(--fld) 70%,var(--paper));}
 .fld:empty::before{content:attr(data-ph);color:var(--ph);font-weight:400}
@@ -171,21 +178,7 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
     <p class="official"><b>공식 양식 받는 곳</b> · 노인장기요양보험 longtermcare.or.kr·The건강보험 앱 / 국가법령정보센터 '노인장기요양보험법 시행규칙' 별지 제1호의2서식 / 공단 1577-1000</p>
   </div>
   <div class="hint"><span class="k">[빈칸]</span> 과 <span class="k">○○</span>(법원·기관 이름) 을 탭해 입력하고, <b>☐</b> 는 탭하면 체크됩니다. 경위·사유처럼 길게 쓰는 항목은 <b>아래 넓은 칸</b>에 적으면 됩니다. 다 채우면 <b>인쇄·PDF로 저장</b>하거나, <b>서식 다운로드</b>에서 작성한 내용을 파일로 받아 이어서 편집할 수 있습니다. 한글(<b>.hwpx</b> — 한글 2014 이상)·워드(<b>.docx</b>)·마크다운·텍스트 중에 고르시면 됩니다.</div>
-  <div class="doc" id="doc">장기요양인정 신청서
-
-① 신청 구분 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>인정신청 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>갱신신청 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>등급변경신청
-② 신청인(대상자) 성명 <span class="fld" contenteditable="true" role="textbox" data-ph="성명" style="min-width:4ch"></span>  생년월일 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>  주소 <span class="fld" contenteditable="true" role="textbox" data-ph="주소" style="min-width:4ch"></span>  연락처 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>
-   자격 구분 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>건강보험가입자 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>피부양자 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>의료급여수급권자
-③ 노인성 질병 여부(65세 미만인 경우) <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>해당 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>비해당   질병명(치매·뇌혈관질환·파킨슨 등) <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>
-④ 신청 사유 / 현재 거동·일상생활 수행 상태 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>
-⑤ 대리신청인(해당 시) 성명 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>  신청인과의 관계 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>
-   자격 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>가족·친족 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>사회복지전담공무원 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>치매안심센터의 장 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>시장·군수·구청장 지정인   연락처 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>
-⑥ 방문조사 희망 장소·연락 가능 시간 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>
-⑦ 첨부서류 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>의사(한의사) 소견서 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>신분 확인서류 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>대리신청 증빙 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>기타 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>
-
-위와 같이 장기요양인정을 신청합니다.
-신청일 20<span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>.   신청인(또는 대리인) (서명 또는 인)
-국민건강보험공단 이사장 귀하</div>
+  <div class="doc" id="doc"><div class="ln ln-c ln-t">장기요양인정 신청서</div><div class="ln"><br></div><div class="ln">① 신청 구분 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>인정신청 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>갱신신청 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>등급변경신청</div><div class="ln">② 신청인(대상자) 성명 <span class="fld" contenteditable="true" role="textbox" data-ph="성명" style="min-width:4ch"></span>  생년월일 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>  주소 <span class="fld" contenteditable="true" role="textbox" data-ph="주소" style="min-width:4ch"></span>  연락처 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span></div><div class="ln">   자격 구분 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>건강보험가입자 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>피부양자 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>의료급여수급권자</div><div class="ln">③ 노인성 질병 여부(65세 미만인 경우) <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>해당 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>비해당   질병명(치매·뇌혈관질환·파킨슨 등) <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span></div><div class="ln">④ 신청 사유 / 현재 거동·일상생활 수행 상태 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span></div><div class="ln">⑤ 대리신청인(해당 시) 성명 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span>  신청인과의 관계 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span></div><div class="ln">   자격 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>가족·친족 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>사회복지전담공무원 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>치매안심센터의 장 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>시장·군수·구청장 지정인   연락처 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span></div><div class="ln">⑥ 방문조사 희망 장소·연락 가능 시간 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span></div><div class="ln">⑦ 첨부서류 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>의사(한의사) 소견서 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>신분 확인서류 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>대리신청 증빙 <span class="cbx" role="checkbox" aria-checked="false" tabindex="0">☐</span>기타 <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:6ch"></span></div><div class="ln"><br></div><div class="ln">위와 같이 장기요양인정을 신청합니다.</div><div class="ln ln-c">신청일 20<span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>. <span class="fld" contenteditable="true" role="textbox" data-ph="" style="min-width:4ch"></span>.</div><div class="ln ln-c">신청인(또는 대리인) (서명 또는 인)</div><div class="ln ln-r ln-s">국민건강보험공단 이사장 귀하</div></div>
   <div class="tips">
     <h2>작성요령</h2>
     <ol><li>★의사소견서는 공단 안내(접수증 발급) 후 제출 — 거동불편·도서벽지·생활곤란 시 면제·연기 가능합니다.</li><li>★65세 미만은 노인성 질병(시행령 별표1: 치매·뇌혈관질환·파킨슨 등) 해당 여부가 필수 — 질병명을 명확히 기재.</li><li>신청 후 공단 직원의 방문조사(인정조사)와 등급판정위원회 심의를 거쳐 1~5등급·인지지원등급이 판정되고, 장기요양인정서·표준장기요양이용계획서가 교부됩니다.</li><li>★최신 서식·기재례는 longtermcare.or.kr·공단 지사에서 확인. 등급·급여 결정 불복은 공단 이의신청→행정심판(get_form_template: 행정심판_청구서).</li></ol>
@@ -332,7 +325,16 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
           if(seg)paras[paras.length-1].push({t:seg,s:style||{}});
         });
       }
+      // 본문이 줄 단위 .ln 으로 감싸여 있으면 그 안을 훑는다(화면 배치를 입히며 구조가 바뀌었다).
+      // 감싸기 전 구조(평평한 텍스트+span)도 그대로 처리되도록 both 를 지원한다.
+      var nodes=[];
       doc.childNodes.forEach(function(n){
+        if(n.nodeType===1&&n.classList&&n.classList.contains("ln")){
+          if(nodes.length)nodes.push({nodeType:3,textContent:"\n"});
+          n.childNodes.forEach(function(c){nodes.push(c);});
+        } else nodes.push(n);
+      });
+      nodes.forEach(function(n){
         if(n.nodeType===3){push(n.textContent);return;}
         if(n.nodeType!==1)return;
         if(n.classList.contains("fld")){
