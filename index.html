@@ -342,16 +342,45 @@ footer{border-top:1px solid var(--line);padding:56px 0 44px;background:var(--sof
   .hero h1{letter-spacing:-.045em}
 }
 
-/* 상담창 — 별도 워커(legalnavi-chat)를 iframe으로 끼운다.
-   대화 로직을 여기 복사하지 않는 이유: 8/27 프리징 이후에도 상담창은 계속 고칠 수 있어야 하고,
-   같은 코드를 두 곳에 두면 반드시 갈린다. 여기서는 열 줄만 쥔다. */
-.chatbox{border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;
-  box-shadow:var(--shadow);background:var(--bg)}
-.chatbox iframe{display:block;width:100%;height:620px;border:0}
-.chat-open{text-align:center;margin-top:14px;font-size:14px}
-.chat-open a{color:var(--brand);text-decoration:none;font-weight:600}
-.chat-open a:hover{text-decoration:underline}
-@media(max-width:760px){.chatbox iframe{height:560px}}
+/* 상담창 — 오른쪽 아래 떠 있는 버튼을 누르면 열린다.
+   대화 로직은 별도 워커(legalnavi-chat)에 있고 여기서는 iframe으로 띄우기만 한다.
+   ①8/27 프리징 뒤에도 상담창은 계속 고쳐야 하고 ②같은 코드가 두 곳에 있으면 반드시 갈린다.
+   iframe의 src는 처음 열 때 넣는다 — 안 여는 사람에게까지 워커를 부를 이유가 없다. */
+.chat-fab{
+  position:fixed; right:20px; bottom:20px; z-index:90;
+  width:58px; height:58px; border-radius:50%; border:0; cursor:pointer;
+  background:var(--brand); color:#fff; display:grid; place-items:center;
+  box-shadow:0 6px 20px -4px rgba(49,130,246,.5), 0 2px 6px rgba(2,8,23,.16);
+  transition:transform .16s ease, background .16s ease;
+}
+.chat-fab:hover{background:var(--brand-d); transform:translateY(-2px)}
+.chat-fab:focus-visible{outline:3px solid var(--brand); outline-offset:3px}
+.chat-fab svg{width:26px;height:26px}
+.chat-fab .x{display:none}
+.chat-fab[aria-expanded="true"] .bubble{display:none}
+.chat-fab[aria-expanded="true"] .x{display:block}
+
+.chat-panel{
+  position:fixed; right:20px; bottom:90px; z-index:89;
+  width:390px; height:min(620px, calc(100vh - 130px));
+  background:var(--bg); border:1px solid var(--line); border-radius:16px;
+  box-shadow:0 12px 40px -8px rgba(2,8,23,.28), 0 2px 8px rgba(2,8,23,.10);
+  display:flex; flex-direction:column; overflow:hidden;
+}
+.chat-panel[hidden]{display:none}
+.chat-head{
+  display:flex; align-items:center; gap:9px; padding:12px 14px;
+  border-bottom:1px solid var(--line); background:var(--soft); font-size:14px; font-weight:700;
+}
+.chat-head .sub{font-weight:500; font-size:12px; color:var(--muted)}
+.chat-head a{margin-left:auto; font-size:12px; color:var(--brand); text-decoration:none; font-weight:600}
+.chat-panel iframe{flex:1; width:100%; border:0; display:block}
+
+@media(max-width:560px){
+  .chat-fab{right:16px; bottom:16px}
+  .chat-panel{right:10px; left:10px; bottom:84px; width:auto; height:min(78vh, calc(100vh - 110px))}
+}
+@media (prefers-reduced-motion:reduce){.chat-fab{transition:none}}
 </style>
 </head>
 <body>
@@ -363,7 +392,7 @@ footer{border-top:1px solid var(--line);padding:56px 0 44px;background:var(--sof
     법률 절차 길잡이
   </a>
   <nav>
-    <a href="#try">바로 써보기</a>
+    <a href="https://legalnavi-chat.yuneunmi814.workers.dev" id="navChat">바로 물어보기</a>
     <a href="#how">기능</a>
     <a href="#talk">쓰는 법</a>
     <a href="#forms">서식 찾기</a>
@@ -390,20 +419,6 @@ footer{border-top:1px solid var(--line);padding:56px 0 44px;background:var(--sof
     <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>개인정보 미수집</span>
   </div>
 </div></header>
-
-<!-- ── 상담창: 바로 써보기 ───────────────── -->
-<section id="try"><div class="wrap">
-  <div class="sec-head mid">
-    <div class="eyebrow">지금 바로</div>
-    <h2>겪으신 일을 한 줄로 적어보세요</h2>
-    <p class="lead">법률 용어를 몰라도 됩니다. 설치도 로그인도 없고, 적으신 내용은 저장되지 않습니다.</p>
-  </div>
-  <div class="chatbox">
-    <iframe src="https://legalnavi-chat.yuneunmi814.workers.dev/?embed=1"
-            title="법률 절차 길잡이 상담창" loading="lazy"></iframe>
-  </div>
-  <p class="chat-open"><a href="https://legalnavi-chat.yuneunmi814.workers.dev" target="_blank" rel="noopener">새 창에서 크게 보기 →</a></p>
-</div></section>
 
 <!-- ── 탭: 세 가지 기능 ───────────────────── -->
 <section id="how" class="plain"><div class="wrap">
@@ -1097,6 +1112,37 @@ more.textContent=`서식 ${FORMS.length}종 전체 보기`;
 more.addEventListener("click",()=>{showAll=true;render();});
 render();
 
+</script>
+<!-- ── 상담창 (오른쪽 아래) ───────────────── -->
+<button class="chat-fab" id="chatFab" type="button" aria-expanded="false" aria-controls="chatPanel"
+        aria-label="상담창 열기">
+  <svg class="bubble" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.6 9.6 0 0 1-2.6-.4L3 21l1.6-4.7A8.2 8.2 0 0 1 3.6 11.5a8.4 8.4 0 0 1 9-8.4 8.4 8.4 0 0 1 8.4 8.4z"/></svg>
+  <svg class="x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+</button>
+<div class="chat-panel" id="chatPanel" role="dialog" aria-label="법률 절차 길잡이 상담창" hidden>
+  <div class="chat-head">
+    <span>무엇이든 물어보세요</span>
+    <span class="sub">기록 안 남음</span>
+    <a href="https://legalnavi-chat.yuneunmi814.workers.dev" target="_blank" rel="noopener">크게 보기 ↗</a>
+  </div>
+  <iframe id="chatFrame" title="법률 절차 길잡이 상담창" data-src="https://legalnavi-chat.yuneunmi814.workers.dev/?embed=1"></iframe>
+</div>
+<script>
+(function(){
+  var fab=document.getElementById("chatFab"), panel=document.getElementById("chatPanel"),
+      frame=document.getElementById("chatFrame"), nav=document.getElementById("navChat");
+  function open(v){
+    panel.hidden=!v;
+    fab.setAttribute("aria-expanded", v?"true":"false");
+    fab.setAttribute("aria-label", v?"상담창 닫기":"상담창 열기");
+    // 처음 열 때만 불러온다 — 안 여는 사람에게까지 워커를 부를 이유가 없다.
+    if(v && !frame.src) frame.src=frame.getAttribute("data-src");
+  }
+  fab.addEventListener("click",function(){ open(panel.hidden); });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape"&&!panel.hidden){ open(false); fab.focus(); } });
+  // 스크립트가 죽어도 링크는 새 창으로 열려야 한다 — 그래서 href를 살려두고 여기서만 가로챈다.
+  if(nav) nav.addEventListener("click",function(e){ e.preventDefault(); open(true); });
+})();
 </script>
 </body>
 </html>
