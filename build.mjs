@@ -246,6 +246,8 @@ async function run() {
   // 사이트맵 — 검색엔진에 "이 주소들을 봐 달라"고 알려주는 목록.
   const urls = [
     { loc: SITE + "/", pri: "1.0" },
+    // 손으로 쓴 정적 페이지. 여기 적어두지 않으면 재빌드 때마다 사이트맵에서 사라진다.
+    { loc: SITE + "/절차/", pri: "0.9" },
     ...forms.map((f) => ({ loc: `${SITE}/forms/${encodeURIComponent(f.k)}`, pri: "0.8" })),
   ];
   await writeFile(
@@ -258,6 +260,10 @@ async function run() {
   await writeFile("robots.txt", `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 
   const { added, removed } = await syncLanding(forms.filter((f) => f.t), counts);
+
+  // /절차/ 는 손으로 쓴 정적 페이지라 서식 생성 흐름을 안 탄다.
+  // 계측만은 랜딩·서식과 같은 규칙으로 따로 넣어 준다(이미 있으면 지우고 다시).
+  await 계측붙이기("절차/index.html");
 
   console.log(`서식 ${done}/${forms.length}종 생성 · ${Math.round(bytes / 1024)}KB`);
   console.log(`커버리지 ${counts.분야}분야 · ${counts.주제}주제 · 서식 ${counts.서식} · 자가진단 ${counts.자가진단}`);
@@ -274,3 +280,13 @@ async function run() {
 }
 
 run();
+
+// 정적 HTML 한 장에 계측 태그를 idempotent하게 넣는다.
+async function 계측붙이기(path) {
+  let html;
+  try { html = await readFile(path, "utf8"); } catch { return; }
+  const before = html;
+  html = html.replace(/\n?<script defer src="https:\/\/static\.cloudflareinsights\.com[^<]*<\/script>/g, "");
+  if (BEACON_TAG) html = html.replace("</body>", `${BEACON_TAG}\n</body>`);
+  if (html !== before) await writeFile(path, html);
+}
