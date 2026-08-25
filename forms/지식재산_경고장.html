@@ -83,7 +83,13 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
 .doc .ln-t{text-align:center;font-size:1.5em;font-weight:800;letter-spacing:.28em;margin:.2em 0 1.1em;line-height:1.5}
 .doc .ln-s{font-size:1.12em;font-weight:700;margin-top:.5em}
 .doc .ln-h{padding-left:1.5em;text-indent:-1.5em}
-.fld{display:inline-block;max-width:100%;border:none;border-bottom:1.6px solid var(--fld-line);background:var(--fld);color:var(--fld-ink);border-radius:4px 4px 0 0;padding:0 5px;margin:0 1px;min-height:1.5em;line-height:1.5;font-weight:600;outline:none;vertical-align:top;font-family:inherit;}
+/* vertical-align은 baseline이어야 한다. top으로 두면 칸이 줄 맨 위에 붙고 글자는 기준선에
+   앉아서, 같은 줄인데도 칸마다 세로 위치가 -5px·-2px로 들쭉날쭉해진다. 좁은 화면에서는
+   그게 "글자에 칸이 올라탄" 것처럼 보인다(8/24 예은님 폰 제보 → 320px에서 22곳 재현).
+   좌우 여백도 1px은 너무 붙는다 — 앞 글자와 칸이 한 덩어리로 읽힌다.
+   max-width는 여백을 빼고 잡아야 한다. 100%로 두면 넓은 칸이 좌우 여백만큼
+   문서 밖으로 밀려 가로 스크롤이 생긴다(320px 전수 검사에서 3종 적발). */
+.fld{display:inline-block;max-width:calc(100% - 6px);border:none;border-bottom:1.6px solid var(--fld-line);background:var(--fld);color:var(--fld-ink);border-radius:4px 4px 0 0;padding:0 5px;margin:0 3px;min-height:1.5em;line-height:1.5;font-weight:600;outline:none;vertical-align:baseline;font-family:inherit;}
 .fld:focus{box-shadow:0 0 0 2px color-mix(in srgb,var(--fld-line) 45%,transparent);background:color-mix(in srgb,var(--fld) 70%,var(--paper));}
 .fld:empty::before{content:attr(data-ph);color:var(--ph);font-weight:400}
 /* 긴 서술형 칸 — 항목명(예: "- 경위:")은 윗줄에 그대로 두고, 입력은 아래 전용 칸에서.
@@ -92,7 +98,7 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
   border:1.5px dashed var(--fld-line);border-radius:10px;line-height:1.7;font-weight:500;white-space:pre-wrap;}
 .fld.big:empty::before{content:attr(data-ph);color:var(--ph);font-weight:400;font-size:.94em}
 .lbl{font-weight:800;background:color-mix(in srgb,var(--accent) 11%,transparent);color:var(--ink);padding:1px 8px;border-radius:6px;letter-spacing:-.01em;}
-.cbx{display:inline-block;cursor:pointer;user-select:none;font-size:1.3em;line-height:1;padding:2px 5px;margin:0 1px;color:var(--accent);vertical-align:-.12em;border-radius:5px}
+.cbx{display:inline-block;cursor:pointer;user-select:none;font-size:1.3em;line-height:1;padding:2px 5px;margin:0 3px;color:var(--accent);vertical-align:-.12em;border-radius:5px}
 .cbx:hover{background:color-mix(in srgb,var(--accent) 12%,transparent)}
 .cbx:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .cbx:focus{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
@@ -109,6 +115,10 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
   .bar .dd>.btn{width:100%}
   .menu{min-width:0;width:max(100%,220px)}
   .bar .sp{display:none}
+  /* 넓은 빈칸은 폰에서 제 줄을 차지한다. 앞 글자 뒤에 붙여두면 화면 밖으로 나간다. */
+  /* min-width는 렌더러가 인라인으로 박아서(밑줄 길이 → ch) 스타일시트로는 못 이긴다.
+     좁은 화면에서만 !important로 덮는다 — 안 그러면 칸이 문서 밖으로 26px 밀린다. */
+  .doc .fld.wide{display:block;width:100%;min-width:0!important;margin:6px 0 4px}
   .btn{padding:11px 8px;font-size:13.5px;justify-content:center}
   .wrap{padding:16px 12px 56px}
   /* 16px 미만이면 iOS가 빈칸을 탭할 때마다 화면을 확대해 버린다. 서식은 빈칸을
@@ -183,36 +193,31 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
     <h2>작성요령</h2>
     <ol><li>★특허·상표는 권리범위 검토 후 발송하세요(부당경고는 영업방해 책임 소지).</li><li>내용증명 3부 작성·배달증명 병행으로 도달을 입증하세요.</li><li>영업비밀·위조품은 증거보전·통관보류를 병행하면 효과적입니다.</li></ol>
   </div>
-  <div class="submit">
-    <h3>다 채우셨으면, 여기에 내세요</h3>
-    <div><b>접수처</b> · 특허청·특허심판원 / 산업재산권 분쟁조정위원회 / 법원 / 경찰·검찰</div>
-    <div><b>접수 방법</b> · 한국저작권위원회 조정 ☎1800-5455 adr.copyright.or.kr / 특허청 ☎1544-8080 / 지식재산 침해 신고상담센터 ☎1666-6464 / 지식재산처 www.kipo.go.kr / 산업재산권 분쟁조정위원회 koipa.re.kr / 대한법률구조공단 132</div>
-    <div style="margin-top:9px"><a class="btn" href="https://adr.copyright.or.kr" target="_blank" rel="noopener">접수처 바로가기</a></div>
-  </div>
+  
   <div class="share">
     <button class="btn share-k" id="shareBtn" type="button" hidden>
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3C6.9 3 2.8 6.3 2.8 10.3c0 2.6 1.7 4.8 4.3 6.1l-1 3.6c-.1.3.2.5.5.4l4.2-2.8c.4 0 .8.1 1.2.1 5.1 0 9.2-3.3 9.2-7.4S17.1 3 12 3z"/></svg>카카오톡 공유</button>
     <button class="btn" id="copyBtn" type="button">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>링크 복사</button>
   </div>
-  <p class="foot">※ 일반 법률·절차 정보이며 개별 법률 자문이 아닙니다. 입력 내용은 이 기기 브라우저에만 자동 저장되며 서버로 전송되지 않습니다(빈칸 비우기를 누르면 삭제). 관공서 제출본은 위 ‘공식 양식 받는 곳’에서 정식 서식을 받아 작성하세요. · 법률 절차 길잡이(Legal Navigator)</p>
+  <p class="foot">※ 일반 법률·절차 정보이며 개별 법률 자문이 아닙니다. 입력 내용은 이 탭을 닫기 전까지만 자동 저장되며 서버로 전송되지 않습니다(빈칸 비우기를 누르면 즉시 삭제). 제출 전 해당 기관의 최신 서식과 접수요건을 확인하세요. · 법률 절차 길잡이(Legal Navigator)</p>
 </div>
 <script>
 (function(){
   var doc=document.getElementById("doc");
-  // 입력값 자동 저장·복원 — 이 기기 브라우저(localStorage)에만 저장, 서버 전송 없음.
+  // 입력값 자동 저장·복원 — 현재 탭의 sessionStorage에만 저장, 탭을 닫으면 삭제되고 서버 전송 없음.
   var KEY="lnform:"+location.pathname;
   function save(){
     try{
       var d={f:[],c:[]};
       doc.querySelectorAll(".fld").forEach(function(x){d.f.push(x.textContent||"");});
       doc.querySelectorAll(".cbx").forEach(function(c){d.c.push(c.getAttribute("aria-checked")==="true");});
-      localStorage.setItem(KEY,JSON.stringify(d));
+      sessionStorage.setItem(KEY,JSON.stringify(d));
     }catch(e){}
   }
   function restore(){
     try{
-      var raw=localStorage.getItem(KEY); if(!raw) return;
+      var raw=sessionStorage.getItem(KEY); if(!raw) return;
       var d=JSON.parse(raw);
       doc.querySelectorAll(".fld").forEach(function(x,i){if(d.f&&d.f[i])x.textContent=d.f[i];});
       doc.querySelectorAll(".cbx").forEach(function(c,i){if(d.c&&d.c[i]){c.setAttribute("aria-checked","true");c.textContent="☑";}});
@@ -482,7 +487,7 @@ body{background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo",Pre
   document.getElementById("resetBtn").addEventListener("click",function(){
     doc.querySelectorAll(".fld").forEach(function(x){x.textContent="";});
     doc.querySelectorAll(".cbx").forEach(function(c){c.setAttribute("aria-checked","false");c.textContent="☐";});
-    try{localStorage.removeItem(KEY);}catch(e){}
+    try{sessionStorage.removeItem(KEY);}catch(e){}
   });
 
   // ── 공유 (8/18 회의 결정 ③) ─────────────────────────
