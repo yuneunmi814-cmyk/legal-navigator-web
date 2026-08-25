@@ -15,6 +15,16 @@ import { readFile, writeFile, mkdir, rm } from "node:fs/promises";
 
 const SITE = (process.env.SITE || "https://legalnavi.pages.dev").replace(/\/$/, "");
 const MCP = (process.env.MCP || "https://legal-navigator-kakaotools.playmcp-endpoint.kakaocloud.io").replace(/\/$/, "");
+
+// 방문자 계측 — Cloudflare Web Analytics.
+// 토큰은 어차피 모든 페이지 HTML에 그대로 실려 나가는 공개 값이라 비밀이 아니다.
+// 그래도 소스에 박아두지 않는 이유는 하나: 도메인이 바뀌면 토큰도 바뀌기 때문이다.
+//   CF_BEACON=<토큰> node build.mjs
+// 값이 없으면 아무것도 넣지 않는다(지금까지와 동일).
+const CF_BEACON = process.env.CF_BEACON || "";
+const BEACON_TAG = CF_BEACON
+  ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"${CF_BEACON}"}'></script>`
+  : "";
 const OUT = "forms";
 const CONCURRENCY = 6;
 
@@ -102,6 +112,9 @@ async function syncLanding(forms, counts) {
     .replace(/(스토킹·명예훼손·사기·횡령 등 <b>)\d+(<\/b>)/, `$1${counts.자가진단}$2`)
     .replace(/(<b>)\d+(종<\/b> — 진정서·내용증명)/, `$1${counts.서식}$2`);
 
+  // 계측은 </body> 바로 앞에. 매 빌드마다 다시 넣으므로, 이미 있으면 지우고 새로 넣는다.
+  html = html.replace(/\n?<script defer src="https:\/\/static\.cloudflareinsights\.com[^<]*<\/script>/g, "");
+  if (BEACON_TAG) html = html.replace("</body>", `${BEACON_TAG}\n</body>`);
   await writeFile("index.html", html);
 
   const now = forms.map((f) => f.k);
@@ -193,6 +206,7 @@ async function buildOne(f) {
   // 제목은 검색 결과에 그대로 뜨는 한 줄이다. 사람들이 치는 말은 '양식'이라 그걸 넣는다.
   const title = `${f.t} 양식 · 무료 빈칸 채움 — 법률 절차 길잡이`;
   html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(title)}</title>${meta(f)}`);
+  if (BEACON_TAG) html = html.replace("</body>", `${BEACON_TAG}</body>`);
   await writeFile(`${OUT}/${f.k}.html`, html);
 
   // 페이지 안의 '텍스트 파일' 내려받기 링크도 우리 도메인을 보게 됐으니 실제 파일을 같이 받아둔다.
