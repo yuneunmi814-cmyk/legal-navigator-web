@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>내 사건 기한 계산 — 법률 절차 길잡이</title>
+<meta name="description" content="항소·정식재판청구·항고·재정신청·헌법소원 — 지금 며칠 남았는지 세어 드립니다. 사건번호나 받은 서류만 있으면 됩니다. 회원가입도 설치도 없고, 입력한 내용은 이 기기 밖으로 나가지 않습니다.">
+<link rel="canonical" href="https://legalnavi.pages.dev/절차/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="내 사건 기한 계산 — 법률 절차 길잡이">
+<meta property="og:description" content="항소·정식재판청구·항고·재정신청·헌법소원 — 지금 며칠 남았는지 세어 드립니다. 사건번호나 받은 서류만 있으면 됩니다. 회원가입도 설치도 없고, 입력한 내용은 이 기기 밖으로 나가지 않습니다.">
+<meta property="og:url" content="https://legalnavi.pages.dev/절차/">
+<meta property="og:image" content="https://legalnavi.pages.dev/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://legalnavi.pages.dev/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="https://legalnavi.pages.dev/apple-touch-icon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "법률 절차 길잡이 — 기한 계산", "applicationCategory": "LegalService", "operatingSystem": "웹 브라우저", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"}, "description": "항소·정식재판청구·항고·재정신청·헌법소원 — 지금 며칠 남았는지 세어 드립니다. 사건번호나 받은 서류만 있으면 됩니다. 회원가입도 설치도 없고, 입력한 내용은 이 기기 밖으로 나가지 않습니다.", "url": "https://legalnavi.pages.dev/절차/"}</script>
+<style>
+:root{
+  --bg:#F4F5F2; --card:#FFF; --line:#D2D6D0;
+  --ink:#161B24; --ink2:#4E5561; --ink3:#7B828D;
+  --blue:#204B75; --blue-soft:#E4ECF4;
+  --red:#A81E27; --red-bg:#FBE9E9;
+  --amber:#8A5A04; --amber-bg:#FAF0DD;
+  --green:#256346; --green-bg:#E2EFE8;
+  --grey:#43434D; --grey-bg:#E6E6E9;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){
+  --bg:#111419; --card:#1A1E25; --line:#333A44;
+  --ink:#E6E9EC; --ink2:#A8B0BB; --ink3:#7A8290;
+  --blue:#7FAAD4; --blue-soft:#1D2836;
+  --red:#F0777E; --red-bg:#2C1A1C;
+  --amber:#DCA646; --amber-bg:#2A2318;
+  --green:#66B48C; --green-bg:#16261E;
+  --grey:#9CA2AC; --grey-bg:#21242A;
+}}
+:root[data-theme=dark]{
+  --bg:#111419; --card:#1A1E25; --line:#333A44;
+  --ink:#E6E9EC; --ink2:#A8B0BB; --ink3:#7A8290;
+  --blue:#7FAAD4; --blue-soft:#1D2836;
+  --red:#F0777E; --red-bg:#2C1A1C;
+  --amber:#DCA646; --amber-bg:#2A2318;
+  --green:#66B48C; --green-bg:#16261E;
+  --grey:#9CA2AC; --grey-bg:#21242A;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  font-size:19px;line-height:1.7;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:640px;margin:0 auto;padding:1.5rem 1.1rem 5rem}
+
+header{padding:.5rem 0 1.5rem;border-bottom:2px solid var(--line);margin-bottom:1.8rem}
+header h1{margin:0;font-size:1.5rem;letter-spacing:-.02em;font-weight:800}
+header p{margin:.35rem 0 0;font-size:.88rem;color:var(--ink3)}
+
+.q{font-size:1.5rem;font-weight:750;line-height:1.4;letter-spacing:-.02em;margin:0 0 .4rem;text-wrap:balance}
+.note{font-size:.95rem;color:var(--ink2);margin:0 0 1.3rem;text-wrap:pretty}
+.hints{margin:0 0 1.3rem;padding:.9rem 1.05rem;background:var(--blue-soft);border-radius:8px;font-size:.94rem;color:var(--ink2)}
+.hints ul{margin:0;padding-left:1.1rem}
+.hints li{margin:.2rem 0}
+
+.opts{display:grid;gap:.65rem;margin:0;padding:0;list-style:none}
+button.opt{
+  width:100%;text-align:left;font:inherit;font-weight:650;
+  background:var(--card);color:var(--ink);
+  border:1.5px solid var(--line);border-radius:10px;
+  padding:1.15rem 1.2rem;cursor:pointer;
+  display:flex;align-items:center;gap:.85rem;
+  transition:border-color .12s,background .12s;
+}
+button.opt:hover{border-color:var(--blue);background:var(--blue-soft)}
+button.opt:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+button.opt .arw{margin-left:auto;color:var(--ink3);flex:none}
+
+.datebox{background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:1.2rem}
+.datebox label{display:block;font-weight:650;font-size:1rem;margin-bottom:.55rem}
+input[type=date],input[type=text]{
+  width:100%;font:inherit;padding:.85rem .9rem;
+  border:1.5px solid var(--line);border-radius:8px;
+  background:var(--bg);color:var(--ink);
+}
+input:focus{outline:3px solid var(--blue);outline-offset:1px;border-color:var(--blue)}
+button.go{
+  margin-top:.9rem;width:100%;font:inherit;font-weight:750;font-size:1.05rem;
+  background:var(--blue);color:var(--bg);border:none;border-radius:10px;
+  padding:1rem;cursor:pointer;
+}
+button.go:hover{filter:brightness(1.1)}
+button.go:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+
+.leaf{border-radius:12px;padding:1.4rem 1.3rem;border:1.5px solid var(--line);border-left-width:6px}
+.leaf h2{margin:0 0 .2rem;font-size:1.5rem;letter-spacing:-.02em;line-height:1.3}
+.leaf .sub{font-size:.92rem;color:var(--ink2);margin:0 0 1rem}
+.lf-urgent{background:var(--red-bg);border-left-color:var(--red)} .lf-urgent h2{color:var(--red)}
+.lf-wait{background:var(--amber-bg);border-left-color:var(--amber)} .lf-wait h2{color:var(--amber)}
+.lf-done{background:var(--green-bg);border-left-color:var(--green)} .lf-done h2{color:var(--green)}
+.lf-closed{background:var(--grey-bg);border-left-color:var(--grey)} .lf-closed h2{color:var(--grey)}
+
+.dl{background:var(--card);border-radius:10px;padding:1.05rem 1.15rem;margin:0 0 1.1rem}
+.dl .big{font-size:2.1rem;font-weight:800;letter-spacing:-.03em;line-height:1.15;font-variant-numeric:tabular-nums}
+.dl .day{font-size:1.05rem;font-weight:700;margin-top:.15rem}
+.dl .where{font-size:.93rem;color:var(--ink2);margin-top:.6rem;padding-top:.6rem;border-top:1px solid var(--line)}
+.dl .caveat{font-size:.86rem;color:var(--ink2);margin-top:.5rem;line-height:1.55}
+.dl.over .big{color:var(--grey)}
+
+.leaf ul.steps{margin:0 0 1rem;padding:0;list-style:none;display:grid;gap:.45rem}
+.leaf ul.steps li{padding-left:1.15rem;position:relative;font-size:.99rem;line-height:1.6}
+.leaf ul.steps li::before{content:"—";position:absolute;left:0;color:var(--ink3)}
+.warn{background:var(--card);border-radius:10px;padding:1rem 1.1rem;font-size:.97rem;line-height:1.65;margin:0 0 1rem;border:1.5px solid var(--red)}
+.warn b{color:var(--red)}
+.warn.good{border-color:var(--green)} .warn.good b{color:var(--green)}
+.honest{font-size:.93rem;color:var(--ink2);background:var(--card);border-radius:10px;padding:.9rem 1.05rem;margin:0 0 1rem;line-height:1.6}
+.cites{font-size:.8rem;color:var(--ink3);margin:1rem 0 0;font-family:ui-monospace,Menlo,monospace}
+
+.nav{display:flex;gap:.6rem;margin-top:1.8rem;flex-wrap:wrap}
+button.nav-b{
+  font:inherit;font-size:.95rem;font-weight:600;background:none;color:var(--ink2);
+  border:1.5px solid var(--line);border-radius:8px;padding:.65rem 1.1rem;cursor:pointer;
+}
+button.nav-b:hover{border-color:var(--blue);color:var(--blue)}
+button.nav-b:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+.crumb{font-size:.83rem;color:var(--ink3);margin:0 0 1.1rem;min-height:1.2em}
+.readout{background:var(--blue-soft);border-radius:10px;padding:1.05rem 1.15rem;margin:0 0 1.2rem}
+.readout .k{font-size:.78rem;letter-spacing:.09em;text-transform:uppercase;color:var(--blue);font-weight:700}
+.readout .v{font-size:1.15rem;font-weight:700;margin-top:.2rem}
+.readout .d{font-size:.92rem;color:var(--ink2);margin-top:.25rem}
+.bad{background:var(--red-bg);border:1.5px solid var(--red);border-radius:10px;padding:1.05rem 1.15rem;margin:0 0 1.2rem;font-size:.97rem;line-height:1.6}
+
+.drop{
+  border:2.5px dashed var(--line);border-radius:12px;background:var(--card);
+  padding:2.2rem 1.2rem;text-align:center;cursor:pointer;transition:border-color .12s,background .12s;
+}
+.drop:hover,.drop.on{border-color:var(--blue);background:var(--blue-soft)}
+.drop .ico{font-size:2.4rem;line-height:1}
+.drop .t{font-weight:700;font-size:1.08rem;margin-top:.5rem}
+.drop .d{font-size:.9rem;color:var(--ink2);margin-top:.25rem}
+.shot{width:100%;max-height:44vh;object-fit:contain;border-radius:10px;border:1.5px solid var(--line);background:var(--card);display:block;margin:0 0 1.1rem}
+.prog{background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:1rem 1.1rem;margin:0 0 1.1rem}
+.prog .bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:.6rem}
+.prog .bar>i{display:block;height:100%;background:var(--blue);width:0;transition:width .25s}
+.prog .t{font-weight:650;font-size:.98rem}
+.privacy{background:var(--green-bg);border-radius:10px;padding:.85rem 1rem;font-size:.89rem;color:var(--ink2);margin:0 0 1.1rem;line-height:1.6}
+.privacy b{color:var(--green)}
+.pick{display:grid;gap:.5rem;margin:0 0 1.1rem;padding:0;list-style:none}
+button.pick-b{
+  width:100%;text-align:left;font:inherit;font-weight:650;font-size:1.02rem;
+  background:var(--card);color:var(--ink);border:1.5px solid var(--line);
+  border-radius:10px;padding:.95rem 1.1rem;cursor:pointer;display:flex;align-items:center;gap:.7rem;
+}
+button.pick-b:hover{border-color:var(--blue);background:var(--blue-soft)}
+button.pick-b:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+button.pick-b.guess{border-color:var(--blue);border-width:2.5px;background:var(--blue-soft)}
+button.pick-b .tag{margin-left:auto;font-size:.76rem;font-weight:700;color:var(--blue);flex:none}
+footer{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.8rem;color:var(--ink3);line-height:1.7}
+.soon{opacity:.55}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>법률 절차 길잡이</h1>
+    <p>지금 무엇을 언제까지 해야 하는지만 알려드립니다</p>
+  </header>
+  <p class="crumb" id="crumb"></p>
+  <main id="app" role="main"></main>
+  <footer>
+    <p><b>이 화면은 아무것도 밖으로 보내지 않습니다.</b> 입력한 내용은 이 기기 안에만 있고, 창을 닫으면 사라집니다.</p>
+    <p><a href="https://legalnavi.pages.dev/">← 법률 절차 길잡이 홈</a> · <a href="https://legalnavi.pages.dev/#forms">서식 목록</a> · <a href="https://legalnavi.pages.dev/#talk">카카오톡에서 쓰는 법</a></p>
+<p>기한은 참고용입니다. 마지막 날에 기대지 말고 미리 내세요. · 데이터 0.1.0 · 법령 대조 2026-08-23</p>
+  </footer>
+</div>
+
+<script src="ocr/tesseract.min.js"></script>
+<script>
+const D = {"문서판별": [{"이름": "약식명령", "열쇳말": [["약식명령", 10], ["정식재판청구", 8], ["노역장", 6], ["환산한 기간", 5], ["약식", 3], ["벌금", 2]]}, {"이름": "공소장", "열쇳말": [["공소장", 10], ["공소사실", 8], ["공소를 제기", 6], ["죄명", 3], ["적용법조", 3]]}, {"이름": "판결문", "열쇳말": [["선고한다", 8], ["판결", 5], ["이유", 2], ["피고인을", 3], ["상소할 수", 6], ["항소할 수", 6]]}, {"이름": "불기소결정통지서", "열쇳말": [["불기소", 10], ["혐의없음", 8], ["기소유예", 8], ["공소권없음", 8], ["죄가안됨", 8], ["처분결과", 5], ["항고할 수", 6]]}, {"이름": "항고기각결정통지서", "열쇳말": [["항고기각", 10], ["고등검찰청", 6], ["재정신청", 6], ["항고", 4], ["기각", 3]]}, {"이름": "출석요구서", "열쇳말": [["출석요구", 10], ["피의자신문", 8], ["출석하여", 5], ["출석", 3]]}], "부호로문서": {"고약": "약식명령", "노": "판결문", "도": "판결문"}, "문서종류표": {"약식명령": {"진입노드": "A5", "날짜사용": "물어봐야함", "이유": "문서의 날짜는 발령일. 기산점은 내가 우편으로 받은 날(형소법 452)"}, "판결문": {"진입노드": "A2", "날짜사용": "문서날짜", "필드": "판결선고일", "이유": "항소 기산점이 선고일이라 문서 날짜가 곧 기산점(형소법 343②)"}, "공소장": {"진입노드": "A6_재판", "날짜사용": "안씀"}, "불기소결정통지서": {"진입노드": "A7", "날짜사용": "물어봐야함", "이유": "기산점은 통지를 받은 날(검찰청법 10④)"}, "항고기각결정통지서": {"진입노드": "B4", "날짜사용": "물어봐야함", "이유": "기산점은 통지를 받은 날"}, "출석요구서": {"진입노드": "A7_수사중", "날짜사용": "안씀"}, "_못읽었을때": {"진입노드": "ROOT", "안내": "읽지 못했습니다. 질문으로 찾아볼까요?"}}, "확인화면": {"필수": true, "문구": "이렇게 읽었습니다. 맞나요?", "보여줄것": ["문서 이름", "사건번호", "(날짜를 쓰는 경우에만) 문서에 적힌 날짜"], "고칠수있게": true, "날짜를물을때문구": "이 종이를 우편으로 받은 날이 언제인가요?", "날짜를물을때덧붙임": "법원이 보낸 날이 아니라, 손에 들어온 날입니다. 가족이 대신 받았다면 그날입니다."}, "노드": {"A1": {"type": "question", "ask": "법원에서 판결을 선고받았나요?", "options": [{"label": "예", "next": "A2"}, {"label": "아니오", "next": "A4"}]}, "A2": {"type": "date", "ask": "판결을 선고받은 날이 언제인가요?", "field": "판결선고일", "rule": "항소", "if_open": "A2_항소", "if_expired": "A2b", "_메모_why": "며칠 지났는지는 우리가 센다. 이용자에게 날짜 계산을 시키지 않는다"}, "A2_항소": {"type": "leaf", "state": "urgent", "title": "항소", "rule": "항소", "steps": ["무엇을 — 항소장", "그 다음 — 기록접수통지를 받으면 20일 안에 항소이유서"], "warning": "항소장과 항소이유서는 서로 다른 서류입니다. 항소장을 먼저 내고, 법원에서 소송기록접수통지를 받은 뒤 20일 안에 항소이유서를 따로 내야 합니다. 항소장만 내고 이유서를 안 내면 기각됩니다.", "다음기한": "항소이유서", "tools": ["get_form_template:항소장", "calculate_deadline:항소", "get_procedure:항소"], "statutes": ["형사소송법 358", "형사소송법 361의3①"]}, "A2b": {"type": "question", "ask": "기간을 못 지킨 게 내 잘못이 아닌 사정이었나요?", "examples": ["재판이 열린 줄 몰랐다", "송달을 실제로 받지 못했다", "입원·수감 등으로 알 수 없었다"], "options": [{"label": "예", "next": "A2b_회복"}, {"label": "아니오 — 알고 있었는데 못 냈다", "next": "A3"}]}, "A2b_회복": {"type": "leaf", "state": "urgent", "title": "상소권회복청구", "rule": "상소권회복", "steps": ["내 잘못이 아닌 사정이었어야 합니다", "그 사정을 보여줄 자료가 필요합니다 — 입원기록, 주소이전 자료 같은 것"], "warning": "회복청구서만 내시면 안 됩니다. 회복청구서와 항소장을 반드시 함께 내야 합니다(형사소송법 346조 3항). 하나만 내면 회복이 되어도 항소가 없는 상태가 됩니다.", "솔직하게": "쉽지는 않습니다. 스스로 연락이 닿지 않게 만들었거나 본인 부주의로 놓친 경우에는 받아들여지지 않습니다. 그래도 해당된다고 생각하시면 시도해 볼 수 있습니다.", "tools": ["get_form_template:상소권회복청구서", "get_form_template:항소장", "find_legal_aid"], "statutes": ["형사소송법 345", "형사소송법 346"], "_메모": "판례는 자의적 소재불명·본인 과실 불인정. 어렵다는 것을 같이 말할 것"}, "A3": {"type": "checklist_question", "ask": "재심 사유가 있나요?", "items": ["원판결의 증거가 된 서류·증거물이 확정판결로 위조·변조임이 증명된 때", "원판결의 증거가 된 증언·감정·통역·번역이 확정판결로 허위임이 증명된 때", "무고로 유죄를 받았는데 그 무고죄가 확정판결로 증명된 때", "원판결의 증거가 된 재판이 확정재판으로 변경된 때", "무죄·면소·형면제 또는 더 가벼운 죄를 인정할 명백한 증거가 새로 발견된 때", "지식재산권(저작·특허·실용신안·디자인·상표) 침해죄에서 무효심결이 확정된 때", "판사·검사·사법경찰관이 직무 관련 범죄를 범한 것이 증명된 때"], "options": [{"label": "하나라도 해당", "next": "A3_재심"}, {"label": "전부 아니다", "next": "A3_닫힘"}], "statutes": ["형사소송법 420"]}, "A3_재심": {"type": "leaf", "state": "urgent", "title": "재심청구", "rule": null, "기한": "제한 없음", "솔직하게": "재심은 요건이 좁아서 실제로 받아들여지는 경우가 드뭅니다. 미리 알고 시작하시는 게 좋겠습니다.", "tools": ["get_procedure:재심", "find_legal_aid"], "statutes": ["형사소송법 420"], "steps": ["기한 제한은 없습니다", "무료 법률상담을 먼저 받아보시길 권합니다"], "_메모": "기대를 부풀리지 않고 먼저 말한다"}, "A3_닫힘": {"type": "leaf", "state": "closed", "title": "재심은 어렵습니다", "대안": ["벌금 분할납부나 납부연기를 신청할 수 있습니다 (검찰청)", "벌금 500만원 이하면 사회봉사로 대신할 수 있습니다", "무료 법률상담을 받아보실 수 있습니다"], "tools": ["find_legal_aid", "get_procedure:벌금분할납부"], "_메모_규칙3": "막다른 길에 사람을 버려두지 않는다 — 반드시 대안을 준다"}, "A4": {"type": "question", "ask": "받은 종이가 어떤 것인가요?", "options": [{"label": "약식명령", "next": "A5"}, {"label": "공소장", "next": "A6_재판"}, {"label": "검찰 처분 통지서", "next": "A7"}, {"label": "아무것도 받지 못했다", "next": "A7_수사중"}], "_메모_why": "약식명령이냐 공소장이냐를 예·아니오로 세 번 물으면 3단계가 된다. 종이 이름은 맨 위에 크게 쓰여 있으니 한 번에 고르게 한다"}, "A5": {"type": "date", "ask": "약식명령을 우편으로 받은 날이 언제인가요?", "field": "약식명령송달일", "rule": "정식재판청구", "if_open": "A5_정식재판", "if_expired": "A5_확정", "_메모_why": "형소법 452 — 고지는 재판서의 송달로 한다. 법원이 보낸 날이 아니라 받은 날이 기준"}, "A5_정식재판": {"type": "leaf", "state": "urgent", "title": "정식재판청구", "rule": "정식재판청구", "steps": ["무엇을 — 정식재판청구서 (서면)"], "warning": "청구하기 전에 꼭 알아두셔야 할 것이 있습니다. 정식재판에서는 벌금이 더 오를 수 있습니다. 징역으로 바뀌지는 않지만(형종 상향 금지) 금액은 오를 수 있습니다. 다만 형을 올리려면 판결서에 그 이유를 적어야 합니다.", "tools": ["get_form_template:정식재판청구서", "calculate_deadline:정식재판청구"], "statutes": ["형사소송법 453①", "형사소송법 457의2①②"], "_메모": "이 경고는 버튼보다 먼저 보여준다. 안 알려주고 청구하게 하면 도구가 사람을 해친 것이다", "_메모_warning_우선순위": "버튼보다 먼저 보여준다. 이걸 안 알려주고 청구하게 하면 도구가 사람을 해친 것이다."}, "A5_확정": {"type": "leaf", "state": "wait", "title": "벌금이 확정되었습니다 — 다만 한 가지 확인해 주세요", "먼저확인": {"조건": "약식명령이 온 줄 모르셨거나 실제로 받지 못하셨다면", "경로": "정식재판청구권 회복청구를 할 수 있습니다", "rule": "상소권회복", "근거": "형사소송법 458조 1항이 상소권회복 규정을 정식재판청구에도 적용합니다"}, "warning": "가족이 대신 받았더라도 송달은 성립합니다. 같은 집에 살면서 내용을 이해할 수 있는 사람이 받았다면 그날부터 기간이 갑니다. 본인이 나중에 알았다는 것만으로는 부족하고, 어쩔 수 없는 사정이었다는 걸 보여주셔야 회복됩니다.", "대안": ["분할납부 · 납부연기 (검찰청)", "사회봉사 대체 (벌금 500만원 이하)"], "tools": ["get_form_template:정식재판청구권회복청구서", "find_legal_aid"], "statutes": ["형사소송법 458①", "민사소송법 186①", "형사소송법 65"]}, "A6_재판": {"type": "leaf", "state": "wait", "title": "재판 단계", "steps": ["다음에 공판기일 통지가 옵니다", "지금 국선변호인을 신청하실 수 있습니다", "재판 전에 준비할 것을 정리해 드립니다"], "tools": ["get_checklist:형사공판", "get_procedure:형사재판", "find_legal_aid"]}, "A7": {"type": "question", "ask": "검찰에서 처분 결과를 통지받았나요?", "options": [{"label": "기소유예", "next": "A8"}, {"label": "혐의없음 · 죄가안됨 · 공소권없음", "next": "A7_종결"}, {"label": "아직 없음", "next": "A7_수사중"}]}, "A7_종결": {"type": "leaf", "state": "done", "title": "끝났습니다", "steps": ["전과는 남지 않습니다", "이 사건으로 더 하실 일은 없습니다"], "_메모_규칙": "끝났다는 것을 분명히 말한다. 불안하게 두지 않는다"}, "A7_수사중": {"type": "leaf", "state": "wait", "title": "수사 단계", "steps": ["말하고 싶지 않은 것은 말하지 않아도 됩니다 (진술거부권)", "변호인을 부를 수 있습니다", "조사 전에 준비할 것을 정리해 드립니다"], "tools": ["get_checklist:피의자조사", "find_legal_aid"]}, "A8": {"type": "question", "ask": "기소유예가 억울한가요?", "note": "기소유예 = \"죄는 있지만 이번엔 봐준다\". 아예 하지 않았다면 억울한 게 맞다", "options": [{"label": "예 — 나는 아예 하지 않았다", "next": "A8_헌법소원"}, {"label": "아니오", "next": "A8_수용"}]}, "A8_헌법소원": {"type": "leaf", "state": "urgent", "title": "헌법소원", "rule": "헌법소원", "steps": ["진정서나 탄원서를 내는 것, 수사를 다시 해달라고 하는 것은 기간을 늘려주지 않습니다", "먼저 낼 것 — 국선대리인 선임신청서"], "warning": "헌법소원은 변호사 없이 낼 수 없습니다. 그런데 돈이 없어도 길이 있습니다 — 90일 안에 국선대리인 선임신청서만 내두시면, 그 신청한 날로 기간을 지킨 것이 됩니다(헌법재판소법 70조 1항). 변호사는 그 다음에 붙습니다.", "tools": ["get_form_template:국선대리인선임신청서", "find_legal_aid", "calculate_deadline:헌법소원"], "statutes": ["헌법재판소법 69①", "헌법재판소법 25③", "헌법재판소법 70①"], "_메모_warning_성격": "좋은소식 — 벽처럼 보이는 것이 사실은 문이라는 것을 알려주는 자리"}, "A8_수용": {"type": "leaf", "state": "done", "title": "전과기록에는 남지 않습니다", "steps": ["기소유예는 재판을 받지 않고 끝나는 처분입니다", "마음이 바뀌면 — 억울하다고 판단되면 아직 헌법소원을 낼 수 있습니다", "다만 그 문도 통지받은 날부터 90일까지만 열려 있습니다"], "되돌아가기": "A8_헌법소원", "rule": "헌법소원", "tools": ["calculate_deadline:헌법소원"], "statutes": ["헌법재판소법 69①"], "_메모_확인필요": "수사경력자료의 보존·삭제 기준은 아직 대조하지 않음 (형의 실효 등에 관한 법률) — 단정해서 말하지 말 것"}, "B0": {"type": "question", "ask": "고소인가요, 고발인가요?", "note": "고소 = 피해자 본인이나 고소권자가 신고 · 고발 = 제3자가 신고", "options": [{"label": "고소인", "next": "B2"}, {"label": "고발인", "next": "B0_고발인"}], "_메모_why": "검찰청법 10③이 \"재정신청을 할 수 있는 자는 제외한다\"고 못 박고 있어 갈 수 있는 길이 아예 다르다"}, "B0_고발인": {"type": "leaf", "state": "wait", "title": "고발인은 재항고로 갑니다", "rule": "재항고", "steps": ["고발인은 재정신청을 할 수 없습니다 (검찰청법 10조 3항)", "대신 재항고를 할 수 있습니다"], "tools": ["get_procedure:재항고", "calculate_deadline:재항고"], "statutes": ["검찰청법 10③⑤"]}, "B1_수사중": {"type": "leaf", "state": "wait", "title": "아직 수사 중", "steps": ["추가 증거를 낼 수 있다", "고소보충진술 요청 가능", "피해자 지원 제도 연결"], "tools": ["find_legal_aid", "get_checklist:고소인"]}, "B2": {"type": "date", "ask": "검찰에서 \"불기소\" 통지를 받은 날이 언제인가요?", "field": "불기소통지일", "rule": "검찰항고", "if_open": "B2_항고", "if_expired": "B3", "none_option": {"label": "아직 통지를 받지 못했다", "next": "B1_수사중"}}, "B2_항고": {"type": "leaf", "state": "urgent", "title": "오늘 할 일 — 불기소이유 청구", "rule": "검찰항고", "steps": ["통지서에는 결과만 있습니다. 이유는 따로 청구해야 옵니다 (형사소송법 259조)", "청구하면 7일 안에 서면으로 옵니다", "이유를 읽고 나서 남은 기간에 항고장을 씁니다", "항고장은 그 검사가 있는 지방검찰청·지청에 냅니다 (판단은 고등검찰청)"], "warning": "오늘 쓰실 것은 항고장이 아니라 이유 청구서입니다. 왜 불기소가 됐는지 모르는 채로 쓴 항고장은 받아들여지기 어렵습니다. 청구를 미루면 이유를 보지 못한 채 30일이 지나갑니다.", "tools": ["get_form_template:불기소이유고지청구서", "get_form_template:항고장", "calculate_deadline:검찰항고"], "statutes": ["검찰청법 10①④", "형사소송법 258①", "형사소송법 259"], "_메모_실전순서": ["통지받은 날 — 30일 시계 시작", "즉시 — 불기소이유 청구 (형소법 259)", "7일 이내 — 이유 도착", "남은 23일 — 이유를 읽고 항고장 작성"]}, "B3": {"type": "question", "ask": "이미 항고했는데 기각됐나요?", "options": [{"label": "예", "next": "B4"}, {"label": "아니오", "next": "B3_기한도과"}]}, "B3_기한도과": {"type": "leaf", "state": "closed", "title": "항고 기한(30일)이 지났습니다", "대안": ["중요한 새 증거가 생기면 다시 고소할 수 있습니다", "무료 법률상담을 받아보실 수 있습니다"], "tools": ["find_legal_aid"], "_메모_규칙3": "막다른 길에 사람을 버려두지 않는다"}, "B4": {"type": "date", "ask": "항고기각 통지를 받은 날이 언제인가요?", "field": "항고기각통지일", "rule": "재정신청", "if_open": "B4_재정신청", "if_expired": "B4_즉시항고"}, "B4_재정신청": {"type": "leaf", "state": "urgent", "title": "재정신청", "rule": "재정신청", "steps": ["어디에 — 불기소처분한 검사가 있는 지방검찰청 검사장", "심판은 고등법원이 합니다"], "warning": "고등법원으로 보내시면 안 됩니다. 재정신청서는 불기소처분을 한 검사가 있는 지방검찰청 검사장에게 냅니다(형사소송법 260조 3항). 심판은 고등법원이 하지만 서류를 받는 곳은 검찰청입니다.", "tools": ["get_form_template:재정신청서", "calculate_deadline:재정신청"], "statutes": ["형사소송법 260②③"], "_메모_항고전치예외": ["항고 후 재기수사가 있었는데 다시 불기소 통지를 받은 때", "항고 후 3개월이 지나도록 처분이 없는 때", "검사가 공소시효 만료일 30일 전까지 공소를 제기하지 않는 때 (만료일 전날까지 신청)"]}, "B4_즉시항고": {"type": "leaf", "state": "urgent", "title": "재정신청도 기각됐다면 — 즉시항고", "rule": "즉시항고", "steps": ["기각이 확정되면, 중요한 새 증거가 나오지 않는 한 다시 기소될 수 없습니다"], "warning": "문이 아주 좁습니다. 헌법이나 법률을 어긴 점이 있을 때만 다툴 수 있고, 사실관계를 다시 따지는 것은 안 됩니다(형사소송법 415조). 기대를 크게 갖지 않으시는 게 좋겠습니다.", "대안": ["중요한 새 증거가 생기면 다시 고소할 수 있습니다"], "tools": ["find_legal_aid", "get_procedure:즉시항고"], "statutes": ["형사소송법 262④", "형사소송법 415", "형사소송법 405"], "_메모_확실도": "기산점은 해석 — 실무 확인 필요"}}, "첫질문": {"id": "ROOT", "type": "question", "ask": "지금 이 일에서 당신은 어느 쪽인가요?", "why": "같은 '불기소'가 두 사람에게 정반대 의미다. 이걸 안 나누면 정반대 안내를 하게 된다", "options": [{"label": "조사·재판을 받는 쪽 (피의자·피고인)", "next": "A1"}, {"label": "신고·고소한 쪽 (고소인·피해자)", "next": "B0"}]}, "기한규칙": {"항소": {"days": 7, "from": "판결선고일", "초일산입": false, "말일연장": true, "제출처": "1심 법원", "근거": ["형사소송법 358", "형사소송법 343②", "형사소송법 66①③"], "물음": "판결을 선고받은 날이 언제인가요?"}, "상고": {"days": 7, "from": "판결선고일", "초일산입": false, "말일연장": true, "제출처": "2심 법원", "근거": ["형사소송법 374", "형사소송법 343②", "형사소송법 66①③"], "물음": "판결을 선고받은 날이 언제인가요?"}, "항소이유서": {"days": 20, "from": "소송기록접수통지일", "초일산입": false, "말일연장": true, "제출처": "항소법원", "근거": ["형사소송법 361의3①"], "주의": "항소장과 별개의 서류이고 기한도 다름. 미제출 시 실권", "물음": "소송기록접수통지를 받은 날이 언제인가요?"}, "정식재판청구": {"days": 7, "from": "약식명령송달일", "초일산입": false, "말일연장": true, "제출처": "약식명령을 한 법원", "근거": ["형사소송법 453①", "형사소송법 452", "형사소송법 66①③"], "주의": "452조 — 고지는 재판서의 송달로 한다. 즉 우편으로 받은 날이 기준이고 법원이 보낸 날이 아님", "물음": "약식명령을 우편으로 받은 날이 언제인가요?"}, "검찰항고": {"days": 30, "from": "불기소통지일", "초일산입": false, "말일연장": true, "제출처": "그 검사가 속한 지방검찰청·지청 (판단은 고등검찰청)", "근거": ["검찰청법 10①④", "형사소송법 258①"], "물음": "불기소 통지를 받은 날이 언제인가요?"}, "재항고": {"days": 30, "from": "항고기각통지일", "초일산입": false, "말일연장": true, "제출처": "대검찰청", "근거": ["검찰청법 10③⑤"], "주의": "재정신청을 할 수 있는 자는 제외 — 고소인은 이 길로 못 감", "물음": "항고기각 통지를 받은 날이 언제인가요?"}, "재정신청": {"days": 10, "from": "항고기각통지일", "초일산입": false, "말일연장": true, "제출처": "불기소처분한 검사가 속한 지방검찰청 검사장", "관할법원": "고등법원", "근거": ["형사소송법 260②③"], "주의": "제출처가 고등법원이 아니라 검찰청. 고등법원으로 보내면 기한을 놓침", "물음": "항고기각 통지를 받은 날이 언제인가요?"}, "즉시항고": {"days": 7, "from": "결정고지일", "초일산입": false, "말일연장": true, "제출처": "대법원", "근거": ["형사소송법 405", "형사소송법 415", "형사소송법 262④"], "주의": "415조는 헌법·법률·명령·규칙 위반을 이유로 할 때만. 사실관계 재다툼 불가", "확실도": "해석", "물음": "그 결정을 받은 날이 언제인가요?"}, "헌법소원": {"days": 90, "from": "사유를안날", "보조기한": {"days": 365, "from": "사유가있은날"}, "관계": "AND — 둘 중 먼저 오는 쪽이 마감", "초일산입": false, "말일연장": true, "제출처": "헌법재판소", "근거": ["헌법재판소법 69①"], "주의": "진정서·탄원서·수사재기 신청은 구제절차가 아니라 기간이 늘지 않음", "물음": "그 처분을 알게 된 날이 언제인가요?"}, "상소권회복": {"days": 7, "from": "사유해소일", "초일산입": false, "말일연장": true, "제출처": "원심법원", "근거": ["형사소송법 345", "형사소송법 346", "형사소송법 458①"], "주의": "청구서와 상소장을 동시에 제출해야 함(346③). 사유를 소명해야 함(346②)", "물음": "그 사정이 없어진 날은 언제인가요? (재판이 있었다는 걸 알게 된 날)"}}, "부호표": {"고합": {"기관": "법원", "쉬운말": "1심 재판 · 판사 3명(무거운 사건)", "진입노드": "A6_재판", "주의": null, "알림": null}, "고단": {"기관": "법원", "쉬운말": "1심 재판 · 판사 1명", "진입노드": "A6_재판", "주의": null, "알림": null}, "고정": {"기관": "법원", "쉬운말": "정식재판을 청구해서 열린 1심 재판", "진입노드": "A6_재판", "주의": null, "알림": "이미 정식재판을 청구하셨네요. 지금은 재판 단계입니다."}, "고약": {"기관": "법원", "쉬운말": "약식명령(재판 없이 벌금)", "진입노드": "A5", "주의": "정식재판청구 기한이 7일입니다. 약식명령을 받은 날부터 셉니다.", "알림": null}, "노": {"기관": "법원", "쉬운말": "항소심(2심)", "진입노드": "A1", "주의": null, "알림": null}, "도": {"기관": "법원", "쉬운말": "상고심(대법원)", "진입노드": "A1", "주의": null, "알림": null}, "초적": {"기관": "법원", "쉬운말": "체포·구속이 맞는지 다투는 신청", "진입노드": null, "주의": null, "알림": null}, "초보": {"기관": "법원", "쉬운말": "보석(석방) 신청", "진입노드": null, "주의": null, "알림": null}, "초재": {"기관": "법원", "쉬운말": "재정신청", "진입노드": "B4", "주의": null, "알림": null}, "초기": {"기관": "법원", "쉬운말": "그 밖의 형사 신청", "진입노드": null, "주의": null, "알림": null}, "초": {"기관": "법원", "쉬운말": "형사 신청사건", "진입노드": null, "주의": null, "알림": null}, "형제": {"기관": "검찰", "쉬운말": "검찰이 수사 중(또는 처분을 마친) 사건", "진입노드": "A7", "주의": null, "알림": null}, "전형제": {"기관": "검찰", "쉬운말": "전자약식(약식명령으로 가는 사건)", "진입노드": "A7", "주의": null, "알림": null}, "수제": {"기관": "검찰", "쉬운말": "수사사건", "진입노드": "A7", "주의": null, "알림": null}}, "비형사": {"가합": "민사 1심 합의", "가단": "민사 1심 단독", "가소": "민사 소액", "나": "민사 항소", "다": "민사 상고", "드단": "가사 1심 단독", "드합": "가사 1심 합의", "느단": "가사 비송", "구단": "행정 1심 단독", "구합": "행정 1심 합의", "누": "행정 항소", "두": "행정 상고", "차": "지급명령", "카단": "민사 신청", "카합": "민사 신청 합의", "타채": "채권압류·추심", "타경": "부동산 경매"}, "잎상태": {"urgent": {"색": "빨강", "뜻": "기한이 걸린 행동", "필수": ["실제 마감 날짜", "남은 일수", "서식", "어디에 내는지"]}, "wait": {"색": "노랑", "뜻": "기한은 없지만 지금 할 일", "필수": ["할 일", "다음에 올 것", "준비물"]}, "done": {"색": "초록", "뜻": "끝났음", "필수": ["끝났다는 분명한 말"]}, "closed": {"색": "검정", "뜻": "이 길은 닫혔음", "필수": ["대안 하나 이상"]}}, "버전": "0.1.0", "대조일": "2026-08-23"};
+const $ = (s)=>document.querySelector(s);
+const app = $("#app"), crumb = $("#crumb");
+let stack = [];          // 되돌아가기용
+let 담은날짜 = {};        // {필드: "2026-08-01"}
+
+// ── 날짜 계산 ────────────────────────────────────────────────
+// 확실한 것만 넣는다. 음력 명절(설·추석·부처님오신날)은 해마다 날짜가 달라
+// 여기서 계산하지 않는다 — 그래서 결과에 항상 단서를 붙인다.
+const 고정공휴일 = ["01-01","03-01","05-05","06-06","08-15","10-03","10-09","12-25"];
+function 쉬는날(d){
+  const w = d.getDay();
+  if(w===0||w===6) return true;
+  const md = String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  return 고정공휴일.includes(md);
+}
+function 마감계산(시작문자열, 규칙){
+  const [y,m,dd] = 시작문자열.split("-").map(Number);
+  const d = new Date(y, m-1, dd);
+  // 초일불산입 — 시작일 다음 날부터 세므로 마감은 시작일 + days
+  d.setDate(d.getDate() + 규칙.days);
+  let 밀림 = 0;
+  if(규칙.말일연장){ while(쉬는날(d)){ d.setDate(d.getDate()+1); 밀림++; } }
+  return {날짜:d, 밀림};
+}
+function 오늘(){ const t=new Date(); return new Date(t.getFullYear(),t.getMonth(),t.getDate()); }
+function 일수차(a,b){ return Math.round((a-b)/86400000); }
+function 한글날짜(d){
+  const 요일="일월화수목금토"[d.getDay()];
+  return `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${요일})`;
+}
+
+// ── 사건번호 읽기 (case_number.py 와 같은 규칙) ──────────────
+const 부호목록 = Object.keys(D.부호표).concat(Object.keys(D.비형사)).sort((a,b)=>b.length-a.length);
+const 부호RE = new RegExp("(\\d{2,4})\\s*("+부호목록.join("|")+")\\s*제?\\s*(\\d{1,7})\\s*호?");
+function 번호읽기(text){
+  let s = String(text).normalize("NFKC").trim()
+    .replace(/[·\-–—_/.]+/g," ")
+    .replace(/\S*(?:법원|지원|검찰청|지청)\s*/g,"")
+    .replace(/\s+/g," ").trim();
+  if(!s) return {ok:false, 안내:"사건번호를 입력해 주세요."};
+  if(/^\d{4}\s+\d{4,8}$/.test(s))
+    return {ok:false, 안내:"경찰 접수번호로 보입니다. 이 번호만으로는 지금 어느 단계인지 알 수 없어요. 질문으로 찾아볼까요?"};
+  const m = s.match(부호RE);
+  if(!m) return {ok:false, 안내:"사건번호를 읽지 못했습니다. 2026고단1234 처럼 적어 주세요."};
+  const 부호=m[2]; let 연도=+m[1]; if(연도<100) 연도+=2000;
+  if(D.비형사[부호])
+    return {ok:false, 안내:`이건 형사사건 번호가 아니라 ${D.비형사[부호]} 사건 번호로 보입니다. 이 도구는 형사절차만 다룹니다.`};
+  const v = D.부호표[부호];
+  const r = {ok:true, 부호, 연도, 번호:+m[3], 기관:v.기관, 쉬운말:v.쉬운말,
+             진입노드:v.진입노드, 주의:v.주의, 알림:v.알림};
+  if(!v.진입노드){ r.ok=false; r.안내=`${v.쉬운말}이네요. 이 번호만으로는 지금 무엇을 해야 하는지까지는 알 수 없어요. 질문으로 찾아볼까요?`; }
+  if(new Date().getFullYear()-연도>=2){
+    r.오래됨="이미 기한이 지났을 수 있어요. 다만 내 잘못이 아닌 사정으로 놓친 경우라면 아직 길이 있습니다.";
+  }
+  return r;
+}
+
+// ── 그리기 ───────────────────────────────────────────────────
+function esc(s){ return String(s??"").replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+function 시작(){
+  stack=[]; 담은날짜={};
+  crumb.textContent="";
+  app.innerHTML = `
+    <p class="q">어떻게 시작할까요?</p>
+    <p class="note">셋 중 아무거나 괜찮습니다. 어느 쪽으로 들어와도 같은 답에 도착합니다.</p>
+    <ul class="opts">
+      <li><button class="opt" data-go="번호">사건번호를 알고 있어요<span class="arw">→</span></button></li>
+      <li><button class="opt" data-go="질문">번호는 몰라요. 질문으로 찾을게요<span class="arw">→</span></button></li>
+      <li><button class="opt" data-go="사진">받은 종이를 사진으로 넣기<span class="arw">→</span></button></li>
+    </ul>`;
+  app.querySelector('[data-go=번호]').onclick = 번호화면;
+  app.querySelector('[data-go=사진]').onclick = 사진화면;
+  app.querySelector('[data-go=질문]').onclick = ()=>{ stack.push("시작"); 그리기(D.첫질문, true); };
+}
+
+function 번호화면(){
+  stack.push("시작");
+  app.innerHTML = `
+    <p class="q">사건번호를 적어 주세요</p>
+    <p class="note">받은 종이 위쪽에 있습니다. 2026고단1234 처럼 생겼습니다.</p>
+    <div class="datebox">
+      <label for="cn">사건번호</label>
+      <input type="text" id="cn" placeholder="2026고단1234" autocomplete="off" inputmode="text">
+      <button class="go" id="cngo">확인</button>
+    </div>
+    <div id="cnout"></div>
+    <div class="nav"><button class="nav-b" id="back">← 뒤로</button></div>`;
+  const inp=$("#cn");
+  inp.focus();
+  const 실행=()=>{
+    const r=번호읽기(inp.value);
+    const out=$("#cnout");
+    if(!r.ok){
+      out.innerHTML=`<div class="bad">${esc(r.안내)}</div>
+        <ul class="opts"><li><button class="opt" id="toq">질문으로 찾기<span class="arw">→</span></button></li></ul>`;
+      $("#toq").onclick=()=>{ 그리기(D.첫질문,true); };
+      return;
+    }
+    out.innerHTML = `
+      <div class="readout">
+        <div class="k">이렇게 읽었습니다</div>
+        <div class="v">${esc(r.연도)}년 ${esc(r.부호)}${esc(r.번호)} · ${esc(r.기관)}</div>
+        <div class="d">${esc(r.쉬운말)}</div>
+      </div>
+      ${r.알림?`<div class="warn good"><b>참고</b> ${esc(r.알림)}</div>`:""}
+      ${r.주의?`<div class="warn"><b>주의</b> ${esc(r.주의)}</div>`:""}
+      ${r.오래됨?`<div class="warn"><b>${esc(r.연도)}년 사건입니다</b> ${esc(r.오래됨)}</div>`:""}
+      <ul class="opts">
+        <li><button class="opt" id="ok2">맞아요, 계속<span class="arw">→</span></button></li>
+        <li><button class="opt" id="no2">아니에요, 질문으로 찾을래요<span class="arw">→</span></button></li>
+      </ul>`;
+    $("#ok2").onclick=()=>{ 이동(r.오래됨?"A2b":r.진입노드); };
+    $("#no2").onclick=()=>{ 그리기(D.첫질문,true); };
+  };
+  $("#cngo").onclick=실행;
+  inp.onkeydown=(e)=>{ if(e.key==="Enter") 실행(); };
+  $("#back").onclick=뒤로;
+}
+
+function 이동(id){ stack.push(현재id); 현재id=id; 그리기(D.노드[id]); }
+let 현재id=null;
+
+function 그리기(node, 루트){
+  if(루트){ 현재id="ROOT"; }
+  crumb.textContent = stack.length ? "질문 "+(stack.length)+"번째" : "";
+  const t=node.type;
+  if(t==="question"||t==="checklist_question") 그리기_질문(node);
+  else if(t==="date") 그리기_날짜(node);
+  else 그리기_잎(node);
+  window.scrollTo(0,0);
+}
+
+function 그리기_질문(n){
+  const 힌트 = n.examples||n.items;
+  app.innerHTML = `
+    <p class="q">${esc(n.ask)}</p>
+    ${n.note?`<p class="note">${esc(n.note)}</p>`:""}
+    ${힌트?`<div class="hints"><ul>${힌트.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}
+    <ul class="opts">${n.options.map((o,i)=>
+      `<li><button class="opt" data-i="${i}">${esc(o.label)}<span class="arw">→</span></button></li>`).join("")}</ul>
+    ${nav()}`;
+  n.options.forEach((o,i)=>{ app.querySelector(`[data-i="${i}"]`).onclick=()=>이동(o.next); });
+  붙이기_nav();
+}
+
+function 그리기_날짜(n){
+  const 규칙=D.기한규칙[n.rule];
+  // 사진 흐름에서 이미 받은 날짜라면 다시 묻지 않는다. 같은 걸 두 번 묻는 건 실례다.
+  if(담은날짜[n.field]){
+    const {날짜}=마감계산(담은날짜[n.field],규칙);
+    const 다음 = 일수차(날짜,오늘())>=0 ? n.if_open : n.if_expired;
+    현재id = 다음;                    // 건너뛴 것이므로 스택에 쌓지 않는다
+    그리기(D.노드[다음]);
+    return;
+  }
+  app.innerHTML = `
+    <p class="q">${esc(n.ask)}</p>
+    <p class="note">며칠 남았는지는 저희가 세겠습니다.</p>
+    <div class="datebox">
+      <label for="dt">날짜</label>
+      <input type="date" id="dt">
+      <button class="go" id="dtgo">확인</button>
+    </div>
+    ${n.none_option?`<ul class="opts" style="margin-top:.65rem"><li><button class="opt" id="none">${esc(n.none_option.label)}<span class="arw">→</span></button></li></ul>`:""}
+    ${nav()}`;
+  const inp=$("#dt");
+  inp.max = new Date().toISOString().slice(0,10);
+  $("#dtgo").onclick=()=>{
+    if(!inp.value){ inp.focus(); return; }
+    담은날짜[n.field]=inp.value;
+    const {날짜}=마감계산(inp.value,규칙);
+    const 남음=일수차(날짜,오늘());
+    이동(남음>=0 ? n.if_open : n.if_expired);
+  };
+  if(n.none_option) $("#none").onclick=()=>이동(n.none_option.next);
+  붙이기_nav();
+}
+
+function 그리기_잎(n){
+  const 규칙 = n.rule ? D.기한규칙[n.rule] : null;
+  let dlHTML="", 물어야할필드=null;
+  if(규칙){
+    // 그 규칙이 요구하는 바로 그 날짜만 쓴다.
+    // 예전엔 없으면 아무 날짜나 갖다 썼는데, 상소권회복(사유해소일 기준)에
+    // 판결선고일을 넣어 "76일 지났습니다"라고 하는 사고가 났다.
+    // 아직 길이 열린 사람을 포기시키는 오답이라 fallback을 없앴다.
+    const 시작 = 담은날짜[규칙.from];
+    if(시작){
+      const {날짜,밀림}=마감계산(시작,규칙);
+      const 남음=일수차(날짜,오늘());
+      const 지남=남음<0;
+      dlHTML=`<div class="dl ${지남?"over":""}">
+        <div class="big">${지남?`${-남음}일 지났습니다`:(남음===0?"오늘이 마지막 날":`${남음}일 남았습니다`)}</div>
+        <div class="day">${한글날짜(날짜)}까지</div>
+        <div class="where">어디에 — ${esc(규칙.제출처)}</div>
+        <div class="caveat">첫날은 세지 않습니다(형사소송법 66조 1항).${밀림?" 마지막 날이 쉬는 날이라 다음 평일로 밀렸습니다.":""}
+        설·추석처럼 해마다 날짜가 바뀌는 공휴일은 계산에 넣지 못했습니다. <b>마지막 날에 기대지 말고 미리 내세요.</b></div>
+      </div>`;
+    } else {
+      // 날짜를 아직 모른다 — 지어내지 말고 그 자리에서 묻는다
+      dlHTML=`<div class="dl">
+        <div class="day">기한은 ${규칙.days}일입니다</div>
+        <div class="where">어디에 — ${esc(규칙.제출처)}</div>
+        <div class="datebox" style="margin-top:.9rem;padding:1rem">
+          <label for="lfdt">${esc(규칙.물음||"")}</label>
+          <input type="date" id="lfdt">
+          <button class="go" id="lfgo">며칠 남았는지 보기</button>
+        </div>
+      </div>`;
+      물어야할필드 = 규칙.from;
+    }
+  } else if(n.기한){
+    dlHTML=`<div class="dl"><div class="day">기한 ${esc(n.기한)}</div></div>`;
+  }
+  const 먼저 = n.먼저확인;
+  app.innerHTML = `
+    <div class="leaf lf-${esc(n.state)}">
+      <h2>${esc(n.title)}</h2>
+      <p class="sub">${esc(D.잎상태[n.state].뜻)}</p>
+      ${dlHTML}
+      ${먼저?`<div class="warn good"><b>${esc(먼저.조건)}</b><br>${esc(먼저.경로)} — ${esc(먼저.근거)}</div>`:""}
+      ${n.steps?`<ul class="steps">${n.steps.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>`:""}
+      ${n.대안?`<ul class="steps">${n.대안.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>`:""}
+      ${n.warning?`<div class="warn"><b>꼭 알아두세요</b> ${esc(n.warning)}</div>`:""}
+      ${n.솔직하게?`<div class="honest">${esc(n.솔직하게)}</div>`:""}
+      ${n.statutes?`<p class="cites">${n.statutes.map(esc).join(" · ")}</p>`:""}
+    </div>
+    ${nav()}`;
+  if(물어야할필드){
+    const i=$("#lfdt"); i.max=new Date().toISOString().slice(0,10);
+    $("#lfgo").onclick=()=>{ if(!i.value){i.focus();return;} 담은날짜[물어야할필드]=i.value; 그리기_잎(n); };
+  }
+  붙이기_nav();
+}
+
+
+// ── 사진에서 읽기 ───────────────────────────────────────────
+// 원칙 (설계도 7-2)
+//  1. 파일은 기기 밖으로 나가지 않는다 — 아래 어디에도 업로드가 없다
+//  2. 읽은 것을 그대로 믿지 않는다 — 반드시 사람이 확인하고 고칠 수 있다
+//  3. 확인 전에는 기한을 계산하지도, 보여주지도 않는다
+//  4. 못 읽으면 추측하지 않고 못 읽었다고 말한다
+let 사진URL = null;
+
+function 사진화면(){
+  stack.push("시작");
+  app.innerHTML = `
+    <p class="q">받은 종이를 사진으로 넣어 주세요</p>
+    <p class="note">종이 전체가 보이게, 맨 위 제목이 잘 나오게 찍어 주세요.</p>
+    <div class="privacy"><b>사진은 이 기기 밖으로 나가지 않습니다.</b> 인터넷으로 보내지 않고, 저장하지도 않습니다. 창을 닫으면 사라집니다.</div>
+    <div class="drop" id="drop" tabindex="0" role="button" aria-label="사진 고르기">
+      <div class="ico">📄</div>
+      <div class="t">사진 고르기</div>
+      <div class="d">여기를 누르거나 사진을 끌어다 놓으세요</div>
+    </div>
+    <input type="file" id="file" accept="image/*" style="display:none">
+    <ul class="opts" style="margin-top:1.1rem">
+      <li><button class="opt" id="skip">사진 없이 직접 고를게요<span class="arw">→</span></button></li>
+    </ul>
+    ${nav()}`;
+  const drop=$("#drop"), file=$("#file");
+  drop.onclick=()=>file.click();
+  drop.onkeydown=(e)=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();file.click();} };
+  drop.ondragover=(e)=>{e.preventDefault();drop.classList.add("on");};
+  drop.ondragleave=()=>drop.classList.remove("on");
+  drop.ondrop=(e)=>{e.preventDefault();drop.classList.remove("on");
+    if(e.dataTransfer.files[0]) 사진받음(e.dataTransfer.files[0]);};
+  file.onchange=()=>{ if(file.files[0]) 사진받음(file.files[0]); };
+  $("#skip").onclick=()=>판독확인({});
+  붙이기_nav();
+}
+
+function 사진받음(f){
+  if(!f.type.startsWith("image/")){
+    alert("사진 파일만 넣을 수 있습니다. PDF는 아직 지원하지 않습니다.");
+    return;
+  }
+  if(사진URL) URL.revokeObjectURL(사진URL);
+  사진URL = URL.createObjectURL(f);   // 메모리 안에만 있다. 서버로 가지 않는다.
+  읽는중();
+}
+
+function 읽는중(){
+  app.innerHTML = `
+    <p class="q">글자를 읽는 중입니다</p>
+    <p class="note">30초쯤 걸릴 수 있습니다. 기다리는 동안 종이의 맨 윗줄을 봐 두세요.</p>
+    <img class="shot" src="${사진URL}" alt="넣은 사진">
+    <div class="prog"><div class="t" id="ptxt">준비하는 중…</div><div class="bar"><i id="pbar"></i></div></div>
+    <ul class="opts"><li><button class="opt" id="skip2">기다리지 않고 직접 고를게요<span class="arw">→</span></button></li></ul>
+    ${nav()}`;
+  $("#skip2").onclick=()=>{ 취소됨=true; 판독확인({}); };
+  붙이기_nav();
+  취소됨=false;
+  OCR돌리기();
+}
+let 취소됨=false;
+
+async function OCR돌리기(){
+  const ptxt=()=>$("#ptxt"), pbar=()=>$("#pbar");
+  try{
+    if(typeof Tesseract==="undefined") throw new Error("엔진 없음");
+    // 워커 안에서는 상대경로가 풀리지 않는다. 절대 주소로 준다.
+    const 여기 = (p)=>new URL(p, location.href).href;
+    const worker = await Tesseract.createWorker("kor", 1, {
+      workerPath: 여기("ocr/worker.min.js"),
+      corePath:   여기("ocr/tesseract-core-simd.wasm.js"),
+      langPath:   여기("ocr"),
+      logger:(m)=>{
+        if(취소됨) return;
+        const t=ptxt(), b=pbar(); if(!t||!b) return;
+        if(m.status==="recognizing text"){ t.textContent="글자를 찾는 중…"; b.style.width=Math.round(m.progress*100)+"%"; }
+        else { t.textContent="사전을 준비하는 중…"; }
+      },
+    });
+    const {data} = await worker.recognize(사진URL);
+    await worker.terminate();
+    if(취소됨) return;
+    판독확인(판독(data.text||""));
+  }catch(e){
+    if(취소됨) return;
+    // 못 읽었으면 추측하지 않는다. 솔직히 말하고 직접 고르게 한다.
+    판독확인({실패:true, 사유: String(e.message||e).includes("엔진")
+      ? "글자 읽는 기능을 불러오지 못했습니다."
+      : "사진에서 글자를 읽지 못했습니다."});
+  }
+}
+
+// 열쇳말로 문서 종류를 맞춘다. 점수가 낮으면 맞혔다고 하지 않는다.
+function 판독(글){
+  const 납작 = 글.replace(/\s+/g,"");
+  let 최고=null, 최고점=0;
+  for(const d of D.문서판별){
+    let 점수=0;
+    for(const [말,w] of d.열쇳말) if(납작.includes(말.replace(/\s+/g,""))) 점수+=w;
+    if(점수>최고점){ 최고점=점수; 최고=d.이름; }
+  }
+  const 번호 = 번호읽기(글);
+  // 사건번호는 제목보다 훨씬 정확히 읽힌다. 부호가 문서 종류를 말해주면 그쪽을 믿는다.
+  const 부호짐작 = (번호.ok && D.부호로문서[번호.부호]) || null;
+  if(부호짐작){
+    if(부호짐작===최고) 최고점 += 8;      // 두 신호가 맞으면 확신
+    else if(최고점 < 10){ 최고 = 부호짐작; 최고점 = 10; }  // 제목이 약하면 번호를 따른다
+  }
+  return {
+    문서: 최고점>=6 ? 최고 : null,
+    점수: 최고점,
+    번호: 번호.ok ? 번호 : null,
+    근거: 부호짐작 ? "사건번호와 본문" : "본문",
+    원문: 글.slice(0,400),
+  };
+}
+
+function 판독확인(r){
+  const 종류 = Object.keys(D.문서종류표).filter(k=>!k.startsWith("_"));
+  const 안내 = r.실패 ? r.사유 : (r.문서 ? null : "무슨 서류인지 알아보지 못했습니다.");
+  app.innerHTML = `
+    <p class="q">${r.문서 ? "이렇게 읽었습니다. 맞나요?" : "이 종이 맨 위에 뭐라고 쓰여 있나요?"}</p>
+    ${r.문서 ? `<p class="note">다르면 아래에서 골라 주세요.</p>` : ""}
+    ${사진URL?`<img class="shot" src="${사진URL}" alt="넣은 사진">`:""}
+    ${안내?`<div class="bad">${esc(안내)} 아래에서 직접 골라 주세요.</div>`:""}
+    ${r.번호?`<div class="readout">
+        <div class="k">사건번호도 읽었습니다</div>
+        <div class="v">${esc(r.번호.연도)}년 ${esc(r.번호.부호)}${esc(r.번호.번호)}</div>
+        <div class="d">${esc(r.번호.쉬운말)}</div>
+      </div>`:""}
+    <ul class="pick">${종류.map((k,i)=>
+      `<li><button class="pick-b ${r.문서===k?"guess":""}" data-k="${i}">${esc(k)}${
+        r.문서===k?`<span class="tag">${esc(r.근거||"읽은 결과")}으로 짐작</span>`:""}</button></li>`).join("")}</ul>
+    <ul class="opts"><li><button class="opt" id="none3">잘 모르겠어요. 질문으로 찾을게요<span class="arw">→</span></button></li></ul>
+    ${nav()}`;
+  종류.forEach((k,i)=>{ app.querySelector(`[data-k="${i}"]`).onclick=()=>문서선택(k, r.번호); });
+  $("#none3").onclick=()=>{ 사진정리(); 그리기(D.첫질문,true); };
+  붙이기_nav();
+}
+
+function 문서선택(이름, 번호){
+  const v = D.문서종류표[이름];
+  사진정리();
+  if(!v || !v.진입노드){ 그리기(D.첫질문,true); return; }
+  // 문서에 적힌 날짜를 기산점으로 쓸 수 있는 경우는 판결문뿐이다.
+  // 나머지는 '만든 날'이라 반드시 받은 날을 따로 묻는다 (설계도 7-2).
+  if(v.날짜사용==="물어봐야함" || v.날짜사용==="문서날짜"){
+    날짜묻기(이름, v);
+    return;
+  }
+  이동(v.진입노드);
+}
+
+function 날짜묻기(이름, v){
+  const 확인 = D.확인화면;
+  stack.push("시작");
+  현재id = "사진날짜";
+  app.innerHTML = `
+    <p class="q">${esc(v.날짜사용==="문서날짜" ? "판결을 선고받은 날이 언제인가요?" : 확인.날짜를물을때문구)}</p>
+    <p class="note">${esc(v.날짜사용==="문서날짜" ? "판결문에 적힌 선고일입니다." : 확인.날짜를물을때덧붙임)}</p>
+    <div class="datebox">
+      <label for="pd">날짜</label>
+      <input type="date" id="pd">
+      <button class="go" id="pdgo">확인</button>
+    </div>
+    ${nav()}`;
+  const i=$("#pd"); i.max=new Date().toISOString().slice(0,10); i.focus();
+  $("#pdgo").onclick=()=>{
+    if(!i.value){ i.focus(); return; }
+    // 어느 규칙의 날짜인지 문서 종류가 정해 준다
+    if(v.필드) 담은날짜[v.필드]=i.value;
+    else {
+      const n=D.노드[v.진입노드];
+      if(n && n.type==="date") 담은날짜[n.field]=i.value;
+      else if(이름==="약식명령") 담은날짜["약식명령송달일"]=i.value;
+      else if(이름==="불기소결정통지서") 담은날짜["불기소통지일"]=i.value;
+      else if(이름==="항고기각결정통지서") 담은날짜["항고기각통지일"]=i.value;
+    }
+    이동(v.진입노드);
+  };
+  붙이기_nav();
+}
+
+function 사진정리(){
+  if(사진URL){ URL.revokeObjectURL(사진URL); 사진URL=null; }
+}
+
+function nav(){
+  return `<div class="nav">
+    <button class="nav-b" id="back">← 뒤로</button>
+    <button class="nav-b" id="restart">처음부터</button>
+  </div>`;
+}
+function 붙이기_nav(){
+  const b=$("#back"), r=$("#restart");
+  if(b) b.onclick=뒤로;
+  if(r) r.onclick=시작;
+}
+function 뒤로(){
+  const p=stack.pop();
+  if(!p||p==="시작"){ 시작(); return; }
+  // 돌아간 자리가 날짜를 묻는 곳이면 담아둔 값을 비운다.
+  // 안 그러면 자동으로 건너뛰어 되돌아갈 수가 없다.
+  const 대상 = p==="ROOT" ? null : D.노드[p];
+  if(대상 && 대상.type==="date") delete 담은날짜[대상.field];
+  현재id=p;
+  그리기(p==="ROOT"?D.첫질문:D.노드[p], p==="ROOT");
+}
+
+시작();
+</script>
+</body>
+</html>
