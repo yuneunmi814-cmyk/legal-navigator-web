@@ -1,7 +1,7 @@
 /**
  * 서식 페이지 정적 생성기
  *
- * 왜 필요한가 — 서식 114종은 MCP 서버(카카오클라우드 주소)가 그려서 내보내고 있다.
+ * 왜 필요한가 — 서식 전종은 MCP 서버(카카오클라우드 주소)가 그려서 내보내고 있다.
  * 그 주소는 공모전이 내준 것이라 우리 자산이 아니고, description·canonical도 없다.
  * 검색에 걸리는 페이지 114개를 우리 도메인에 두려면 여기서 만들어 둬야 한다.
  *
@@ -81,6 +81,18 @@ function readMeta(html, key) {
   return { t: unesc(t[1].replace(/<[^>]+>/g, "").trim()), u: unesc(u[1].replace(/<[^>]+>/g, "").trim()) };
 }
 
+/** MCP의 /healthz에서 규모를 받아온다.
+ * 법령·판례·용어는 tools/list에 안 실려서 예전엔 index.html에 손으로 적었다.
+ * 그래서 몇 달째 낡아 있었다 — 법령 258(실제 321)·절차 259(실제 279)·서식 114(실제 119).
+ * MCP가 /healthz에 규모를 내보내므로 이제 손으로 적지 않는다. */
+async function 규모() {
+  try {
+    const r = await fetch(`${MCP}/healthz`);
+    const j = await r.json();
+    return j.scale ?? null;
+  } catch { return null; }
+}
+
 /** 랜딩의 서식 목록과 커버리지 숫자를 MCP 기준으로 다시 쓴다. */
 async function syncLanding(forms, counts) {
   let html = await readFile("index.html", "utf8");
@@ -111,6 +123,20 @@ async function syncLanding(forms, counts) {
     .replace(/자가진단 \d+종/g, `자가진단 ${counts.자가진단}종`)
     .replace(/(스토킹·명예훼손·사기·횡령 등 <b>)\d+(<\/b>)/, `$1${counts.자가진단}$2`)
     .replace(/(<b>)\d+(종<\/b> — 진정서·내용증명)/, `$1${counts.서식}$2`);
+
+  // 손으로 적던 숫자들 — 법령·판례·용어·절차. 이제 /healthz 값으로 덮어쓴다.
+  const sc = await 규모();
+  if (sc) {
+    html = html
+      .replace(/법령 조문 \d+건/g, `법령 조문 ${sc.statutes}건`)
+      .replace(/조문 \d+건은/g, `조문 ${sc.statutes}건은`)
+      .replace(/판례 \d+건/g, `판례 ${sc.precedents}건`)
+      .replace(/용어 풀이 \d+개/g, `용어 풀이 ${sc.glossary}개`)
+      .replace(/\d+개 절차/g, `${sc.topics}개 절차`)
+      .replace(/\d+개 분야/g, `${sc.categories}개 분야`);
+  } else {
+    console.log("  ⚠️ /healthz를 못 읽어 법령·판례·용어 숫자는 그대로 둔다");
+  }
 
   // 계측은 </body> 바로 앞에. 매 빌드마다 다시 넣으므로, 이미 있으면 지우고 새로 넣는다.
   html = html.replace(/\n?<script defer src="https:\/\/static\.cloudflareinsights\.com[^<]*<\/script>/g, "");
@@ -165,6 +191,10 @@ function meta(f) {
   })}</script>`;
 }
 
+// 총 서식 수 — 페이지 상단 "서식 N종 전체 보기" 링크에 쓴다.
+// 예전엔 114로 박혀 있어 서식이 늘어도 119개 페이지가 전부 "114종"이라고 말했다.
+let 총서식 = 0;
+
 async function buildOne(f) {
   const src = `${MCP}/forms/${encodeURIComponent(f.k)}`;
   const res = await fetch(src, { headers: { "user-agent": "legalnavi-build" } });
@@ -182,7 +212,7 @@ async function buildOne(f) {
   // 검색으로 이 페이지에 바로 들어온 사람에게는 여기가 사이트의 전부다.
   // 서비스가 뭔지 알려주고 다른 서식으로 갈 길을 열어준다(검색엔진이 114개를
   // 서로 이어진 한 사이트로 읽게 하는 효과도 같이).
-  const home = `<div class="ln-home"><a href="/"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M7 20h10M5 8h14"/><path d="M5 8 2.5 13.5h5zM19 8l-2.5 5.5h5z"/></svg><b>법률 절차 길잡이</b></a><a class="more" href="/#forms">서식 114종 전체 보기 &rsaquo;</a></div>`;
+  const home = `<div class="ln-home"><a href="/"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M7 20h10M5 8h14"/><path d="M5 8 2.5 13.5h5zM19 8l-2.5 5.5h5z"/></svg><b>법률 절차 길잡이</b></a><a class="more" href="/#forms">서식 ${총서식}종 전체 보기 &rsaquo;</a></div>`;
   const homeCss = `<style>
 .ln-home{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between;
   padding:10px 14px;background:var(--paper);border-bottom:1px solid var(--line);font-size:13.5px}
@@ -221,6 +251,7 @@ async function buildOne(f) {
 async function run() {
   const { keys, counts } = await fromMcp();
   const forms = keys.map((k) => ({ k }));
+  총서식 = forms.length;
   await rm(OUT, { recursive: true, force: true });
   await mkdir(OUT, { recursive: true });
 
