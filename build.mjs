@@ -127,13 +127,23 @@ async function syncLanding(forms, counts) {
   // 손으로 적던 숫자들 — 법령·판례·용어·절차. 이제 /healthz 값으로 덮어쓴다.
   const sc = await 규모();
   if (sc) {
-    html = html
-      .replace(/법령 조문 \d+건/g, `법령 조문 ${sc.statutes}건`)
-      .replace(/조문 \d+건은/g, `조문 ${sc.statutes}건은`)
-      .replace(/판례 \d+건/g, `판례 ${sc.precedents}건`)
-      .replace(/용어 풀이 \d+개/g, `용어 풀이 ${sc.glossary}개`)
-      .replace(/\d+개 절차/g, `${sc.topics}개 절차`)
-      .replace(/\d+개 분야/g, `${sc.categories}개 분야`);
+    // ⚠️ 필드 하나가 없을 때 그대로 쓰면 "용어 풀이 undefined개"가 라이브로 나간다.
+    //    실제로 겪었다 — MCP 로컬에 glossary를 추가했지만 재배포 전이라 라이브 /healthz에
+    //    아직 그 필드가 없었다. 값이 없으면 덮어쓰지 않고 있던 숫자를 그대로 둔다.
+    const 빠짐 = [];
+    const 쓰기 = (키, 정규식, 만들기) => {
+      const v = sc[키];
+      if (typeof v === "number" && Number.isFinite(v)) html = html.replace(정규식, 만들기(v));
+      else 빠짐.push(키);
+    };
+    쓰기("statutes", /법령 조문 \d+건/g, (v) => `법령 조문 ${v}건`);
+    쓰기("statutes", /조문 \d+건은/g, (v) => `조문 ${v}건은`);
+    쓰기("precedents", /판례 \d+건/g, (v) => `판례 ${v}건`);
+    쓰기("glossary", /용어 풀이 \d+개/g, (v) => `용어 풀이 ${v}개`);
+    쓰기("topics", /\d+개 절차/g, (v) => `${v}개 절차`);
+    쓰기("categories", /\d+개 분야/g, (v) => `${v}개 분야`);
+    if (빠짐.length)
+      console.log(`  ⚠️ /healthz에 없는 값: ${[...new Set(빠짐)].join(", ")} — 그 숫자는 그대로 둔다`);
   } else {
     console.log("  ⚠️ /healthz를 못 읽어 법령·판례·용어 숫자는 그대로 둔다");
   }
