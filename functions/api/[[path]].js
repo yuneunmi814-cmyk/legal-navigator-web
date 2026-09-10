@@ -31,8 +31,8 @@ export async function onRequest({ request, env = {} }) {
     } catch { return json({ error: 'Invalid JSON' }, 400); }
   }
   try {
-    const upstream = new Request(UPSTREAM + path, { method, headers: { 'content-type': 'application/json' }, body, signal: AbortSignal.timeout(50000), redirect: 'error' });
-    const result = env.GUIDANCE ? await env.GUIDANCE.fetch(upstream) : await fetch(upstream.url, { method, headers: { 'content-type': 'application/json' }, body, signal: upstream.signal, redirect: 'error' });
+    const upstream = new Request(UPSTREAM + path, { method, headers: { 'content-type': 'application/json' }, body, signal: AbortSignal.timeout(50000), redirect: 'manual' });
+    const result = env.GUIDANCE ? await env.GUIDANCE.fetch(upstream) : await fetch(upstream.url, { method, headers: { 'content-type': 'application/json' }, body, signal: upstream.signal, redirect: 'manual' });
     if (!result.ok) return json({ error: '안내 서버에 연결하지 못했습니다.' }, 502);
     return json(await result.json());
   } catch { return json({ error: '안내 서버의 응답이 늦어지고 있습니다.' }, 503); }

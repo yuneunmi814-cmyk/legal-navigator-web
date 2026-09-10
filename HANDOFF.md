@@ -11,7 +11,7 @@
 - 큰 입력창 → 같은 화면의 절차 전문·기한·관할기관·준비 자료·실제 서식 링크.
 - 기존 119종 서식 검색, `/절차/` 계산기, 기관 소개서, 의견 링크 유지.
 - AI 문답은 기본 꺼짐. 사용자 선택 시 Google 전송을 명시. 카카오와 별도 웹 체험임을 설명.
-- `/api/*` Pages Functions는 GUIDANCE 서비스 바인딩으로 기존 legalnavi-chat Worker에 직접 연결. 공개 workers.dev fetch는 Pages 환경에서 실패해 내부 연결로 수정. 임의 URL·쿠키·인증 전달 없음.
+- `/api/*` Pages Functions는 GUIDANCE 서비스 바인딩으로 기존 legalnavi-chat Worker에 직접 연결. 공개 환경 오류의 실제 원인은 Request.redirect="error" 미지원. "manual"로 수정하고 3xx는 오류 처리. 서버 간 연결은 서비스 바인딩으로 유지. 임의 URL·쿠키·인증 전달 없음.
 - Worker의 `full.steps/evidence/authority/submit` 추가가 함께 필요. 기존에 조회하던 상세 절차를 재사용하므로 MCP 호출 수는 그대로.
 - 빌드 산출물은 `node scripts/prepare-deploy.mjs` → `dist/`. 이 폴더만 공개. 소스·인계장은 제외.
 

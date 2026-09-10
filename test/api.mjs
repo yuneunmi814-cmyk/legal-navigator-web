@@ -16,7 +16,7 @@ test('rejects unknown routes, wrong methods, cross-origin and oversized input wi
 });
 test('forwards only fixed upstream without cookies and returns no-store JSON', async () => {
  const real = globalThis.fetch;
- globalThis.fetch = async (url,opts) => {assert.equal(url,'https://legalnavi-chat.yuneunmi814.workers.dev/api/ask');assert.equal(opts.headers.cookie,undefined);return Response.json({card:{children:[]}});};
+ globalThis.fetch = async (url,opts) => {assert.equal(url,'https://legalnavi-chat.yuneunmi814.workers.dev/api/ask');assert.equal(opts.headers.cookie,undefined);assert.equal(opts.redirect,'manual');return Response.json({card:{children:[]}});};
  try {const r=await onRequest({request:make('/api/ask',{q:'보증금'},{cookie:'private=value'})});assert.equal(r.status,200);assert.equal(r.headers.get('cache-control'),'no-store');assert.deepEqual(await r.json(),{card:{children:[]}});} finally {globalThis.fetch=real;}
 });
 test('upstream failure is a retryable error, not a false legal answer', async () => {
@@ -25,5 +25,5 @@ test('upstream failure is a retryable error, not a false legal answer', async ()
 });
 test('production uses the configured Worker service binding instead of public fetch',async()=>{
  const real=globalThis.fetch;globalThis.fetch=async()=>{throw new Error('must use service binding')};
- try{let called=false;const env={GUIDANCE:{fetch:async request=>{called=true;assert.equal(new URL(request.url).pathname,'/api/ask');assert.equal((await request.json()).q,'보증금');return Response.json({ok:true});}}};const r=await onRequest({request:make('/api/ask',{q:'보증금'}),env});assert.equal(r.status,200);assert(called);}finally{globalThis.fetch=real;}
+ try{let called=false;const env={GUIDANCE:{fetch:async request=>{called=true;assert.equal(new URL(request.url).pathname,'/api/ask');assert.equal(request.redirect,'manual');assert.equal((await request.json()).q,'보증금');return Response.json({ok:true});}}};const r=await onRequest({request:make('/api/ask',{q:'보증금'}),env});assert.equal(r.status,200);assert(called);}finally{globalThis.fetch=real;}
 });
