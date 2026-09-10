@@ -13,7 +13,7 @@ MCP 서버(대화로 물어보는 쪽)는 별도 저장소에 있습니다 →
 
 | | |
 |---|---|
-| `index.html` | 소개 페이지 한 장. 서식 검색도 여기 들어 있습니다 |
+| `index.html` | 상황 입력·절차 결과·서식 검색을 한 페이지에서 제공합니다 |
 | `forms/` | **서식 전종의 개별 페이지** — 빌드로 생성되며 직접 고치지 않습니다 |
 | `brochure/` | 기관 유형별 소개서 PDF 9종 |
 | `build.mjs` | 서식 페이지·사이트맵 생성기 (아래 참고) |
@@ -21,8 +21,27 @@ MCP 서버(대화로 물어보는 쪽)는 별도 저장소에 있습니다 →
 | `_headers` | Cloudflare Pages 응답 헤더 (캐시·보안) |
 | `404.html` | 없는 주소로 들어왔을 때 |
 
-빌드 도구도 프레임워크도 쓰지 않습니다. **손으로 쓴 정적 HTML 한 장**입니다.
-로그인도 서버도 데이터베이스도 없습니다 — 수집하는 개인정보가 0인 이유입니다.
+화면은 정적 HTML/CSS/JavaScript입니다. `assets/experience.js`가 같은 도메인의
+`/api/ask`, `/api/chat`, `/api/caps`를 호출합니다. `functions/api/[[path]].js`는
+기존 legalnavi-chat Worker로 중계합니다. 로그인·데이터베이스는 없습니다.
+질문은 안내 서버와 MCP 서버에 전달되며, 사용자가 선택한 AI 문답은 Google에도 전달됩니다.
+대화는 브라우저 메모리에서만 유지하며 새 질문·새로고침으로 초기화합니다.
+Cloudflare Web Analytics는 기존과 같이 사용합니다. "어디에도 저장되지 않는다"고 보장하지 않습니다.
+
+## 개발·검증
+
+```bash
+node scripts/preview.mjs       # http://localhost:4173, 실제 안내 서버 연결
+node --test test/api.mjs       # 중계 요청 검증·실패 처리
+node --check assets/experience.js
+```
+
+- 첫 질문은 기본적으로 수록된 절차를 조회합니다. AI 문답은 기본 꺼짐입니다.
+- 관련 서식은 서버의 연결 목록과 실제 게시된 119종 목록이 모두 일치할 때만 표시합니다.
+- 절차 전문은 legalnavi-chat의 `full.steps`를 이용합니다. 카드와 상세 절차 제목이 같을 때만 제공됩니다.
+- 내부 도구 호출 표기는 웹 화면에서 제거합니다. 법률 문장을 새로 생성하지 않습니다.
+- 질문 내용·쿠키·인증 헤더를 로그에 기록하거나 중계하지 않습니다.
+- `scripts/prepare-deploy.mjs`가 공개 파일만 `dist/`로 모읍니다. 소스·테스트·인계장은 배포하지 않습니다.
 
 ---
 
@@ -74,15 +93,16 @@ node scripts/brochure.mjs
 Cloudflare Pages (프로젝트명 `legalnavi`).
 
 ```bash
-node build.mjs                                    # 서식 먼저 굽고
-npx wrangler pages deploy . --project-name legalnavi --branch main
+# 서식 자체가 바뀌었을 때만 MCP에서 다시 생성합니다.
+CF_BEACON=b558ecfcfd424fa3b75d264ff35d2b45 node build.mjs
+node scripts/prepare-deploy.mjs
+npx wrangler pages deploy dist --project-name legalnavi --branch main
 ```
 
 ⚠️ `wrangler`는 **현재 셸 위치를 기준으로 올립니다.** 배포 전에 `pwd`로 이 저장소가 맞는지 확인하세요.
 반영에 10~30초 걸리므로 곧바로 확인하면 이전 버전이 보입니다.
 
-GitHub Pages에도 같은 내용이 올라가 있습니다
-(`https://yuneunmi814-cmyk.github.io/legal-navigator-web/`). 도메인이 정해지면 정리할 예정입니다.
+GitHub Pages는 서버 중계 기능을 실행하지 못합니다. 현재 서비스 주소는 `https://legalnavi.pages.dev`입니다.
 
 ---
 

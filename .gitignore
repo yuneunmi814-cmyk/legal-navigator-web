@@ -3,3 +3,8 @@ live.html
 now.html
 new.html
 *.tmp
+
+# Local preview / deployment output
+dist/
+.wrangler/
+node_modules/
