@@ -4,7 +4,7 @@ const json = (body, status = 200) => new Response(JSON.stringify(body), { status
 export async function onRequest({ request, env = {} }) {
   const url = new URL(request.url);
   const path = url.pathname.replace(/\/$/, '');
-  if (!['/api/ask', '/api/chat', '/api/caps'].includes(path)) return json({ error: 'Not found' }, 404);
+  if (!['/api/ask', '/api/chat', '/api/guide', '/api/caps'].includes(path)) return json({ error: 'Not found' }, 404);
   const method = path === '/api/caps' ? 'GET' : 'POST';
   if (request.method !== method) return json({ error: 'Method not allowed' }, 405);
   if (method === 'POST' && request.headers.get('origin') && request.headers.get('origin') !== url.origin) return json({ error: 'Forbidden' }, 403);
@@ -27,6 +27,7 @@ export async function onRequest({ request, env = {} }) {
       body = new TextDecoder().decode(bytes); const data = JSON.parse(body);
       if (!data || typeof data !== 'object' || Array.isArray(data)) return json({ error: 'Invalid input' }, 400);
       if (path === '/api/ask' && (typeof data.q !== 'string' || data.q.trim().length < 2 || data.q.length > 300)) return json({ error: 'Invalid question' }, 400);
+      if (path === '/api/guide' && (typeof data.q !== 'string' || data.q.length>300 || !['start','topic','date','finish','form'].includes(data.stage || 'start') || ['topic','goal','date','form'].some(k=>data[k]!=null && (typeof data[k]!=='string' || data[k].length>150)))) return json({error:'Invalid guide request'},400);
       if (path === '/api/chat' && (!Array.isArray(data.messages) || !data.messages.length || data.messages.length > 32 || !data.messages.every(m => m && ['user', 'bot'].includes(m.role) && typeof m.text === 'string' && m.text.length <= 6000) || (data.topic != null && (typeof data.topic !== 'string' || data.topic.length > 200)))) return json({ error: 'Invalid conversation' }, 400);
     } catch { return json({ error: 'Invalid JSON' }, 400); }
   }

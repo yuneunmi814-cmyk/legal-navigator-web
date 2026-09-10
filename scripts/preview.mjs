@@ -2,6 +2,8 @@ import http from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import { resolve, extname, sep } from 'node:path';
 import { onRequest } from '../functions/api/[[path]].js';
+const guidance = process.env.GUIDANCE_WORKER_PATH ? (await import(process.env.GUIDANCE_WORKER_PATH)).default : null;
+const bindings = guidance ? {GUIDANCE:{fetch:r=>guidance.fetch(r,{MCP_URL:'https://legal-navigator-kakaotools.playmcp-endpoint.kakaocloud.io/mcp',FORMS_BASE:'https://legalnavi.pages.dev/forms'})}} : {};
 const root = resolve(import.meta.dirname, '..');
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.png': 'image/png', '.pdf': 'application/pdf' };
 http.createServer(async (req, res) => {
@@ -9,7 +11,7 @@ http.createServer(async (req, res) => {
     const url = new URL(req.url, 'http://localhost:4173');
     if (url.pathname.startsWith('/api/')) {
       const request = new Request(url, { method: req.method, headers: req.headers, ...(req.method !== 'GET' && req.method !== 'HEAD' ? { body: req, duplex: 'half' } : {}) });
-      const answer = await onRequest({ request }); res.writeHead(answer.status, Object.fromEntries(answer.headers)); res.end(Buffer.from(await answer.arrayBuffer())); return;
+      const answer = await onRequest({ request, env: bindings }); res.writeHead(answer.status, Object.fromEntries(answer.headers)); res.end(Buffer.from(await answer.arrayBuffer())); return;
     }
     const relative = decodeURIComponent(url.pathname).replace(/^\/+/, '');
     let file = resolve(root, relative || 'index.html');

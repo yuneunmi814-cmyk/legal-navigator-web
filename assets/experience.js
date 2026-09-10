@@ -33,11 +33,12 @@
   function cardView(card, full = {}) {
     const box = node('article', 'answer-card');
     let stepsShown = false;
-    for (const c of card.children || []) {
+    const children = card.type === 'ListView' ? (card.items || card.children || []).flatMap(item => item.children || []) : (card.children || []);
+    for (const c of children) {
       if (c.type === 'Title') box.append(node('h2', '', c.value));
       else if (c.type === 'Caption') box.append(node('p', 'answer-caption', readable(unclip(c.value, full.laws))));
       else if (c.type === 'Text') {
-        if (/^•/.test(c.value) && full.steps?.length) {
+        if ((/^•/.test(c.value) || /^\d+\./.test(c.value)) && full.steps?.length) {
           if (!stepsShown) {
             const steps = node('ol', 'procedure-steps');
             for (const step of full.steps) steps.append(node('li', '', readable(step).replace(/^\d+(?:-[a-z])?\)\s*/, '')));
@@ -49,9 +50,12 @@
       else if (c.type === 'Row') {
         const row = node('div', 'answer-badges');
         for (const badge of c.children || []) {
+          if (badge.type !== 'Badge') { row.append(cardView({children:[badge]})); continue; }
           if (badge.type === 'Badge') row.append(node('span', `answer-badge${badge.color === 'danger' ? ' urgent' : ''}`, unclip(badge.label, badge.color === 'danger' ? full.deadline : '')));
         }
         box.append(row);
+      } else if (c.type === 'Col') { box.append(cardView(c));
+      } else if (c.type === 'Markdown') { box.append(node('p', '', readable(c.value)));
       } else if (c.type === 'Button') {
         const url = c.onClickAction?.payload?.target?.url;
         if (url) box.append(link(readable(c.label), url));
@@ -63,8 +67,20 @@
     $('forms').scrollIntoView({ block: 'start' });
     $('q').focus({ preventScroll: true });
   }
+  function setStage(stage) {
+    const n = stage === 'prepare' ? 2 : ['need','date'].includes(stage) ? 1 : 0;
+    [...$('guide-progress').children].forEach((el,i) => { if(i === n) el.setAttribute('aria-current','step'); else el.removeAttribute('aria-current'); el.classList.toggle('complete',i<n); });
+  }
+  function inlineForm(key, parent) {
+    const known = [...document.querySelectorAll('#flist .fitem')].find(el=>el.dataset.k===key);
+    if (!known || parent.querySelector('iframe')) return;
+    const frame = node('iframe','inline-form'); frame.title=known.dataset.t+' 작성'; frame.src=known.getAttribute('href')+'#save';
+    const close=node('button','chip','서식 접기');close.type='button'; close.addEventListener('click',()=>{frame.hidden=!frame.hidden;close.textContent=frame.hidden?'작성 중인 서식 펼치기':'서식 접기';});
+    parent.append(close,link('별도 창에서 크게 작성하기 ↗',known.getAttribute('href')),frame); frame.scrollIntoView({block:'start'});
+  }
   function resultView(data) {
     const fragment = document.createDocumentFragment();
+    if (data.stage) setStage(data.stage);
     if (data.reply) fragment.append(node('p', 'reply-text', data.reply));
     if (data.empty) {
       fragment.append(node('p', 'reply-text', data.message || '관련 절차를 찾지 못했습니다. 상대방과 일어난 일을 조금 더 구체적으로 적어주세요.'));
@@ -112,6 +128,42 @@
       }
       fragment.append(related);
     }
+    if (data.widgets?.length) {
+      const cards=node('section','tool-cards'); cards.setAttribute('aria-label','MCP 위젯 카드');
+      for (const widget of data.widgets) {
+        const group=node('div','tool-card');group.append(node('p','tool-label',({form:'서식 카드',checklist:'준비 자료 카드',deadline:'기한 계산 카드',submission:'제출처 카드'})[widget.kind]||'안내 카드'));
+        if(widget.card) group.append(cardView(widget.card));
+        else if(widget.text) group.append(node('p','reply-text',widget.text));
+        if(widget.kind==='form') {
+          const known=[...document.querySelectorAll('#flist .fitem')].find(el=>el.dataset.k===widget.key);
+          if(known) {
+            const open=node('button','open-form','대화 안에서 서식 작성하기');open.type='button';open.addEventListener('click',()=>inlineForm(widget.key,group));group.append(open);
+            // The MCP's preview button opens the same published form inside the conversation.
+            const preview=[...group.querySelectorAll('a')].find(a=>/빈칸.*채우기/.test(a.textContent));
+            if(preview) preview.addEventListener('click',e=>{e.preventDefault();inlineForm(widget.key,group);});
+          }
+        }
+        cards.append(group);
+      }
+      fragment.append(cards);
+      if(data.goal==='forms' || data.goal==='deadline') { const first=fragment.firstChild; if(first!==cards) first.after(cards); }
+    }
+    if (data.datePrompt) {
+      const dates=node('form','date-prompt'); const label=node('label','','기산 기준일');const date=node('input');date.type='date';date.required=true;label.append(date);dates.append(node('p','',data.deadlineNote),label);
+      const calculate=node('button','open-form','이 날짜로 기한 계산');calculate.type='submit';dates.append(calculate);
+      dates.addEventListener('submit',e=>{e.preventDefault();if(busy)return;ask('기준일: '+date.value,{payload:{...data.context,stage:'finish',goal:'deadline',date:date.value},route:'guide',append:true});});fragment.append(dates);
+    }
+    if(data.choices?.length || data.answerChoices?.length) {
+      const choices=node('div','guided-choices');
+      for(const choice of data.choices || []) {
+        const button=node('button','choice-button',choice.label);button.type='button';
+        button.addEventListener('click',()=>{if(busy)return;choices.querySelectorAll('button').forEach(b=>b.disabled=true);ask(choice.label,{payload:{...data.context,...choice},route:'guide',append:true});});choices.append(button);
+      }
+      for(const label of data.answerChoices || []) {
+        const button=node('button','choice-button',label);button.type='button';button.addEventListener('click',()=>{if(busy)return;input.value=label;form.requestSubmit();choices.querySelectorAll('button').forEach(b=>b.disabled=true);});choices.append(button);
+      }
+      fragment.append(choices);
+    }
     if (data.fellBack) fragment.append(node('p', 'answer-note', '지금은 AI 문답을 이용할 수 없어, 수록된 절차 안내로 보여드립니다.'));
     if (data.card || data.empty || data.forms?.length) fragment.append(node('p', 'answer-note', '일반적인 절차 안내입니다. 실제 기한·제출 요건은 받은 서류와 담당 기관에서 확인하세요. 개별 사건 상담은 대한법률구조공단 132.'));
     return fragment;
@@ -122,7 +174,7 @@
     document.querySelectorAll('[data-example]').forEach(b => b.disabled = value);
   }
   function reset() {
-    generation++; active?.abort(); turns = []; topic = ''; finished = false;
+    setStage('situation'); generation++; active?.abort(); turns = []; topic = ''; finished = false;
     log.replaceChildren(); log.hidden = true; $('workspace-top').hidden = true;
     document.body.classList.remove('work-started'); setBusy(false);
     input.value = ''; input.placeholder = '예) 외주 작업을 끝냈는데 잔금을 안 줍니다';
@@ -139,11 +191,12 @@
     if (finished) { turns = []; topic = ''; finished = false; }
     const interview = option.checked;
     const nextTurns = retry?.turns || [...turns, { role: 'user', text: question }];
-    const payload = retry?.payload || (interview ? { messages: nextTurns, topic } : { q: question });
-    const route = retry?.route || (interview ? 'chat' : 'ask');
+    const payload = retry?.payload || (interview ? { messages: nextTurns, topic } : { q: question, stage:'start' });
+    const route = retry?.route || (interview ? 'chat' : 'guide');
     document.body.classList.add('work-started'); log.hidden = false; $('workspace-top').hidden = false;
-    if (!retry) log.append(node('p', 'user-question', question));
+    if (!retry || retry.append) log.append(node('p', 'user-question', question));
     const status = node('div', 'request-status', '관련 절차와 서식을 찾고 있습니다.'); status.setAttribute('role', 'status'); log.append(status);
+    log.querySelectorAll('.guided-choices button').forEach(b=>b.disabled=true);
     setBusy(true); const controller = new AbortController(); active = controller; const timer = setTimeout(() => controller.abort(), 55000);
     try {
       const response = await fetch(`/api/${route}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), signal: controller.signal });
@@ -151,12 +204,12 @@
       const data = await response.json();
       if (data.error) throw new Error('server');
       if (seq !== generation) return;
-      if (!data.card && !data.reply && !data.empty && !data.forms?.length) throw new Error('empty response');
+      if (!data.card && !data.reply && !data.empty && !data.forms?.length && !data.widgets?.length) throw new Error('empty response');
       const answer = node('div', 'answer-turn'); answer.append(resultView(data));
       status.replaceWith(answer); answer.scrollIntoView({ block: 'start' });
       turns = nextTurns; if (data.reply) turns.push({ role: 'bot', text: data.reply });
       topic = data.topic || topic; finished = route === 'ask' || !!data.done || !!data.fellBack || !!data.empty || !!data.noTopic;
-      input.value = ''; input.placeholder = finished ? '다른 상황도 물어보세요' : '위 질문에 답해주세요';
+      input.value = ''; input.placeholder = finished ? '다른 상황도 물어보세요' : (route === 'guide' ? '위 선택지를 누르거나 새로운 상황을 적어주세요' : '위 질문에 답해주세요');
       $('composer-label').textContent = finished ? '새로운 상황을 입력하면 다시 찾아드립니다' : '답할 수 있는 내용만 적어주세요';
     } catch (error) {
       if (seq !== generation) return;

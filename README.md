@@ -22,7 +22,7 @@ MCP 서버(대화로 물어보는 쪽)는 별도 저장소에 있습니다 →
 | `404.html` | 없는 주소로 들어왔을 때 |
 
 화면은 정적 HTML/CSS/JavaScript입니다. `assets/experience.js`가 같은 도메인의
-`/api/ask`, `/api/chat`, `/api/caps`를 호출합니다. `functions/api/[[path]].js`는
+`/api/guide`, `/api/ask`, `/api/chat`, `/api/caps`를 호출합니다. `functions/api/[[path]].js`는
 `wrangler.toml`의 GUIDANCE 서비스 바인딩으로 기존 legalnavi-chat Worker에 직접 연결합니다.
 로컬 미리보기만 공개 Worker 주소로 연결합니다. 로그인·데이터베이스는 없습니다.
 질문은 안내 서버와 MCP 서버에 전달되며, 사용자가 선택한 AI 문답은 Google에도 전달됩니다.
@@ -37,9 +37,10 @@ node --test test/api.mjs       # 중계 요청 검증·실패 처리
 node --check assets/experience.js
 ```
 
-- 첫 질문은 기본적으로 수록된 절차를 조회합니다. AI 문답은 기본 꺼짐입니다. 모델 시도 전체가 18초를 넘으면 MCP 안내로 전환합니다.
+- 기본 흐름은 상황 후보 확인 → 필요한 도움 선택 → 실제 MCP 카드입니다. 기한 우선 시 기준일을 입력받습니다. AI 문답은 기본 꺼짐입니다. 모델 시도 전체가 18초를 넘으면 MCP 안내로 전환합니다.
 - 관련 서식은 서버의 연결 목록과 실제 게시된 119종 목록이 모두 일치할 때만 표시합니다.
 - 절차 전문은 legalnavi-chat의 `full.steps`를 이용합니다. 카드와 상세 절차 제목이 같을 때만 제공됩니다.
+- 서식 카드는 대화 안 iframe으로 기존 서식 작성 페이지를 열며, 접어도 입력 내용을 유지합니다. 새 질문은 대화와 iframe을 초기화합니다.
 - 내부 도구 호출 표기는 웹 화면에서 제거합니다. 법률 문장을 새로 생성하지 않습니다.
 - 질문 내용·쿠키·인증 헤더를 로그에 기록하거나 중계하지 않습니다.
 - `scripts/prepare-deploy.mjs`가 공개 파일만 `dist/`로 모읍니다. 소스·테스트·인계장은 배포하지 않습니다.
