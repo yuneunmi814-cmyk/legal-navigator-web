@@ -1,7 +1,7 @@
 const UPSTREAM = 'https://legalnavi-chat.yuneunmi814.workers.dev';
 const json = (body, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
 
-export async function onRequest({ request }) {
+export async function onRequest({ request, env = {} }) {
   const url = new URL(request.url);
   const path = url.pathname.replace(/\/$/, '');
   if (!['/api/ask', '/api/chat', '/api/caps'].includes(path)) return json({ error: 'Not found' }, 404);
@@ -31,7 +31,8 @@ export async function onRequest({ request }) {
     } catch { return json({ error: 'Invalid JSON' }, 400); }
   }
   try {
-    const result = await fetch(UPSTREAM + path, { method, headers: { 'content-type': 'application/json' }, body, signal: AbortSignal.timeout(50000), redirect: 'error' });
+    const upstream = new Request(UPSTREAM + path, { method, headers: { 'content-type': 'application/json' }, body, signal: AbortSignal.timeout(50000), redirect: 'error' });
+    const result = env.GUIDANCE ? await env.GUIDANCE.fetch(upstream) : await fetch(upstream.url, { method, headers: { 'content-type': 'application/json' }, body, signal: upstream.signal, redirect: 'error' });
     if (!result.ok) return json({ error: '안내 서버에 연결하지 못했습니다.' }, 502);
     return json(await result.json());
   } catch { return json({ error: '안내 서버의 응답이 늦어지고 있습니다.' }, 503); }

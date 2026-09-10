@@ -23,7 +23,8 @@ MCP 서버(대화로 물어보는 쪽)는 별도 저장소에 있습니다 →
 
 화면은 정적 HTML/CSS/JavaScript입니다. `assets/experience.js`가 같은 도메인의
 `/api/ask`, `/api/chat`, `/api/caps`를 호출합니다. `functions/api/[[path]].js`는
-기존 legalnavi-chat Worker로 중계합니다. 로그인·데이터베이스는 없습니다.
+`wrangler.toml`의 GUIDANCE 서비스 바인딩으로 기존 legalnavi-chat Worker에 직접 연결합니다.
+로컬 미리보기만 공개 Worker 주소로 연결합니다. 로그인·데이터베이스는 없습니다.
 질문은 안내 서버와 MCP 서버에 전달되며, 사용자가 선택한 AI 문답은 Google에도 전달됩니다.
 대화는 브라우저 메모리에서만 유지하며 새 질문·새로고침으로 초기화합니다.
 Cloudflare Web Analytics는 기존과 같이 사용합니다. "어디에도 저장되지 않는다"고 보장하지 않습니다.

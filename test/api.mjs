@@ -23,3 +23,7 @@ test('upstream failure is a retryable error, not a false legal answer', async ()
  const real=globalThis.fetch;globalThis.fetch=async()=>{throw new Error('offline')};
  try {const r=await onRequest({request:make('/api/ask',{q:'지급명령'})});assert.equal(r.status,503);assert.ok((await r.json()).error);} finally{globalThis.fetch=real;}
 });
+test('production uses the configured Worker service binding instead of public fetch',async()=>{
+ const real=globalThis.fetch;globalThis.fetch=async()=>{throw new Error('must use service binding')};
+ try{let called=false;const env={GUIDANCE:{fetch:async request=>{called=true;assert.equal(new URL(request.url).pathname,'/api/ask');assert.equal((await request.json()).q,'보증금');return Response.json({ok:true});}}};const r=await onRequest({request:make('/api/ask',{q:'보증금'}),env});assert.equal(r.status,200);assert(called);}finally{globalThis.fetch=real;}
+});
