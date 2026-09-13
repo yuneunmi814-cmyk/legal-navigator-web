@@ -238,18 +238,23 @@ function 번호읽기(text){
 function esc(s){ return String(s??"").replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
 
 function 시작(){
+  사진정리();
   stack=[]; 담은날짜={};
   crumb.textContent="";
   app.innerHTML = `
     <p class="q">어떻게 시작할까요?</p>
-    <p class="note">셋 중 아무거나 괜찮습니다. 어느 쪽으로 들어와도 같은 답에 도착합니다.</p>
+    <p class="note">형사절차 안내입니다. 사건번호만으로 현재 진행 상태나 사건의 결과를 조회하지는 않습니다.</p>
     <ul class="opts">
       <li><button class="opt" data-go="번호">사건번호를 알고 있어요<span class="arw">→</span></button></li>
       <li><button class="opt" data-go="질문">번호는 몰라요. 질문으로 찾을게요<span class="arw">→</span></button></li>
       <li><button class="opt" data-go="사진">받은 종이를 사진으로 넣기<span class="arw">→</span></button></li>
+      <li><button class="opt" data-go="글">받은 서류·문자 내용을 붙여넣기<span class="arw">→</span></button></li>
+      <li><button class="opt" data-go="직접">서류 이름을 직접 고르기<span class="arw">→</span></button></li>
     </ul>`;
   app.querySelector('[data-go=번호]').onclick = 번호화면;
   app.querySelector('[data-go=사진]').onclick = 사진화면;
+  app.querySelector('[data-go=글]').onclick = 글화면;
+  app.querySelector('[data-go=직접]').onclick = ()=>판독확인({});
   app.querySelector('[data-go=질문]').onclick = ()=>{ stack.push("시작"); 그리기(D.첫질문, true); };
 }
 
@@ -289,7 +294,7 @@ function 번호화면(){
         <li><button class="opt" id="ok2">맞아요, 계속<span class="arw">→</span></button></li>
         <li><button class="opt" id="no2">아니에요, 질문으로 찾을래요<span class="arw">→</span></button></li>
       </ul>`;
-    $("#ok2").onclick=()=>{ 이동(r.오래됨?"A2b":r.진입노드); };
+    $("#ok2").onclick=()=>{ 이동(r.진입노드); };
     $("#no2").onclick=()=>{ 그리기(D.첫질문,true); };
   };
   $("#cngo").onclick=실행;
@@ -320,6 +325,11 @@ function 그리기_질문(n){
       `<li><button class="opt" data-i="${i}">${esc(o.label)}<span class="arw">→</span></button></li>`).join("")}</ul>
     ${nav()}`;
   n.options.forEach((o,i)=>{ app.querySelector(`[data-i="${i}"]`).onclick=()=>이동(o.next); });
+  const unknown=document.createElement("button");
+  unknown.className="opt";
+  unknown.textContent="잘 모르겠어요 · 여러 항목에 해당해요";
+  unknown.onclick=확인보류;
+  app.querySelector(".opts").append(unknown);
   붙이기_nav();
 }
 
@@ -421,8 +431,35 @@ function 그리기_잎(n){
 //  3. 확인 전에는 기한을 계산하지도, 보여주지도 않는다
 //  4. 못 읽으면 추측하지 않고 못 읽었다고 말한다
 let 사진URL = null;
+let 읽기세대 = 0;
+
+function 확인보류(){
+  사진정리();
+  app.innerHTML=`<p class="q">확인되지 않은 내용으로 결론을 내리지 않겠습니다</p>
+    <p class="note">현재 선택만으로는 절차나 기한을 확정할 수 없습니다. 모른다는 답을 ‘아니오’로 처리하지 않습니다.</p>
+    <div class="readout"><b>상담 전에 확인할 것</b><ul><li>문서의 정확한 제목과 발급기관</li><li>내 역할: 피의자·피고인·고소인 등</li><li>선고일, 실제 송달일, 통지를 받은 경위</li><li>빠진 페이지와 뒤에 받은 통지서가 있는지</li></ul></div>
+    <p>기한이 임박했거나 날짜가 불확실하면 발급기관 또는 <a href="tel:132">대한법률구조공단 132</a>에 확인하세요. 이 화면은 제출이나 불복 포기를 처리하지 않습니다.</p>${nav()}`;
+  붙이기_nav();
+}
+
+function 글화면(){
+  사진정리();
+  app.innerHTML=`<p class="q">받은 내용을 붙여넣어 주세요</p>
+    <p class="note">문자·이메일·전자문서에서 복사하거나 직접 적을 수 있습니다. PDF·한글·워드도 글자가 선택되면 복사해서 넣으세요. 파일 자체는 아직 지원하지 않습니다.</p>
+    <div class="privacy">이 입력 내용은 서버나 외부 AI에 보내지 않습니다. 이름·주민등록번호·주소·연락처는 빼 주세요. 제목과 절차 안내 부분만으로 시작할 수 있습니다.</div>
+    <label for="document-text">문서 제목과 안내 내용 (최대 20,000자)</label>
+    <textarea id="document-text" rows="10" maxlength="20000" autocomplete="off" spellcheck="false" style="width:100%;box-sizing:border-box;font:inherit;padding:1rem;margin:.7rem 0" placeholder="예: 약식명령 / 정식재판청구 안내…"></textarea>
+    <p id="text-error" role="alert"></p><button class="go" id="read-text">문서 종류 확인하기</button>${nav()}`;
+  $("#read-text").onclick=()=>{
+    const input=$("#document-text"), value=input.value.trim();
+    if(!value || value.length>20000){ $("#text-error").textContent="1~20,000자 안에서 내용을 입력해 주세요."; input.focus(); return; }
+    판독확인(판독(value));
+  };
+  붙이기_nav();
+}
 
 function 사진화면(){
+  사진정리();
   stack.push("시작");
   app.innerHTML = `
     <p class="q">받은 종이를 사진으로 넣어 주세요</p>
@@ -455,6 +492,7 @@ function 사진받음(f){
     alert("사진 파일만 넣을 수 있습니다. PDF는 아직 지원하지 않습니다.");
     return;
   }
+  if(f.size>20*1024*1024){ alert("사진은 20MB 이하로 넣어 주세요."); return; }
   if(사진URL) URL.revokeObjectURL(사진URL);
   사진URL = URL.createObjectURL(f);   // 메모리 안에만 있다. 서버로 가지 않는다.
   읽는중();
@@ -476,33 +514,35 @@ function 읽는중(){
 let 취소됨=false;
 
 async function OCR돌리기(){
+  const 세대=++읽기세대, 대상URL=사진URL;
+  let worker;
   const ptxt=()=>$("#ptxt"), pbar=()=>$("#pbar");
   try{
     if(typeof Tesseract==="undefined") throw new Error("엔진 없음");
     // 워커 안에서는 상대경로가 풀리지 않는다. 절대 주소로 준다.
     const 여기 = (p)=>new URL(p, location.href).href;
-    const worker = await Tesseract.createWorker("kor", 1, {
+    worker = await Tesseract.createWorker("kor", 1, {
       workerPath: 여기("ocr/worker.min.js"),
       corePath:   여기("ocr/tesseract-core-simd.wasm.js"),
       langPath:   여기("ocr"),
       logger:(m)=>{
-        if(취소됨) return;
+        if(취소됨 || 세대!==읽기세대) return;
         const t=ptxt(), b=pbar(); if(!t||!b) return;
         if(m.status==="recognizing text"){ t.textContent="글자를 찾는 중…"; b.style.width=Math.round(m.progress*100)+"%"; }
         else { t.textContent="사전을 준비하는 중…"; }
       },
     });
-    const {data} = await worker.recognize(사진URL);
-    await worker.terminate();
-    if(취소됨) return;
+    if(취소됨 || 세대!==읽기세대) return;
+    const {data} = await worker.recognize(대상URL);
+    if(취소됨 || 세대!==읽기세대) return;
     판독확인(판독(data.text||""));
   }catch(e){
-    if(취소됨) return;
+    if(취소됨 || 세대!==읽기세대) return;
     // 못 읽었으면 추측하지 않는다. 솔직히 말하고 직접 고르게 한다.
     판독확인({실패:true, 사유: String(e.message||e).includes("엔진")
       ? "글자 읽는 기능을 불러오지 못했습니다."
       : "사진에서 글자를 읽지 못했습니다."});
-  }
+  }finally{ if(worker) await worker.terminate().catch(()=>{}); }
 }
 
 // 열쇳말로 문서 종류를 맞춘다. 점수가 낮으면 맞혔다고 하지 않는다.
@@ -515,6 +555,10 @@ function 판독(글){
     if(점수>최고점){ 최고점=점수; 최고=d.이름; }
   }
   const 번호 = 번호읽기(글);
+  const 비형사 = 부호RE.exec(글);
+  const 범위밖 = !!(비형사 && D.비형사[비형사[2]]);
+  const 제목들 = D.문서판별.filter(d=>납작.includes(d.이름)).map(d=>d.이름);
+  const 모호함 = 제목들.length>1;
   // 사건번호는 제목보다 훨씬 정확히 읽힌다. 부호가 문서 종류를 말해주면 그쪽을 믿는다.
   const 부호짐작 = (번호.ok && D.부호로문서[번호.부호]) || null;
   if(부호짐작){
@@ -522,21 +566,26 @@ function 판독(글){
     else if(최고점 < 10){ 최고 = 부호짐작; 최고점 = 10; }  // 제목이 약하면 번호를 따른다
   }
   return {
-    문서: 최고점>=6 ? 최고 : null,
+    문서: !범위밖 && !모호함 && 최고점>=6 ? 최고 : null,
+    범위밖, 모호함,
     점수: 최고점,
     번호: 번호.ok ? 번호 : null,
     근거: 부호짐작 ? "사건번호와 본문" : "본문",
-    원문: 글.slice(0,400),
+    원문: 글.slice(0,20000),
   };
 }
 
 function 판독확인(r){
+  if(r.범위밖){ 확인보류(); return; }
   const 종류 = Object.keys(D.문서종류표).filter(k=>!k.startsWith("_"));
   const 안내 = r.실패 ? r.사유 : (r.문서 ? null : "무슨 서류인지 알아보지 못했습니다.");
   app.innerHTML = `
     <p class="q">${r.문서 ? "이렇게 읽었습니다. 맞나요?" : "이 종이 맨 위에 뭐라고 쓰여 있나요?"}</p>
     ${r.문서 ? `<p class="note">다르면 아래에서 골라 주세요.</p>` : ""}
     ${사진URL?`<img class="shot" src="${사진URL}" alt="넣은 사진">`:""}
+    ${r.원문?`<details open><summary>입력·인식한 원문과 대조하세요</summary><pre style="white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;max-height:16rem;overflow:auto">${esc(r.원문)}</pre></details>`:""}
+    <p class="note">문서 종류는 추정입니다. 아래 이름을 직접 선택해야 다음으로 넘어갑니다. 빠진 페이지와 이후 통지도 확인하세요. 승소·불기소 확률은 계산하지 않습니다.</p>
+    ${r.모호함?`<div class="bad">여러 문서 제목이 보입니다. 안내문에 인용된 이름이 아니라 실제 문서 제목을 확인하세요.</div>`:""}
     ${안내?`<div class="bad">${esc(안내)} 아래에서 직접 골라 주세요.</div>`:""}
     ${r.번호?`<div class="readout">
         <div class="k">사건번호도 읽었습니다</div>
@@ -555,8 +604,9 @@ function 판독확인(r){
 
 function 문서선택(이름, 번호){
   const v = D.문서종류표[이름];
-  사진정리();
   if(!v || !v.진입노드){ 그리기(D.첫질문,true); return; }
+  // 판결문이라는 제목만으로 민사/형사와 심급을 정할 수 없다.
+  if(이름==="판결문"){ 확인보류(); return; }
   // 문서에 적힌 날짜를 기산점으로 쓸 수 있는 경우는 판결문뿐이다.
   // 나머지는 '만든 날'이라 반드시 받은 날을 따로 묻는다 (설계도 7-2).
   if(v.날짜사용==="물어봐야함" || v.날짜사용==="문서날짜"){
@@ -573,15 +623,18 @@ function 날짜묻기(이름, v){
   app.innerHTML = `
     <p class="q">${esc(v.날짜사용==="문서날짜" ? "판결을 선고받은 날이 언제인가요?" : 확인.날짜를물을때문구)}</p>
     <p class="note">${esc(v.날짜사용==="문서날짜" ? "판결문에 적힌 선고일입니다." : 확인.날짜를물을때덧붙임)}</p>
+    ${사진URL?`<img class="shot" src="${사진URL}" alt="날짜를 확인할 원본 사진">`:""}
     <div class="datebox">
       <label for="pd">날짜</label>
       <input type="date" id="pd">
       <button class="go" id="pdgo">확인</button>
     </div>
+    <p class="note">문서 작성일과 실제 송달일은 다를 수 있습니다. 대신 받은 사람·전자송달 등 경위가 불명확하면 추정하지 마세요.</p>
+    <button class="opt" id="date-unknown">정확한 날짜를 모르겠어요</button>
     ${nav()}`;
   const i=$("#pd"); i.max=new Date().toISOString().slice(0,10); i.focus();
   $("#pdgo").onclick=()=>{
-    if(!i.value){ i.focus(); return; }
+    if(!i.value || !i.checkValidity()){ i.reportValidity(); i.focus(); return; }
     // 어느 규칙의 날짜인지 문서 종류가 정해 준다
     if(v.필드) 담은날짜[v.필드]=i.value;
     else {
@@ -593,10 +646,12 @@ function 날짜묻기(이름, v){
     }
     이동(v.진입노드);
   };
+  $("#date-unknown").onclick=확인보류;
   붙이기_nav();
 }
 
 function 사진정리(){
+  취소됨=true; 읽기세대++;
   if(사진URL){ URL.revokeObjectURL(사진URL); 사진URL=null; }
 }
 
@@ -612,8 +667,9 @@ function 붙이기_nav(){
   if(r) r.onclick=시작;
 }
 function 뒤로(){
+  사진정리();
   const p=stack.pop();
-  if(!p||p==="시작"){ 시작(); return; }
+  if(!p||p==="시작"||p==="사진날짜"){ 시작(); return; }
   // 돌아간 자리가 날짜를 묻는 곳이면 담아둔 값을 비운다.
   // 안 그러면 자동으로 건너뛰어 되돌아갈 수가 없다.
   const 대상 = p==="ROOT" ? null : D.노드[p];
@@ -624,6 +680,5 @@ function 뒤로(){
 
 시작();
 </script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"b558ecfcfd424fa3b75d264ff35d2b45"}'></script>
 </body>
 </html>
