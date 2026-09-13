@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>내 사건 기한 계산 — 법률 절차 길잡이</title>
-<meta name="description" content="항소·정식재판청구·항고·재정신청·헌법소원 — 지금 며칠 남았는지 세어 드립니다. 사건번호나 받은 서류만 있으면 됩니다. 회원가입도 설치도 없고, 입력한 내용은 이 기기 밖으로 나가지 않습니다.">
+<title>받은 서류 확인 — 법률 절차 길잡이</title>
+<meta name="description" content="사진·PDF·글 붙여넣기로 받은 서류 종류를 확인하고 상담을 준비합니다. 서류 내용은 기기 안에서 처리합니다. 자동 기한과 사건별 결론은 법률 검수 전까지 보류합니다.">
 <link rel="canonical" href="https://legalnavi.pages.dev/절차/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="내 사건 기한 계산 — 법률 절차 길잡이">
-<meta property="og:description" content="항소·정식재판청구·항고·재정신청·헌법소원 — 지금 며칠 남았는지 세어 드립니다. 사건번호나 받은 서류만 있으면 됩니다. 회원가입도 설치도 없고, 입력한 내용은 이 기기 밖으로 나가지 않습니다.">
+<meta property="og:title" content="받은 서류 확인 — 법률 절차 길잡이">
+<meta property="og:description" content="사진·PDF·글 붙여넣기로 받은 서류 종류를 확인하고 상담을 준비합니다. 자동 기한과 사건별 결론은 법률 검수 전까지 보류합니다.">
 <meta property="og:url" content="https://legalnavi.pages.dev/절차/">
 <meta property="og:image" content="https://legalnavi.pages.dev/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="https://legalnavi.pages.dev/icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="https://legalnavi.pages.dev/apple-touch-icon.png">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "법률 절차 길잡이 — 기한 계산", "applicationCategory": "LegalService", "operatingSystem": "웹 브라우저", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"}, "description": "항소·정식재판청구·항고·재정신청·헌법소원 — 지금 며칠 남았는지 세어 드립니다. 사건번호나 받은 서류만 있으면 됩니다. 회원가입도 설치도 없고, 입력한 내용은 이 기기 밖으로 나가지 않습니다.", "url": "https://legalnavi.pages.dev/절차/"}</script>
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"받은 서류 확인 — 법률 절차 길잡이","applicationCategory":"LegalService","operatingSystem":"웹 브라우저","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"description":"사진·PDF·글 붙여넣기로 서류 종류와 상담 준비 사항을 확인합니다. 자동 기한은 법률 검수 전까지 보류합니다.","url":"https://legalnavi.pages.dev/절차/"}</script>
 <style>
 :root{
   --bg:#F4F5F2; --card:#FFF; --line:#D2D6D0;
@@ -163,14 +163,14 @@ footer{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(--line);font-
 <div class="wrap">
   <header>
     <h1>법률 절차 길잡이</h1>
-    <p>지금 무엇을 언제까지 해야 하는지만 알려드립니다</p>
+    <p>받은 서류를 읽고, 다음 확인을 준비하세요</p>
   </header>
   <p class="crumb" id="crumb"></p>
   <main id="app" role="main"></main>
   <footer>
-    <p><b>이 화면은 아무것도 밖으로 보내지 않습니다.</b> 입력한 내용은 이 기기 안에만 있고, 창을 닫으면 사라집니다.</p>
+    <p><b>서류 내용은 서버·외부 AI로 보내지 않습니다.</b> 읽기 도구를 내려받는 통신은 필요합니다. 입력은 브라우저 메모리에만 두며 처음부터·페이지 이동 시 초기화합니다.</p>
     <p><a href="https://legalnavi.pages.dev/">← 법률 절차 길잡이 홈</a> · <a href="https://legalnavi.pages.dev/#forms">서식 목록</a> · <a href="https://legalnavi.pages.dev/#talk">카카오톡에서 쓰는 법</a></p>
-<p>기한은 참고용입니다. 마지막 날에 기대지 말고 미리 내세요. · 데이터 0.1.0 · 법령 대조 2026-08-23</p>
+<p>자동 기한·사건별 결론은 법률 검수 전까지 보류합니다. · 입력 기능 0.2.0 · 2026-09-13</p>
   </footer>
 </div>
 
@@ -181,6 +181,21 @@ const $ = (s)=>document.querySelector(s);
 const app = $("#app"), crumb = $("#crumb");
 let stack = [];          // 되돌아가기용
 let 담은날짜 = {};        // {필드: "2026-08-01"}
+// Approval is data, never inferred from a source URL or an AI code review.
+const 법률검수 = {reviewedBy:null,validUntil:null,approvedNodes:[],holidayYears:[]};
+function 검수통과(id, today=날짜문자(오늘())){
+  return !!(법률검수.reviewedBy && 법률검수.validUntil>=today && 법률검수.approvedNodes.includes(id));
+}
+function 날짜문자(date){
+  const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(date);
+  const get=key=>parts.find(p=>p.type===key).value;
+  return `${get('year')}-${get('month')}-${get('day')}`;
+}
+function 유효날짜(value){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;
+  const d=new Date(`${value}T00:00:00+09:00`);
+  return Number.isFinite(d.getTime()) && 날짜문자(d)===value && value<=날짜문자(new Date());
+}
 
 // ── 날짜 계산 ────────────────────────────────────────────────
 // 확실한 것만 넣는다. 음력 명절(설·추석·부처님오신날)은 해마다 날짜가 달라
@@ -193,6 +208,8 @@ function 쉬는날(d){
   return 고정공휴일.includes(md);
 }
 function 마감계산(시작문자열, 규칙){
+  if(!유효날짜(시작문자열)) throw Error('날짜를 확인해야 합니다.');
+  if(!법률검수.holidayYears.includes(+시작문자열.slice(0,4))) throw Error('해당 연도 공휴일 자료의 검수가 필요합니다.');
   const [y,m,dd] = 시작문자열.split("-").map(Number);
   const d = new Date(y, m-1, dd);
   // 초일불산입 — 시작일 다음 날부터 세므로 마감은 시작일 + days
@@ -244,16 +261,19 @@ function 시작(){
   app.innerHTML = `
     <p class="q">어떻게 시작할까요?</p>
     <p class="note">형사절차 안내입니다. 사건번호만으로 현재 진행 상태나 사건의 결과를 조회하지는 않습니다.</p>
+    <div class="privacy">사진·PDF·글을 읽고 문서 종류를 확인할 수 있습니다. 자동 기한과 사건별 결론은 법률 검수 전까지 보류하며, 확인할 자료와 공식 문의 경로를 안내합니다.</div>
     <ul class="opts">
       <li><button class="opt" data-go="번호">사건번호를 알고 있어요<span class="arw">→</span></button></li>
       <li><button class="opt" data-go="질문">번호는 몰라요. 질문으로 찾을게요<span class="arw">→</span></button></li>
       <li><button class="opt" data-go="사진">받은 종이를 사진으로 넣기<span class="arw">→</span></button></li>
       <li><button class="opt" data-go="글">받은 서류·문자 내용을 붙여넣기<span class="arw">→</span></button></li>
+      <li><button class="opt" data-go="PDF">PDF 파일 넣기<span class="arw">→</span></button></li>
       <li><button class="opt" data-go="직접">서류 이름을 직접 고르기<span class="arw">→</span></button></li>
     </ul>`;
   app.querySelector('[data-go=번호]').onclick = 번호화면;
   app.querySelector('[data-go=사진]').onclick = 사진화면;
   app.querySelector('[data-go=글]').onclick = 글화면;
+  app.querySelector('[data-go=PDF]').onclick = PDF화면;
   app.querySelector('[data-go=직접]').onclick = ()=>판독확인({});
   app.querySelector('[data-go=질문]').onclick = ()=>{ stack.push("시작"); 그리기(D.첫질문, true); };
 }
@@ -287,9 +307,7 @@ function 번호화면(){
         <div class="v">${esc(r.연도)}년 ${esc(r.부호)}${esc(r.번호)} · ${esc(r.기관)}</div>
         <div class="d">${esc(r.쉬운말)}</div>
       </div>
-      ${r.알림?`<div class="warn good"><b>참고</b> ${esc(r.알림)}</div>`:""}
-      ${r.주의?`<div class="warn"><b>주의</b> ${esc(r.주의)}</div>`:""}
-      ${r.오래됨?`<div class="warn"><b>${esc(r.연도)}년 사건입니다</b> ${esc(r.오래됨)}</div>`:""}
+      <p class="note">사건번호의 부호를 읽은 결과입니다. 현재 재판 중인지, 이미 끝났는지, 기한이 남았는지는 번호만으로 알 수 없습니다.</p>
       <ul class="opts">
         <li><button class="opt" id="ok2">맞아요, 계속<span class="arw">→</span></button></li>
         <li><button class="opt" id="no2">아니에요, 질문으로 찾을래요<span class="arw">→</span></button></li>
@@ -334,6 +352,7 @@ function 그리기_질문(n){
 }
 
 function 그리기_날짜(n){
+  if(!검수통과(현재id)){검수보류(n);return;}
   const 규칙=D.기한규칙[n.rule];
   // 사진 흐름에서 이미 받은 날짜라면 다시 묻지 않는다. 같은 걸 두 번 묻는 건 실례다.
   if(담은날짜[n.field]){
@@ -354,9 +373,9 @@ function 그리기_날짜(n){
     ${n.none_option?`<ul class="opts" style="margin-top:.65rem"><li><button class="opt" id="none">${esc(n.none_option.label)}<span class="arw">→</span></button></li></ul>`:""}
     ${nav()}`;
   const inp=$("#dt");
-  inp.max = new Date().toISOString().slice(0,10);
+  inp.max = 날짜문자(new Date());
   $("#dtgo").onclick=()=>{
-    if(!inp.value){ inp.focus(); return; }
+    if(!유효날짜(inp.value)){ inp.focus(); inp.reportValidity(); return; }
     담은날짜[n.field]=inp.value;
     const {날짜}=마감계산(inp.value,규칙);
     const 남음=일수차(날짜,오늘());
@@ -367,6 +386,7 @@ function 그리기_날짜(n){
 }
 
 function 그리기_잎(n){
+  if(!검수통과(현재id)){검수보류(n);return;}
   const 규칙 = n.rule ? D.기한규칙[n.rule] : null;
   let dlHTML="", 물어야할필드=null;
   if(규칙){
@@ -417,8 +437,8 @@ function 그리기_잎(n){
     </div>
     ${nav()}`;
   if(물어야할필드){
-    const i=$("#lfdt"); i.max=new Date().toISOString().slice(0,10);
-    $("#lfgo").onclick=()=>{ if(!i.value){i.focus();return;} 담은날짜[물어야할필드]=i.value; 그리기_잎(n); };
+    const i=$("#lfdt"); i.max=날짜문자(new Date());
+    $("#lfgo").onclick=()=>{ if(!유효날짜(i.value)){i.focus();i.reportValidity();return;} 담은날짜[물어야할필드]=i.value; 그리기_잎(n); };
   }
   붙이기_nav();
 }
@@ -432,6 +452,69 @@ function 그리기_잎(n){
 //  4. 못 읽으면 추측하지 않고 못 읽었다고 말한다
 let 사진URL = null;
 let 읽기세대 = 0;
+let pdf취소 = null;
+let 활성OCR = null;
+
+function 검수보류(n){
+  사진정리();
+  app.innerHTML=`<p class="q">다음 절차를 확인할 준비가 됐습니다</p>
+    <div class="readout"><b>확인된 내용</b><p>앞에서 선택한 답변으로 관련 절차를 찾았습니다. 실제 사건 진행 상태를 조회하거나 사실관계를 검증한 결과는 아닙니다.</p></div>
+    <div class="bad"><b>아직 확인되지 않은 내용</b><p>이 분기의 법률 검수와 공휴일 검증이 완료되지 않아 마감일·불복 가능 여부를 자동으로 확정하지 않습니다. 기한이 없거나 이미 끝났다는 뜻이 아닙니다.</p></div>
+    <div class="readout"><b>지금 준비할 것</b><ul><li>받은 서류 전체와 이후 통지서</li><li>발급기관·사건번호·본인의 역할·재판 심급</li><li>선고일과 송달일을 구분한 기록, 봉투·전자송달 내역</li><li>원하는 해결과 확인할 질문: 어떤 절차인지, 어디에 언제까지 내는지</li></ul></div>
+    <p><b>공식 확인 경로</b></p><ul><li><a href="https://www.law.go.kr/법령/형사소송법" target="_blank" rel="noopener noreferrer">국가법령정보센터 — 형사소송법</a></li><li><a href="https://www.klac.or.kr" target="_blank" rel="noopener noreferrer">대한법률구조공단</a> · <a href="tel:132">132 전화</a></li></ul>
+    <p class="note">기한이 임박했으면 사이트의 검수 완료를 기다리지 말고 문서에 적힌 발급기관이나 전문가에게 즉시 확인하세요. 자동 제출·합의·포기는 하지 않습니다.</p>
+    <button class="go" id="prepare-copy">상담 준비 목록 복사</button><p id="copy-status" role="status"></p>${nav()}`;
+  $("#prepare-copy").onclick=async()=>{
+    const text='상담 확인 목록\n1. 문서 제목·발급기관·사건번호\n2. 내 역할과 재판 심급\n3. 선고일·송달일·받은 경위\n4. 이후 통지와 빠진 페이지\n5. 원하는 해결\n질문: 가능한 절차, 정확한 제출처와 기한, 필요한 자료는?';
+    try{await navigator.clipboard.writeText(text);$("#copy-status").textContent='준비 목록을 복사했습니다. 사건 내용은 포함하지 않았습니다.';}
+    catch{$("#copy-status").textContent='자동 복사를 지원하지 않습니다. 화면의 준비 목록을 직접 복사해 주세요.';}
+  };
+  붙이기_nav();
+}
+
+function PDF화면(){
+  사진정리();
+  app.innerHTML=`<p class="q">PDF 파일을 넣어 주세요</p>
+    <p class="note">글자가 있는 PDF와 스캔 PDF를 읽습니다. 최대 20MB·10쪽·본문 20,000자. 암호가 걸린 파일은 지원하지 않습니다.</p>
+    <div class="privacy">파일과 읽은 내용은 이 기기에서 처리하며 서버·외부 AI로 전송하지 않습니다. 문서 안의 링크나 실행 명령은 열지 않습니다.</div>
+    <label for="pdf-file">PDF 파일 선택</label><input id="pdf-file" type="file" accept="application/pdf,.pdf">
+    <p id="pdf-status" role="status" aria-live="polite"></p>
+    <button class="opt" id="pdf-cancel" hidden>읽기 취소</button>${nav()}`;
+  $("#pdf-cancel").onclick=PDF화면;
+  $("#pdf-file").onchange=async()=>{
+    const file=$("#pdf-file").files[0]; if(!file)return;
+    const generation=++읽기세대;
+    const controller=new AbortController(); pdf취소=controller;
+    controller.signal.addEventListener('abort',()=>{if(활성OCR){void 활성OCR.terminate().catch(()=>{});활성OCR=null;}},{once:true});
+    const status=$("#pdf-status"), input=$("#pdf-file"), cancel=$("#pdf-cancel");
+    input.disabled=true; cancel.hidden=false; status.textContent="PDF 읽기를 준비합니다…";
+    const timer=setTimeout(()=>controller.abort(),120000);
+    let worker;
+    try{
+      const {readPdf}=await import('./pdf/reader.mjs');
+      const result=await readPdf(file,{signal:controller.signal,
+        progress:text=>{if(generation===읽기세대)status.textContent=text;},
+        ocr:async canvas=>{
+          if(controller.signal.aborted)throw Error('읽기 취소');
+          if(!worker){
+            const local=p=>new URL(p,location.href).href;
+            worker=await Tesseract.createWorker('kor',1,{workerPath:local('ocr/worker.min.js'),corePath:local('ocr/tesseract-core-simd.wasm.js'),langPath:local('ocr')});
+            if(controller.signal.aborted){await worker.terminate();throw Error('읽기 취소');}
+            활성OCR=worker;
+          }
+          return (await worker.recognize(canvas)).data.text||'';
+        }});
+      if(generation!==읽기세대 || controller.signal.aborted)return;
+      판독확인(판독(result.text));
+    }catch(error){
+      if(generation!==읽기세대)return;
+      status.textContent=controller.signal.aborted?'시간 제한으로 읽기를 중단했습니다. 사진이나 글 붙여넣기를 이용해 주세요.':
+        (/Password|destroyed/i.test(error.message)?'암호가 걸렸거나 읽을 수 없는 PDF입니다. 직접 내용을 붙여넣어 주세요.':`읽지 못했습니다. ${error.message||'사진 또는 글 붙여넣기를 이용해 주세요.'}`);
+      input.disabled=false; input.value=''; cancel.hidden=true;
+    }finally{clearTimeout(timer); if(worker)await worker.terminate().catch(()=>{}); if(활성OCR===worker)활성OCR=null; if(pdf취소===controller)pdf취소=null;}
+  };
+  붙이기_nav();
+}
 
 function 확인보류(){
   사진정리();
@@ -445,7 +528,7 @@ function 확인보류(){
 function 글화면(){
   사진정리();
   app.innerHTML=`<p class="q">받은 내용을 붙여넣어 주세요</p>
-    <p class="note">문자·이메일·전자문서에서 복사하거나 직접 적을 수 있습니다. PDF·한글·워드도 글자가 선택되면 복사해서 넣으세요. 파일 자체는 아직 지원하지 않습니다.</p>
+    <p class="note">문자·이메일·전자문서에서 복사하거나 직접 적을 수 있습니다. 한글·워드는 글자가 선택되면 복사해서 넣으세요. PDF는 첫 화면에서 파일로 넣을 수도 있습니다.</p>
     <div class="privacy">이 입력 내용은 서버나 외부 AI에 보내지 않습니다. 이름·주민등록번호·주소·연락처는 빼 주세요. 제목과 절차 안내 부분만으로 시작할 수 있습니다.</div>
     <label for="document-text">문서 제목과 안내 내용 (최대 20,000자)</label>
     <textarea id="document-text" rows="10" maxlength="20000" autocomplete="off" spellcheck="false" style="width:100%;box-sizing:border-box;font:inherit;padding:1rem;margin:.7rem 0" placeholder="예: 약식명령 / 정식재판청구 안내…"></textarea>
@@ -532,6 +615,7 @@ async function OCR돌리기(){
         else { t.textContent="사전을 준비하는 중…"; }
       },
     });
+    if(세대===읽기세대) 활성OCR=worker;
     if(취소됨 || 세대!==읽기세대) return;
     const {data} = await worker.recognize(대상URL);
     if(취소됨 || 세대!==읽기세대) return;
@@ -542,7 +626,7 @@ async function OCR돌리기(){
     판독확인({실패:true, 사유: String(e.message||e).includes("엔진")
       ? "글자 읽는 기능을 불러오지 못했습니다."
       : "사진에서 글자를 읽지 못했습니다."});
-  }finally{ if(worker) await worker.terminate().catch(()=>{}); }
+  }finally{ if(worker) await worker.terminate().catch(()=>{}); if(활성OCR===worker)활성OCR=null; }
 }
 
 // 열쇳말로 문서 종류를 맞춘다. 점수가 낮으면 맞혔다고 하지 않는다.
@@ -632,9 +716,9 @@ function 날짜묻기(이름, v){
     <p class="note">문서 작성일과 실제 송달일은 다를 수 있습니다. 대신 받은 사람·전자송달 등 경위가 불명확하면 추정하지 마세요.</p>
     <button class="opt" id="date-unknown">정확한 날짜를 모르겠어요</button>
     ${nav()}`;
-  const i=$("#pd"); i.max=new Date().toISOString().slice(0,10); i.focus();
+  const i=$("#pd"); i.max=날짜문자(new Date()); i.focus();
   $("#pdgo").onclick=()=>{
-    if(!i.value || !i.checkValidity()){ i.reportValidity(); i.focus(); return; }
+    if(!유효날짜(i.value) || !i.checkValidity()){ i.reportValidity(); i.focus(); return; }
     // 어느 규칙의 날짜인지 문서 종류가 정해 준다
     if(v.필드) 담은날짜[v.필드]=i.value;
     else {
@@ -652,6 +736,8 @@ function 날짜묻기(이름, v){
 
 function 사진정리(){
   취소됨=true; 읽기세대++;
+  if(pdf취소){pdf취소.abort();pdf취소=null;}
+  if(활성OCR){void 활성OCR.terminate().catch(()=>{});활성OCR=null;}
   if(사진URL){ URL.revokeObjectURL(사진URL); 사진URL=null; }
 }
 
@@ -679,6 +765,7 @@ function 뒤로(){
 }
 
 시작();
+window.addEventListener('pagehide',시작);
 </script>
 </body>
 </html>

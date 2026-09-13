@@ -11,7 +11,7 @@ function setup(){
     if(!nodes.has(key)) nodes.set(key,{innerHTML:'',textContent:'',value:'',focus(){},append(){},querySelector:node});
     return nodes.get(key);
   };
-  const context=vm.createContext({document:{querySelector:node,createElement:()=>node('created')},window:{scrollTo(){}},URL,Date,alert(){}});
+  const context=vm.createContext({document:{querySelector:node,createElement:()=>node('created')},window:{scrollTo(){},addEventListener(){}},URL,Date,alert(){}});
   vm.runInContext(script,context);
   return {run:code=>vm.runInContext(code,context),node};
 }
@@ -59,4 +59,24 @@ test('restart clears dates and invalidates pending OCR',()=>{
 test('document page has no analytics beacon or input upload code',()=>{
   assert.ok(!html.includes('cloudflareinsights'));
   assert.ok(!/fetch\(|localStorage|sendBeacon/.test(script));
+});
+test('invalid and future dates are rejected',()=>{
+  const {run}=setup();
+  for(const date of ['2026-02-30','2026-13-01','2100-01-01','bad',''])assert.equal(run(`유효날짜(${JSON.stringify(date)})`),false);
+  assert.equal(run('유효날짜("2024-02-29")'),true);
+});
+test('all legacy leaf and date nodes fail closed without review',()=>{
+  const {run,node}=setup();
+  const ids=run('Object.keys(D.노드).filter(id=>["date","leaf"].includes(D.노드[id].type))');
+  for(const id of ids){
+    run(`현재id=${JSON.stringify(id)};그리기(D.노드[현재id])`);
+    assert.ok(node('#app').innerHTML.includes('법률 검수'),id);
+    assert.ok(!node('#app').innerHTML.includes('일 남았습니다'),id);
+  }
+});
+test('expired review and unverified holidays do not enable calculation',()=>{
+  const {run}=setup();
+  run('법률검수.reviewedBy="test";법률검수.approvedNodes=["A2"];법률검수.validUntil="2020-01-01"');
+  assert.equal(run('검수통과("A2")'),false);
+  assert.throws(()=>run('마감계산("2026-01-01",D.기한규칙.항소)'),/공휴일/);
 });

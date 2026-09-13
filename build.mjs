@@ -303,8 +303,7 @@ async function run() {
   const { added, removed } = await syncLanding(forms.filter((f) => f.t), counts);
 
   // /절차/ 는 손으로 쓴 정적 페이지라 서식 생성 흐름을 안 탄다.
-  // 계측만은 랜딩·서식과 같은 규칙으로 따로 넣어 준다(이미 있으면 지우고 다시).
-  await 계측붙이기("절차/index.html");
+  // 민감한 서류를 처리하는 /절차/에는 외부 계측을 추가하지 않는다.
 
   console.log(`서식 ${done}/${forms.length}종 생성 · ${Math.round(bytes / 1024)}KB`);
   console.log(`커버리지 ${counts.분야}분야 · ${counts.주제}주제 · 서식 ${counts.서식} · 자가진단 ${counts.자가진단}`);

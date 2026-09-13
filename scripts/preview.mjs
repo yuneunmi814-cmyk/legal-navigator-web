@@ -5,7 +5,7 @@ import { onRequest } from '../functions/api/[[path]].js';
 const guidance = process.env.GUIDANCE_WORKER_PATH ? (await import(process.env.GUIDANCE_WORKER_PATH)).default : null;
 const bindings = guidance ? {GUIDANCE:{fetch:r=>guidance.fetch(r,{MCP_URL:'https://legal-navigator-kakaotools.playmcp-endpoint.kakaocloud.io/mcp',FORMS_BASE:'https://legalnavi.pages.dev/forms'})}} : {};
 const root = resolve(import.meta.dirname, '..');
-const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.png': 'image/png', '.pdf': 'application/pdf' };
+const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.mjs': 'text/javascript', '.wasm': 'application/wasm', '.gz': 'application/gzip', '.svg': 'image/svg+xml', '.png': 'image/png', '.pdf': 'application/pdf' };
 http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, 'http://localhost:4173');
