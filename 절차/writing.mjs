@@ -1,5 +1,7 @@
 import {blank,draft} from './writing-model.mjs';
 import {KEY,unpack,fields} from './intake-model.mjs';
+import {mountPaymentEditor} from './payment-editor.mjs';
+import {seed} from './payment-draft.mjs';
 let data=blank(),step=0;
 try{const raw=sessionStorage.getItem(KEY);sessionStorage.removeItem(KEY);const intake=unpack(raw);if(intake){data.intake=intake;data.document=intake.title;data.role=intake.role;}}catch{}
 const $=id=>document.getElementById(id);
@@ -12,13 +14,12 @@ function sync(){
 function button(text,handler,primary=false){const b=document.createElement('button');b.textContent=text;if(primary)b.className='primary';b.onclick=handler;$('actions').append(b);return b;}
 function renderFormGuide(){
  $('form-guide')?.remove();if(data.paymentChoice!=='object')return;
- const section=document.createElement('section');section.id='form-guide';
- const title=document.createElement('h2');title.textContent='이 내용을 서식의 어느 칸에 옮기나요?';section.append(title);
- const note=document.createElement('p');note.textContent='사용자가 이의신청 준비를 선택해 표시합니다. 법적 적합성 확인이나 자동 제출이 아닙니다. 모르는 칸은 추정하지 마세요.';section.append(note);
- const rows=[['사건',data.intake?.caseNumber,'받은 지급명령의 사건번호와 한 글자씩 대조'],['지급명령 발령 법원',data.intake?.court,'문서에 적힌 발령 법원을 확인'],['송달받은 날짜',data.intake?.received,'서식의 연·월·일 칸에 옮기기 전 실제 송달일 확인. 작성일은 사용하지 않음'],['이의 이유',data.objection,'직접 확인한 내용만 옮기기. 전부·일부 이의 범위는 별도 확인'],['채권자·채무자·주소·연락처','','실제 제출 서식에서 원문과 대조해 직접 기재. 별칭을 제출하지 않기'],['작성일·서명 또는 날인','','실제 작성일과 본인 서명 확인']];
- for(const [label,value,hint] of rows){const row=document.createElement('div');row.className='event';const h=document.createElement('h3');h.textContent=label;const p=document.createElement('p');p.style.overflowWrap='anywhere';p.textContent=value||'미확인 — 직접 확인이 필요합니다.';const small=document.createElement('p');small.textContent=hint;row.append(h,p,small);if(value){const b=document.createElement('button');b.textContent=label+' 내용 복사';b.onclick=async()=>{try{await navigator.clipboard.writeText(value);b.textContent='복사했습니다';}catch{b.textContent='자동 복사 불가 — 위 내용을 선택해 복사하세요';}};row.append(b);}section.append(row);}
- const link=document.createElement('a');link.href='/forms/지급명령_이의신청서';link.target='_blank';link.rel='noopener';link.textContent='작성 내용 유지하고 지급명령 이의신청서 열기 →';section.append(link);
- const checklist=document.createElement('p');checklist.textContent='제출 전: 서식이 현재 내 상황에 맞는지 · 이의 범위 · 실제 송달일과 제출기한 · 발령 법원 · 사건번호·당사자 · 서명 · 접수 확인 방법을 점검하세요. 원본과 봉투·전자송달 내역은 별도로 보관하세요.';section.append(checklist);$('review').after(section);
+ const section=document.createElement('div');section.id='form-guide';
+ const nextSeed=seed(data.intake||{},data.objection);
+ if(data.paymentForm&&data.paymentSeed){for(const key of Object.keys(nextSeed))if(nextSeed[key]!==data.paymentSeed[key])data.paymentForm[key]=nextSeed[key];}
+ data.paymentSeed=nextSeed;
+ mountPaymentEditor(section,data.intake||{},data.objection,data.paymentForm,d=>{data.paymentForm=d;});
+ $('review').after(section);
 }
 function render(){
   $('status').textContent='';$('actions').replaceChildren();$('review').hidden=step!==2;$('editor').hidden=step===2;
@@ -30,14 +31,15 @@ function render(){
     $('add').onclick=()=>{sync();data.events.push({date:'',text:'',evidence:''});data.confirmed=false;render();};
     if(data.document.replace(/\s/g,'')==='지급명령'){
       const section=document.createElement('section');section.innerHTML=`<h2>지급명령을 받았다면</h2><p>상대방의 신청을 바탕으로 법원이 내린 지급명령입니다. 읽은 청구 내용이 모두 사실로 검증됐다는 뜻은 아닙니다. 제목·내 역할·현재 상태부터 확인하세요.</p><p>일반적으로 송달받은 날부터 2주 이내에 이의신청을 할 수 있습니다. 이 화면은 실제 송달일이나 마지막 날을 계산하지 않습니다. 기한이 임박했거나 지난 것 같으면 발령 법원에 즉시 확인하세요.</p><p><a href="https://www.law.go.kr/법령/민사소송법/제470조" target="_blank" rel="noopener">민사소송법 제470조</a> · <a href="https://www.scourt.go.kr/nm/min_1/min_1_7/min_1_7_1/index.html" target="_blank" rel="noopener">법원 독촉절차 안내</a> (확인: 2026-09-15)</p><label for="payment-choice">내가 원하는 다음 행동</label><select id="payment-choice"><option value="">아직 선택하지 않음</option><option value="understand">내용과 현재 상태부터 확인하고 싶어요</option><option value="object">내가 채무자로 기재된 지급명령에 이의신청을 준비하고 싶어요</option><option value="consult">내 역할·송달일·대응 방법을 상담하고 싶어요</option></select>${field('objection','이의신청을 선택했다면, 내가 직접 확인한 이의 이유 (선택)',data.objection,'예시를 그대로 쓰지 말고 본인의 사실만 적으세요. 모르면 비워 두세요.')}<p>채권자이거나 다른 종류의 서류라면 이 서식을 선택하지 마세요. 이의 범위가 일부이거나 이미 확정됐는지 모르겠다면 별도 확인이 필요합니다.</p>`;
+      const narrative=$('editor').firstElementChild;const optional=document.createElement('details');const optionalTitle=document.createElement('summary');optionalTitle.textContent='사건 경위·자료를 추가로 정리하기 (선택)';optional.append(optionalTitle,narrative);$('editor').append(optional);
       $('editor').prepend(section);$('payment-choice').value=data.paymentChoice;
     }
   }
-  if(step===2){$('editor').replaceChildren();$('confirm').checked=data.confirmed;$('draft').textContent=draft(data);renderFormGuide();}
+  if(step===2){$('editor').replaceChildren();$('confirm').checked=data.confirmed;$('draft').textContent=draft(data);$('review').hidden=data.paymentChoice==='object';renderFormGuide();}
   else $('form-guide')?.remove();
   if(step>0)button('← 이전 내용 수정',()=>{if(step<2)sync();data.confirmed=false;step--;render();});
   if(step<2)button(step===0?'있었던 일 정리하기 →':'초안 확인하기 →',()=>{sync();if(step===1&&!data.events.some(e=>e.text.trim())&&data.paymentChoice!=='object'){$('status').textContent='있었던 일을 하나 이상 적어주세요. 날짜와 자료는 비워 두어도 됩니다.';return;}data.confirmed=false;step++;render();window.scrollTo(0,0);},true);
-  else{
+  else if(data.paymentChoice!=='object'){
     const save=button('초안 내려받기 (.txt)',()=>{
       if(!data.confirmed)return;
       const url=URL.createObjectURL(new Blob(['\uFEFF'+draft(data)],{type:'text/plain;charset=utf-8'}));

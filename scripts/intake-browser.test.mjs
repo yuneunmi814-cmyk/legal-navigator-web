@@ -13,7 +13,7 @@ try{
  await page.locator('#received-title').waitFor();assert.equal(await page.locator('#received-caseNumber').inputValue(),'2026차전1234');assert.equal(await page.evaluate(()=>sessionStorage.getItem('legalnavi-confirmed-intake-v1')),null);
  await page.getByRole('button',{name:'있었던 일 정리하기 →'}).click();await page.locator('#payment-choice').selectOption('object');await page.locator('#objection').fill('이체 내역을 확인하고 싶습니다.');
  await page.getByRole('button',{name:'초안 확인하기 →'}).click();assert.ok((await page.locator('#form-guide').textContent()).includes('2026차전1234'));
- assert.ok((await page.locator('#draft').textContent()).includes('100만원'));assert.ok(await page.getByRole('button',{name:'초안 내려받기 (.txt)'}).isDisabled());
+ assert.ok((await page.locator('#draft').textContent()).includes('100만원'));assert.ok(await page.getByRole('button',{name:'채워진 작성본 내려받기 (.html)'}).isDisabled());
  for(const width of [320,375,768,1280]){await page.setViewportSize({width,height:900});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);}
  await page.getByRole('button',{name:'← 이전 내용 수정'}).click();await page.getByRole('button',{name:'← 이전 내용 수정'}).click();await page.locator('#received-title').fill('다른 문서');await page.getByRole('button',{name:'있었던 일 정리하기 →'}).click();assert.equal(await page.locator('#payment-choice').count(),0);
  await page.locator('#text-0').fill('서류를 받았습니다');await page.getByRole('button',{name:'초안 확인하기 →'}).click();assert.equal(await page.locator('#form-guide').count(),0);
