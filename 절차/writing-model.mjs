@@ -1,4 +1,4 @@
-export const blank = () => ({goal:'',role:'',document:'',events:[{date:'',text:'',evidence:''}],questions:'',confirmed:false});
+export const blank = () => ({goal:'',role:'',document:'',events:[{date:'',text:'',evidence:''}],questions:'',confirmed:false,intake:null,paymentChoice:'',objection:''});
 export function issues(data){
   const result=[];
   if(!data.goal.trim())result.push('원하는 도움을 아직 적지 않았습니다.');
@@ -21,6 +21,8 @@ export function draft(data){
   return ['사건 경위 및 증거 정리 — 상담·작성 준비용 초안',
     '공식 제출 서식이 아닙니다. 입력한 사실을 정리했으며 법적 주장·기한·승패를 판단하지 않았습니다.',
     `사용자 대조: ${data.confirmed?'입력 내용과 초안을 대조함 (법률 검수 아님)':'아직 대조하지 않음'}`,
+    ...(data.intake?['\n받은 서류에서 사용자가 대조한 항목 (사실·법률 검증 아님)',...Object.entries(data.intake).map(([k,v])=>`${({title:'문서 제목',court:'보낸 기관',caseNumber:'사건번호',role:'문서에서 내 역할',request:'문서의 요구 내용',received:'받은 날·경위',deadlineText:'기한 안내 원문'})[k]||k}: ${value(v)}`)]:[]),
+    ...(data.paymentChoice==='object'?['\n지급명령 이의신청 작성 준비 (사용자 선택)',`사용자가 적은 이의 이유: ${value(data.objection)}`,'이의 범위·송달일·관할·현재 사건 상태를 확인한 뒤 공식 서식에 옮기세요. 이 준비문 자체를 제출하지 마세요.']:[]),
     '\n1. 원하는 도움',value(data.goal),'\n2. 내 역할',value(data.role),
     '\n3. 받은 문서',value(data.document),'\n4. 사건 경위 (입력 순서)',
     ...data.events.map((e,i)=>`${i+1}. 시점: ${value(e.date)}\n내용: ${value(e.text)}\n관련 자료: ${value(e.evidence)}`),
