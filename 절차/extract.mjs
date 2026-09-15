@@ -3,7 +3,7 @@
 export function extract(source){
  const result={};
  const patterns={
-  title:/^[ \t]*지[ \t]*급[ \t]*명[ \t]*령[ \t]*$/gm,
+  title:/^[ \t]*(?:지[ \t]*급[ \t]*명[ \t]*령|내용증명|소장|판결문|약식명령|보정명령|출석요구서|불송치결정통지서)[ \t]*$/gm,
   caseNumber:/20\d{2}[ \t]*(?:차전|차)[ \t]*\d+/g,
   court:/[가-힣]+(?:지방법원|고등법원|가정법원)(?:[ \t]+[가-힣]+지원)?/g,
   creditor:/^[ \t]*채[ \t]*권[ \t]*자[ \t]*[:：]?[ \t]+([^\n\r]+)/gm,
@@ -18,6 +18,6 @@ export function extract(source){
   else if(unique.length>1)result[key]={ambiguous:true};
  }
  // A bundle mentioning other document headings is not confidently one payment order.
- if(result.title&&/^[ \t]*(?:소장|판결문|약식명령|지급명령신청서)[ \t]*$/m.test(source))result.title={ambiguous:true};
+ if(result.title?.value==='지급명령'&&/^[ \t]*지급명령신청서[ \t]*$/m.test(source))result.title={ambiguous:true};
  return result;
 }
