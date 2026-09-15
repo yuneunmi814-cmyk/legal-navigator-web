@@ -269,6 +269,7 @@ function 시작(){
       <li><button class="opt" data-go="글">받은 서류·문자 내용을 붙여넣기<span class="arw">→</span></button></li>
       <li><button class="opt" data-go="PDF">PDF 파일 넣기<span class="arw">→</span></button></li>
       <li><button class="opt" data-go="직접">서류 이름을 직접 고르기<span class="arw">→</span></button></li>
+      <li><a class="opt" href="작성.html">내 상황 정리하고 초안 만들기 →</a></li>
     </ul>`;
   app.querySelector('[data-go=번호]').onclick = 번호화면;
   app.querySelector('[data-go=사진]').onclick = 사진화면;
@@ -459,7 +460,8 @@ function 검수보류(n){
   사진정리();
   app.innerHTML=`<p class="q">다음 절차를 확인할 준비가 됐습니다</p>
     <div class="readout"><b>확인된 내용</b><p>앞에서 선택한 답변으로 관련 절차를 찾았습니다. 실제 사건 진행 상태를 조회하거나 사실관계를 검증한 결과는 아닙니다.</p></div>
-    <div class="bad"><b>아직 확인되지 않은 내용</b><p>이 분기의 법률 검수와 공휴일 검증이 완료되지 않아 마감일·불복 가능 여부를 자동으로 확정하지 않습니다. 기한이 없거나 이미 끝났다는 뜻이 아닙니다.</p></div>
+    <div class="bad"><b>정확한 기한·법적 판단만 보류합니다</b><p>이 분기의 법률 검수와 공휴일 검증이 완료되지 않아 마감일·불복 가능 여부를 자동으로 확정하지 않습니다. 기한이 없거나 이미 끝났다는 뜻이 아닙니다. 사실 정리와 작성 준비는 계속할 수 있습니다.</p></div>
+    <div class="readout"><b>지금 계속할 수 있는 도움</b><p><a href="작성.html">질문에 답하며 사건 경위·증거 목록 만들기 →</a></p><p><a href="/#forms">기존 서식 목록과 작성 안내 찾아보기 →</a></p><p>특정 서식을 제출하라는 판단은 아닙니다. 받은 문서와 공식 안내를 확인해 선택하세요.</p></div>
     <div class="readout"><b>지금 준비할 것</b><ul><li>받은 서류 전체와 이후 통지서</li><li>발급기관·사건번호·본인의 역할·재판 심급</li><li>선고일과 송달일을 구분한 기록, 봉투·전자송달 내역</li><li>원하는 해결과 확인할 질문: 어떤 절차인지, 어디에 언제까지 내는지</li></ul></div>
     <p><b>공식 확인 경로</b></p><ul><li><a href="https://www.law.go.kr/법령/형사소송법" target="_blank" rel="noopener noreferrer">국가법령정보센터 — 형사소송법</a></li><li><a href="https://www.klac.or.kr" target="_blank" rel="noopener noreferrer">대한법률구조공단</a> · <a href="tel:132">132 전화</a></li></ul>
     <p class="note">기한이 임박했으면 사이트의 검수 완료를 기다리지 말고 문서에 적힌 발급기관이나 전문가에게 즉시 확인하세요. 자동 제출·합의·포기는 하지 않습니다.</p>
@@ -521,6 +523,7 @@ function 확인보류(){
   app.innerHTML=`<p class="q">확인되지 않은 내용으로 결론을 내리지 않겠습니다</p>
     <p class="note">현재 선택만으로는 절차나 기한을 확정할 수 없습니다. 모른다는 답을 ‘아니오’로 처리하지 않습니다.</p>
     <div class="readout"><b>상담 전에 확인할 것</b><ul><li>문서의 정확한 제목과 발급기관</li><li>내 역할: 피의자·피고인·고소인 등</li><li>선고일, 실제 송달일, 통지를 받은 경위</li><li>빠진 페이지와 뒤에 받은 통지서가 있는지</li></ul></div>
+    <p><a href="작성.html">판단을 기다리는 동안, 내 상황과 자료부터 정리하기 →</a></p>
     <p>기한이 임박했거나 날짜가 불확실하면 발급기관 또는 <a href="tel:132">대한법률구조공단 132</a>에 확인하세요. 이 화면은 제출이나 불복 포기를 처리하지 않습니다.</p>${nav()}`;
   붙이기_nav();
 }
