@@ -32,16 +32,18 @@
 
 
 <link rel="stylesheet" href="/assets/experience.css">
+<link rel="stylesheet" href="/assets/journey-home.css">
 </head>
 <body>
 <a class="skip" href="#main">본문 바로가기</a>
 <div class="notice-bar">혼자 준비해야 하는 순간에도, 다음 행동을 찾을 수 있도록 <span>프로젝트윤</span></div>
-<div class="site-nav"><div class="site-width"><a class="brand-name" href="#top"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v17M6 20h12M4 7h16M5 7l-3 7h6L5 7Zm14 0-3 7h6l-3-7Z"/></svg></span>법률 절차 길잡이</a><nav aria-label="주요 메뉴"><a href="#how">이용 방법</a><a href="#forms">서식 찾기</a><a href="/절차/">받은 서류 확인</a></nav><a class="nav-start" href="#ask-input">바로 물어보기 <span aria-hidden="true">↗</span></a></div></div>
+<div class="site-nav"><div class="site-width"><a class="brand-name" href="#top"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v17M6 20h12M4 7h16M5 7l-3 7h6L5 7Zm14 0-3 7h6l-3-7Z"/></svg></span>법률 절차 길잡이</a><nav aria-label="주요 메뉴"><a href="#how">이용 방법</a><a href="#forms">서식 찾기</a><a href="/절차/">받은 서류 확인</a></nav><a class="nav-start" href="#top">시작하기 <span aria-hidden="true">↗</span></a></div></div>
 <main id="main">
-<section class="site-section" aria-label="필요한 도움 선택"><div class="site-width"><div class="section-intro"><p class="eyebrow">어디서 시작할까요?</p><h2>받은 서류부터, 써야 할 서류까지.</h2><p>모르는 내용은 건너뛰어도 됩니다. 사건번호만으로 처분 확률이나 사건 결과를 예측하지 않습니다.</p></div><div class="steps-grid"><article><span class="step-no">받은 서류가 있어요</span><h3>사진·PDF·글로 확인</h3><p>문서에서 읽은 글을 직접 대조하고, 다음에 확인할 내용을 찾습니다. 파일과 입력은 기기 안에서 처리합니다.</p><a class="text-button" href="/절차/">받은 서류 확인하기 →</a></article><article><span class="step-no">어디서 시작할지 모르겠어요</span><h3>상황에 맞는 절차 찾기</h3><p>평소 쓰는 말로 질문하고 필요한 도움을 선택하세요. 이 질문은 안내 서버로 전송됩니다.</p><a class="text-button" href="#ask-input">절차 물어보기 →</a></article><article><span class="step-no">서류를 써야 해요</span><h3>내 말로 초안 준비</h3><p>있었던 일·자료·질문을 정리해 내려받고 서식을 찾습니다. 자동 제출이나 법적 주장의 선택은 하지 않습니다.</p><a class="text-button" href="/절차/작성.html">작성 도움 시작하기 →</a></article></div></div></section>
-<header class="experience-hero" id="top"><div class="site-width">
+<section class="journey-home" id="top" aria-label="필요한 도움 선택"><div class="site-width"><p class="eyebrow">서류 확인부터 상담 준비까지</p><h1>어디서부터 해야 할지,<br>하나씩 정리해요.</h1><p>받은 서류가 있든, 설명할 일만 있든.<br>확인할 내용과 다음 준비를 함께 정리합니다.</p><div class="journey-links"><a href="/절차/간편.html?entry=document"><strong>받은 서류가 있어요 →</strong><span>사진·PDF·내용 붙여넣기</span></a><a href="/절차/간편.html?entry=situation"><strong>어떤 일인지 설명할게요 →</strong><span>기억나는 일부터, 내 말로 정리</span></a></div><p class="journey-note">위 두 경로의 파일과 입력은 기기 안에서 처리합니다.<br>자동 저장·제출·기한 계산은 하지 않습니다.</p><div class="hero-shortcuts"><a href="#forms">서식만 찾기 →</a><a href="/절차/">사건번호로 시작하기 →</a></div></div></section>
+<details class="legacy-guide" id="legacy-guide"><summary>기존 절차 질문·이용 안내 펼치기 <small>질문은 서버로 전송됩니다</small></summary>
+<header class="experience-hero" id="questions"><div class="site-width">
 <p class="eyebrow">일상에서 만나는 법률 문제</p>
-<h1>막막한 법률 문제,<br><em>다음에 할 일부터.</em></h1>
+<h2>절차를 물어보고 싶다면</h2>
 <p class="hero-description">상황을 적어주세요.<br class="mobile-break"> 한 단계씩 확인하고, 필요한 절차와 서식을 카드로 안내합니다.</p>
 <section class="workspace" aria-label="법률 길잡이 웹 체험">
 <ol class="guide-progress" id="guide-progress" aria-label="진행 단계"><li aria-current="step">1. 상황 확인</li><li>2. 필요한 도움</li><li>3. 카드로 준비</li></ol><div class="workspace-top" hidden id="workspace-top"><span>법률 길잡이 웹 체험</span><button id="restart" type="button">새 질문</button></div>
@@ -56,6 +58,7 @@
 <section class="outcome-strip"><div class="site-width"><p>답을 읽는 데서<br><strong>다음 행동까지.</strong></p><div><span>01</span><b>지금 할 일</b><small>상황에 맞는 절차</small></div><div><span>02</span><b>확인할 기한</b><small>기준일과 담당 기관 확인</small></div><div><span>03</span><b>준비할 서식</b><small>직접 작성하고 내려받기</small></div></div></section>
 <section class="site-section" id="how"><div class="site-width"><div class="section-intro"><p class="eyebrow">이용 방법</p><h2>겪으신 일은 편하게.<br>다음 단계는 구체적으로.</h2><p>상황을 적으면 관련 절차를 찾습니다.<br>안내를 확인하고 필요한 서류를 준비하세요.</p></div><div class="steps-grid"><article><span class="step-no">01 / 상황</span><h3>평소 쓰는 말로<br>알려주세요</h3><p>“월급을 3개월째 못 받았어요.”<br>어려운 법률 용어로 바꾸지 않아도 됩니다.</p><button data-example="월급을 3개월째 못 받았어요" type="button" class="text-button">이 질문으로 시작 →</button></article><article><span class="step-no">02 / 확인</span><h3>절차와 기한을<br>확인하세요</h3><p>무엇부터 해야 하는지, 어디에 제출하는지 살펴보세요. 상황이 다르면 다른 관련 주제를 선택할 수 있습니다.</p><a href="/절차/" class="text-button">받은 서류 확인하기 →</a></article><article><span class="step-no">03 / 준비</span><h3>서식을 열고<br>직접 작성하세요</h3><p>빈칸을 채워 인쇄하거나 내려받을 수 있습니다. 각 서식에서 공식 양식도 확인하세요.</p><a href="#forms" class="text-button">서식 둘러보기 →</a></article></div></div></section>
 <section class="site-section evidence-section"><div class="site-width evidence-layout"><div><p class="eyebrow">안내의 근거</p><h2>어디에서 나온<br>정보인지 확인하세요.</h2><p>절차와 함께 관련 법령·접수처를 안내합니다.<br>개별 사건의 결론은 단정하지 않습니다.</p><a href="https://www.law.go.kr" target="_blank" rel="noopener" class="text-button">국가법령정보센터 →</a></div><div class="evidence-list"><article><span>01</span><div><h3>공식 자료로 확인하는 절차</h3><p>기관 안내와 관련 법령을 함께 확인할 수 있습니다. 실제 적용은 사건과 시점에 따라 달라질 수 있습니다.</p></div></article><article><span>02</span><div><h3>사용자가 직접 채우는 서식</h3><p>일반적인 작성 예시를 제공합니다. 제출 전 공식 양식과 관할기관의 안내를 확인하세요.</p></div></article><article><span>03</span><div><h3>필요할 때 전문가에게</h3><p>승소 가능성 판단과 개별 사건 자문은 전문가에게 문의하세요.</p><a href="tel:132">대한법률구조공단 132 ↗</a></div></article></div></div></section>
+</details>
 <section id="forms"><div class="wrap">
   <div class="sec-head mid">
     <div class="eyebrow">필요한 서식부터</div>
@@ -307,5 +310,6 @@ render();
 
 </script>
 <script src="/assets/experience.js" defer></script>
+<script src="/assets/journey-home.js" defer></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"b558ecfcfd424fa3b75d264ff35d2b45"}'></script>
 </body></html>
