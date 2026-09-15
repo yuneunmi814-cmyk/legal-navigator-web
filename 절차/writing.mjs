@@ -31,6 +31,8 @@ function render(){
   }
   button('입력 지우고 다시 시작',()=>{if(window.confirm('입력한 내용을 모두 지울까요? 내려받은 파일은 삭제되지 않습니다.')){data=blank();step=0;render();}});
 }
-document.querySelectorAll('.feedback').forEach(b=>b.onclick=()=>{$('feedback-status').textContent=`선택: ${b.textContent}. 서버로 전송하거나 저장하지 않았습니다. 입력한 내용은 위에서 수정할 수 있습니다.`;});
+let feedback='';
+document.querySelectorAll('.feedback').forEach(b=>b.onclick=()=>{feedback=`작성 도우미 개선 요청 (웹 2026-09-15): ${b.textContent}. 사건 내용은 포함하지 않았습니다.`;$('feedback-status').textContent=feedback;$('copy-feedback').hidden=false;});
+$('copy-feedback').onclick=async()=>{try{await navigator.clipboard.writeText(feedback);$('feedback-status').textContent=feedback+' 복사했습니다. 아직 전송하지 않았습니다.';}catch{$('feedback-status').textContent=feedback+' 자동 복사가 안 됩니다. 이 문구를 직접 복사해 주세요.';}};
 window.addEventListener('pagehide',()=>{data=blank();step=0;render();});
 render();

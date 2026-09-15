@@ -111,7 +111,9 @@
       if (!found) aside.append(node('p', '', '이 안내에 연결된 서식은 아직 없습니다. 필요한 서식은 전체 목록에서 찾아보세요.'));
       const browse = link('서식 전체에서 찾기 →', '#forms');
       browse.addEventListener('click', e => { e.preventDefault(); showForms(); }); aside.append(browse);
-      aside.append(link('받은 서류의 기한 확인 →', '/절차/'));
+      aside.append(link('받은 서류 확인하기 →', '/절차/'));
+      aside.append(link('사건 경위·증거 목록 작성하기 →', '/절차/작성.html'));
+      aside.append(node('p', '', '작성 도우미는 기기 안에서만 작동합니다. 이 대화는 자동으로 옮기지 않습니다.'));
       layout.append(aside); fragment.append(layout);
     }
     for (const [key, label] of [['evidence', '준비할 자료'], ['submit', '제출 전 확인']]) {
