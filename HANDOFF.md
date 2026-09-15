@@ -2,7 +2,7 @@
 
 | 갈래 | 한 줄 요약 | 마지막 갱신 | 급함 |
 |---|---|---|---|
-| K | 여러 사건 경위·수정 요약·입력 보존 보완, 시험 배포 준비 | 2026-09-15 | 독립 웹만 |
+| K | 여러 사건 경위·수정 요약·입력 보존 보완, 시험 배포 검증 완료 | 2026-09-15 | 독립 웹만 |
 | J | 독립 웹 소개·공유 정보 현행화, 시험 배포·검증 완료 | 2026-09-15 | 웹 설명 정합성 |
 | I | 두 갈래 홈페이지·공통 상담 준비자료, 시험 배포·동선 검증 완료 | 2026-09-15 | 독립 웹만 |
 | H | 지급명령 네 단계 간편 UX 시안, 시험 배포 검증 완료 | 2026-09-15 | 사용자 비교 대기 |
@@ -255,4 +255,6 @@
 ## 검증 / 배포
 - 모델/입력/추출 23개 테스트 통과. Chromium: 수정 요약 즉시 반영, 여러 경위 실제 TXT 다운로드, 잘못된 날짜 경고, 일반 제목/역할 라벨, 검토 복귀, PDF 오류 후 붙여넣기 보존, 초기화 후 이력 이동, 삭제 취소/확인, 320–1280px 통과.
 - 기존 지급명령 HTML 다운로드·사진 OCR·PDF·취소 검사 통과. 새 흐름 서버 POST 없음. `/private/tmp/journey-followup-review.png` 화면 확인.
-- 법률 내용 전문가 검수·CI·외부 코드 리뷰·실사용자 검증 미실시. 시험 배포 후 주소 추가. 이전 안정 시안은 `https://85ceadda.legalnavi.pages.dev`.
+- 법률 내용 전문가 검수·CI·외부 코드 리뷰·실사용자 검증 미실시. 이전 안정 시안은 `https://85ceadda.legalnavi.pages.dev`.
+- 코드 `b177876`, 시험 배포 `https://e2aca38e.legalnavi.pages.dev`, 최신 시험 채널 `https://codex-two-entry-preview.legalnavi.pages.dev`. 실제 배포에서 journey-followup-browser / journey-browser / simple-upload 모두 통과.
+- 지정 파일 커밋 후 원본 main으로 fast-forward 반영. 원격 push·Production 교체는 하지 않음.
