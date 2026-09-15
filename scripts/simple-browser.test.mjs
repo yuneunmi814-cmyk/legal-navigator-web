@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';
+const {chromium}=await import(process.env.PLAYWRIGHT_MODULE||'playwright');const base=process.env.TEST_BASE||'http://127.0.0.1:4173';const browser=await chromium.launch({headless:true});const page=await browser.newPage();const errors=[],posts=[];page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(r.method()==='POST')posts.push(r.url());});
+try{
+ await page.goto(base+'/절차/간편.html');assert.equal(await page.locator('#upload').isVisible(),false);
+ await page.setViewportSize({width:375,height:900});await page.screenshot({path:'/private/tmp/simple-start.png',fullPage:true});
+ await page.getByRole('button',{name:'가상 문서로 먼저 체험하기'}).click();assert.ok((await page.locator('#screen').textContent()).includes('2026차전12345'));assert.equal(await page.locator('textarea:visible').count(),0);
+ await page.getByRole('button',{name:'근거',exact:true}).first().click();assert.ok(await page.locator('mark').isVisible());
+ await page.getByRole('button',{name:'수정',exact:true}).nth(1).click();await page.getByRole('textbox',{name:'사건번호 수정'}).fill('2026차전999');await page.getByRole('button',{name:'수정 반영'}).click();await page.locator('#facts-checked').check();await page.getByRole('button',{name:'이 내용으로 계속',exact:true}).click();
+ await page.getByLabel('지급명령에 이의신청할 작성본을 준비할게요').check();await page.locator('#role').selectOption('debtor');await page.locator('#scope').selectOption('partial');await page.locator('#f-partial').fill('청구금액 중 10만원');await page.locator('#f-received').fill('2026-09-10');await page.getByRole('button',{name:'검토용 작성본 보기'}).click();assert.ok((await page.locator('#draft-preview').textContent()).includes('2026차전999'));
+ assert.ok(await page.getByRole('button',{name:'검토용 작성본 내려받기'}).isDisabled());await page.locator('#result-document summary').click();await page.locator('#download-check').check();const download=page.waitForEvent('download');await page.getByRole('button',{name:'검토용 작성본 내려받기'}).click();const html=await readFile(await (await download).path(),'utf8');assert.ok(html.includes('2026차전999'));assert.ok(html.includes('10만원'));
+ await page.getByRole('button',{name:'입력 내용 보완하기'}).click();assert.equal(await page.locator('#f-partial').inputValue(),'청구금액 중 10만원');assert.equal(await page.locator('#f-received').inputValue(),'2026-09-10');
+ await page.getByRole('button',{name:'검토용 작성본 보기'}).click();assert.equal(await page.locator('#download-check').isChecked(),false);
+ for(const width of [320,375,768,1280]){await page.setViewportSize({width,height:900});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);}await page.setViewportSize({width:375,height:900});await page.screenshot({path:'/private/tmp/simple-result.png',fullPage:true});
+ await page.goBack();assert.ok(await page.locator('#scope').isVisible());await page.locator('#role').selectOption('other');await page.goForward();assert.equal(await page.locator('#download-check').count(),0);
+ await page.reload();assert.ok(await page.getByRole('button',{name:'사진 또는 PDF 선택'}).isVisible());assert.deepEqual(errors,[]);assert.deepEqual(posts,[]);console.log('PASS: grouped review/edit → deliberate choice → download, data retained, back/forward guard, responsive, no POST');
+}finally{await browser.close();}
